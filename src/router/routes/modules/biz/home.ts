@@ -1,26 +1,25 @@
 import type { AppRouteModule } from '/@/router/types';
 
 import { LAYOUT } from '/@/router/constant';
-import { t } from '/@/hooks/web/useI18n';
 
 const about: AppRouteModule = {
-  path: '/about',
-  name: 'About',
+  path: '/home',
+  name: 'Home',
   component: LAYOUT,
-  redirect: '/about/index',
+  redirect: '/home/index',
   meta: {
     hideChildrenInMenu: true,
     icon: 'simple-icons:about-dot-me',
-    title: t('routes.dashboard.about'),
-    orderNo: 100000,
+    title: '知识门户',
+    orderNo: 1,
   },
   children: [
     {
       path: 'index',
-      name: 'AboutPage',
-      component: () => import('/@/views/sys/about/index.vue'),
+      name: 'HomePage',
+      component: () => import('/@/views/biz/home/index.vue'),
       meta: {
-        title: t('routes.dashboard.about'),
+        title: '知识门户',
         icon: 'simple-icons:about-dot-me',
         hideMenu: true,
       },

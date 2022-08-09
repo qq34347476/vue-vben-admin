@@ -1,9 +1,9 @@
 /**
  * Application configuration
  */
-import type { ProjectConfig } from '/#/config';
+// import type { ProjectConfig } from '/#/config';
 
-import { PROJ_CFG_KEY } from '/@/enums/cacheEnum';
+// import { PROJ_CFG_KEY } from '/@/enums/cacheEnum';
 import projectSetting from '/@/settings/projectSetting';
 
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground';
@@ -13,21 +13,22 @@ import { updateDarkTheme } from '/@/logics/theme/dark';
 import { changeTheme } from '/@/logics/theme';
 
 import { useAppStore } from '/@/store/modules/app';
-import { useLocaleStore } from '/@/store/modules/locale';
+// import { useLocaleStore } from '/@/store/modules/locale';
 
 import { getCommonStoragePrefix, getStorageShortName } from '/@/utils/env';
 
 import { primaryColor } from '../../build/config/themeConfig';
-import { Persistent } from '/@/utils/cache/persistent';
-import { deepMerge } from '/@/utils';
+// import { Persistent } from '/@/utils/cache/persistent';
+// import { deepMerge } from '/@/utils';
 import { ThemeEnum } from '/@/enums/appEnum';
 
 // Initial project configuration
 export function initAppConfigStore() {
-  const localeStore = useLocaleStore();
+  // const localeStore = useLocaleStore();
   const appStore = useAppStore();
-  let projCfg: ProjectConfig = Persistent.getLocal(PROJ_CFG_KEY) as ProjectConfig;
-  projCfg = deepMerge(projectSetting, projCfg || {});
+  // 不使用localstorage存储
+  // let projCfg: ProjectConfig = Persistent.getLocal(PROJ_CFG_KEY) as ProjectConfig;
+  // projCfg = deepMerge(projectSetting, projCfg || {});
   const darkMode = appStore.getDarkMode;
   const {
     colorWeak,
@@ -36,7 +37,7 @@ export function initAppConfigStore() {
 
     headerSetting: { bgColor: headerBgColor } = {},
     menuSetting: { bgColor } = {},
-  } = projCfg;
+  } = projectSetting;
   try {
     if (themeColor && themeColor !== primaryColor) {
       changeTheme(themeColor);
@@ -47,7 +48,7 @@ export function initAppConfigStore() {
   } catch (error) {
     console.log(error);
   }
-  appStore.setProjectConfig(projCfg);
+  // appStore.setProjectConfig(projCfg);
 
   // init dark mode
   updateDarkTheme(darkMode);
@@ -59,7 +60,7 @@ export function initAppConfigStore() {
     bgColor && updateSidebarBgColor(bgColor);
   }
   // init store
-  localeStore.initLocale();
+  // localeStore.initLocale();
 
   setTimeout(() => {
     clearObsoleteStorage();

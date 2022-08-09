@@ -11,18 +11,22 @@ import { defineStore } from 'pinia';
 import { store } from '/@/store';
 
 import { ThemeEnum } from '/@/enums/appEnum';
-import { APP_DARK_MODE_KEY_, PROJ_CFG_KEY } from '/@/enums/cacheEnum';
+import {
+  APP_DARK_MODE_KEY_,
+  // PROJ_CFG_KEY
+} from '/@/enums/cacheEnum';
 import { Persistent } from '/@/utils/cache/persistent';
 import { darkMode } from '/@/settings/designSetting';
 import { resetRouter } from '/@/router';
 import { deepMerge } from '/@/utils';
+import projectSetting from '/@/settings/projectSetting';
 
 interface AppState {
   darkMode?: ThemeEnum;
   // Page loading status
   pageLoading: boolean;
   // project config
-  projectConfig: ProjectConfig | null;
+  projectConfig: ProjectConfig;
   // When the window shrinks, remember some states, and restore these states when the window is restored
   beforeMiniInfo: BeforeMiniState;
 }
@@ -32,7 +36,7 @@ export const useAppStore = defineStore({
   state: (): AppState => ({
     darkMode: undefined,
     pageLoading: false,
-    projectConfig: Persistent.getLocal(PROJ_CFG_KEY),
+    projectConfig: projectSetting, // Persistent.getLocal(PROJ_CFG_KEY),
     beforeMiniInfo: {},
   }),
   getters: {
@@ -80,7 +84,7 @@ export const useAppStore = defineStore({
 
     setProjectConfig(config: DeepPartial<ProjectConfig>): void {
       this.projectConfig = deepMerge(this.projectConfig || {}, config);
-      Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
+      // Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
     },
 
     async resetAllState() {

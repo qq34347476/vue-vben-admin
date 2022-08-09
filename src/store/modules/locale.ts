@@ -3,13 +3,13 @@ import type { LocaleSetting, LocaleType } from '/#/config';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 
-import { LOCALE_KEY } from '/@/enums/cacheEnum';
-import { createLocalStorage } from '/@/utils/cache';
+// import { LOCALE_KEY } from '/@/enums/cacheEnum';
+// import { createLocalStorage } from '/@/utils/cache';
 import { localeSetting } from '/@/settings/localeSetting';
 
-const ls = createLocalStorage();
-
-const lsLocaleSetting = (ls.get(LOCALE_KEY) || localeSetting) as LocaleSetting;
+// const ls = createLocalStorage();
+// 不需要localstorage，不需要语言切换
+const lsLocaleSetting = localeSetting as LocaleSetting;
 
 interface LocaleState {
   localInfo: LocaleSetting;
@@ -35,7 +35,7 @@ export const useLocaleStore = defineStore({
      */
     setLocaleInfo(info: Partial<LocaleSetting>) {
       this.localInfo = { ...this.localInfo, ...info };
-      ls.set(LOCALE_KEY, this.localInfo);
+      // ls.set(LOCALE_KEY, this.localInfo);
     },
     /**
      * Initialize multilingual information and load the existing configuration from the local cache
