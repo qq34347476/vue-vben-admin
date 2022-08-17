@@ -1,5 +1,5 @@
 <template>
-  <BasicTitle :class="prefixCls" v-if="getTitle" :helpMessage="helpMessage">
+  <BasicTitle :class="prefixCls" v-if="getTitle" :helpMessage="helpMessage" :span="true">
     {{ getTitle }}
   </BasicTitle>
 </template>

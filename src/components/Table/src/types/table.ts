@@ -7,7 +7,7 @@ import type { ColumnProps } from 'ant-design-vue/lib/table';
 import { ComponentType } from './componentType';
 import { VueNode } from '/@/utils/propTypes';
 import { RoleEnum } from '/@/enums/roleEnum';
-
+import { ColorTypeEnum } from '/@/enums/biz/indexEnum';
 export declare type SortOrder = 'ascend' | 'descend';
 
 export interface TableCurrentDataSource<T = Recordable> {
@@ -423,7 +423,9 @@ export interface BasicColumn extends ColumnProps<Recordable> {
   }[];
 
   //
-  flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION';
+  flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION' | 'TAG';
+  tagList?: { label: string; value: string; type?: ColorTypeEnum | string }[];
+  tagValue?: string;
   customTitle?: VueNode;
 
   slots?: Recordable;

@@ -9,6 +9,7 @@ import { isArray, isBoolean, isFunction, isMap, isString } from '/@/utils/is';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { formatToDate } from '/@/utils/dateUtil';
 import { ACTION_COLUMN_FLAG, DEFAULT_ALIGN, INDEX_COLUMN_FLAG, PAGE_SIZE } from '../const';
+import { Tag } from 'ant-design-vue';
 
 function handleItem(item: BasicColumn, ellipsis: boolean) {
   const { key, dataIndex, children } = item;
@@ -152,7 +153,7 @@ export function useColumns(
         return hasPermission(column.auth) && isIfShow(column);
       })
       .map((column) => {
-        const { slots, customRender, format, edit, editRow, flag } = column;
+        const { slots, customRender, format, edit, editRow, flag, tagList, key } = column;
 
         if (!slots || !slots?.title) {
           // column.slots = { title: `header-${dataIndex}`, ...(slots || {}) };
@@ -162,6 +163,7 @@ export function useColumns(
         const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(flag!);
         if (!customRender && format && !edit && !isDefaultAction) {
           column.customRender = ({ text, record, index }) => {
+            console.log(text, record, index);
             return formatCell(text, format, record, index);
           };
         }
@@ -169,6 +171,17 @@ export function useColumns(
         // edit table
         if ((edit || editRow) && !isDefaultAction) {
           column.customRender = renderEditCell(column);
+        }
+        // tag
+        if (flag === 'TAG') {
+          column.customRender = ({ record }) => {
+            const tagItem = tagList?.filter((item) => {
+              return item.value === record[column.dataIndex + '' || ''];
+            });
+            if (tagItem?.length) {
+              return <Tag color={tagItem[0].type}>{tagItem[0].label}</Tag>;
+            }
+          };
         }
         return reactive(column);
       });

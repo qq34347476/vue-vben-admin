@@ -42,3 +42,21 @@ svg,
 span {
   outline: none;
 }
+
+// 标题样式
+.common-title {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 16px;
+  margin-bottom: 14px;
+
+  &::before {
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    margin-right: 4px;
+    vertical-align: -2px;
+    background: @primary-color;
+    content: '';
+  }
+}

@@ -1,3 +1,11 @@
+<!--
+ * @Author: crz 982544249@qq.com
+ * @Date: 2022-08-17 14:41:39
+ * @LastEditors: crz 982544249@qq.com
+ * @LastEditTime: 2022-08-19 17:29:21
+ * @FilePath: \knowledge-web\src\components\Basic\src\BasicTitle.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <span :class="getClass">
     <slot></slot>
@@ -45,9 +53,8 @@
   .@{prefix-cls} {
     position: relative;
     display: flex;
-    padding-left: 7px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: bold;
     line-height: 24px;
     color: @text-color-base;
     cursor: pointer;
@@ -59,12 +66,10 @@
     }
 
     &-show-span::before {
-      position: absolute;
-      top: 4px;
-      left: 0;
-      width: 3px;
+      float: left;
+      width: 4px;
       height: 16px;
-      margin-right: 4px;
+      margin: auto 4px auto 0;
       background-color: @primary-color;
       content: '';
     }
