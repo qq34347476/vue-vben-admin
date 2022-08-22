@@ -46,7 +46,7 @@
   import 'tinymce/plugins/searchreplace';
   import 'tinymce/plugins/spellchecker';
   import 'tinymce/plugins/tabfocus';
-  // import 'tinymce/plugins/table';
+  import 'tinymce/plugins/table';
   import 'tinymce/plugins/template';
   import 'tinymce/plugins/textpattern';
   import 'tinymce/plugins/visualblocks';
@@ -147,11 +147,13 @@
       const initOptions = computed((): RawEditorSettings => {
         const { height, options, toolbar, plugins } = props;
         const publicPath = import.meta.env.VITE_PUBLIC_PATH || '/';
+        // console.log(toolbar);
+
         return {
           selector: `#${unref(tinymceId)}`,
           height,
           toolbar,
-          menubar: 'file edit insert view format table',
+          // menubar: 'file edit insert view format table',
           plugins,
           language_url: publicPath + 'resource/tinymce/langs/' + langName.value + '.js',
           language: langName.value,

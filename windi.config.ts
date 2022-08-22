@@ -3,7 +3,7 @@ import { primaryColor } from './build/config/themeConfig';
 
 export default defineConfig({
   darkMode: 'class',
-  plugins: [createEnterPlugin()],
+  plugins: [createEnterPlugin(), require('windicss/plugin/line-clamp')],
   theme: {
     extend: {
       zIndex: {
@@ -18,6 +18,10 @@ export default defineConfig({
         lg: '992px',
         xl: '1200px',
         '2xl': '1600px',
+      },
+      lineClamp: {
+        sm: '3',
+        lg: '10',
       },
     },
   },

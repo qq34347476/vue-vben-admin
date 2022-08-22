@@ -138,5 +138,9 @@
   ],
   "vetur.format.scriptInitialIndent": true,
   "vetur.format.styleInitialIndent": true,
-  "vetur.validation.script": false
+  "vetur.validation.script": false,
+  "fileheader.customMade": {
+    "LastEditTime": "Do not edit", // 文件最后编辑时间
+    "Description": "", // 介绍文件的作用、文件的入参、出参。
+  }
 }

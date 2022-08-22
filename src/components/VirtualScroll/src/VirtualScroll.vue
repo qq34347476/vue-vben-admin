@@ -51,7 +51,7 @@
   export default defineComponent({
     name: 'VirtualScroll',
     props,
-    setup(props, { slots }) {
+    setup(props, { slots, emit }) {
       const wrapElRef = ref<HTMLDivElement | null>(null);
       const state = reactive({
         first: 0,
@@ -125,6 +125,14 @@
         state.scrollTop = wrapEl.scrollTop;
         state.first = getFirst();
         state.last = getLast(state.first);
+        // 缩小以后小数点计算偏差：wrapEl.scrollTop + wrapEl.clientHeight+1>wrapEl.scrollHeight
+        if (
+          wrapEl.scrollTop + wrapEl.clientHeight === wrapEl.scrollHeight ||
+          wrapEl.scrollTop + wrapEl.clientHeight + 1 > wrapEl.scrollHeight
+        ) {
+          // 到底部
+          emit('scrollBottom', state.last);
+        }
       }
 
       function renderChildren() {
