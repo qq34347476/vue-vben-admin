@@ -308,9 +308,10 @@
   @prefix-cls: ~'@{namespace}-basic-form';
 
   .@{prefix-cls} {
-    padding: 20px 20px 0 20px;
-    background-color: white;
+    padding: 12px 10px 6px;
     margin-bottom: 16px;
+    background-color: @component-background;
+    border-radius: 2px;
 
     .ant-form-item {
       &-label label::after {

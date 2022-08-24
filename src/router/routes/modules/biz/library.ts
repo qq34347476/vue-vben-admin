@@ -1,16 +1,16 @@
 /*
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 14:16:03
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-12 14:57:31
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-24 10:39:20
  * @FilePath: \knowledge-web\src\router\routes\modules\biz\library.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 知识库路由
  */
 import type { AppRouteModule } from '/@/router/types';
 
 import { LAYOUT } from '/@/router/constant';
 
-const dashboard: AppRouteModule = {
+const library: AppRouteModule = {
   path: '/library',
   name: 'Library',
   component: LAYOUT,
@@ -93,4 +93,4 @@ const dashboard: AppRouteModule = {
   ],
 };
 
-export default dashboard;
+export default library;

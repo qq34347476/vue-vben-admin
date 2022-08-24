@@ -1,8 +1,8 @@
 <!--
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 14:10:27
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-19 15:14:35
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-24 15:30:02
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\index.vue
  * @Description: 知识库
 -->
@@ -69,9 +69,24 @@
   const [registerDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   const [registerAddDrawer, { openDrawer: openAddDrawer }] = useDrawer();
 
+  // actionsFn
+  const {
+    knowledgeRecordRef,
+    handelDetail,
+    handleEdit,
+    drawerTypeRef,
+    handleFile,
+    handleCollection,
+    handleActive,
+    handleDelete,
+    handleRecover,
+    handleForeverDelete,
+    handleName,
+  } = actionsFn(openDetailDrawer, openAddDrawer);
+
   // table
   const [registerTable, { getSelectRowKeys }] = useTable({
-    columns: createBasicColumns(),
+    columns: createBasicColumns(handleName),
     useSearchForm: true,
     formConfig: {
       labelWidth: 80,
@@ -98,19 +113,6 @@
       return createRecycleActionColumn(record, handelDetail, handleRecover, handleForeverDelete);
     }
   }
-  // actionsFn
-  const {
-    knowledgeRecordRef,
-    handelDetail,
-    handleEdit,
-    drawerTypeRef,
-    handleFile,
-    handleCollection,
-    handleActive,
-    handleDelete,
-    handleRecover,
-    handleForeverDelete,
-  } = actionsFn(openDetailDrawer, openAddDrawer);
 
   // 新建知识库
   function addKnoledgeBase() {

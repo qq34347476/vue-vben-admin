@@ -1,14 +1,16 @@
 /*
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 16:12:05
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-16 18:00:29
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-24 15:29:17
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\actionsFn.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { ref } from 'vue';
 import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
 import { useMessage } from '/@/hooks/web/useMessage';
+import { PageEnum } from '/@/enums/pageEnum';
+import { useRouter } from 'vue-router';
 const { createConfirm, createMessage } = useMessage();
 
 export function actionsFn(openDetailDrawer: Function, openEditDrawer: Function) {
@@ -74,6 +76,14 @@ export function actionsFn(openDetailDrawer: Function, openEditDrawer: Function) 
       createMessage.warn('请先勾选要删除的知识库');
     }
   }
+
+  // 点击名称
+  const { push } = useRouter();
+  function handleName() {
+    // 页面跳转
+    push(PageEnum.BASE_HOME);
+  }
+
   return {
     knowledgeRecordRef,
     handelDetail,
@@ -85,5 +95,6 @@ export function actionsFn(openDetailDrawer: Function, openEditDrawer: Function) 
     handleDelete,
     handleRecover,
     handleForeverDelete,
+    handleName,
   };
 }

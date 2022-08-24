@@ -1,8 +1,8 @@
 /*
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 16:05:41
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-23 10:33:02
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-24 10:25:58
  * @FilePath: \knowledge-web\src\views\examples\page\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -45,7 +45,11 @@ export function createUnauditedColumns(handleName, pageClassifyList?): BasicColu
       width: 300,
       fixed: 'left',
       customRender: (text) => {
-        return <a onClick={handleName}>{text.text}</a>;
+        return (
+          <a class="line-clamp-1" title={text.text} onClick={handleName}>
+            {text.text}
+          </a>
+        );
       },
     },
     {
@@ -92,7 +96,6 @@ export function createUnauditedColumns(handleName, pageClassifyList?): BasicColu
 }
 
 export function createReviewedColumns(handleName, pageClassifyList): BasicColumn[] {
-  console.log(pageClassifyList);
   return [
     {
       dataIndex: 'pageName',

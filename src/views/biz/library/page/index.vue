@@ -2,29 +2,33 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 14:44:03
  * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-23 11:32:20
+ * @LastEditTime: 2022-08-23 15:40:35
  * @FilePath: \knowledge-web\src\views\examples\page\index.vue
  * @Description: 页面模板
 -->
 <template>
-  <BasicForm @register="registerForm" @submit="handelSearch" style="margin: 16px" />
-  <Tabs class="bg-white" style="padding: 0 8px; margin: 0 16px" @change="tabChange">
+  <!-- <BasicForm @register="registerForm" @submit="handelSearch" style="margin: 16px" /> -->
+  <Tabs class="bg-white" style="margin: 16px; padding: 0 16px" @change="tabChange">
     <TabPane :key="ReviewState.unaudited" tab="待审核">
-      <BasicTable @register="registerUnauditedTable">
+      <BasicTable style="padding: 0" @register="registerUnauditedTable">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
             <TableAction :actions="createActionColumn(record, openAddModal)" />
           </template>
         </template>
         <template #toolbar>
-          <a-button type="primary" class="mr-2" @click="openAddModal(getSelectRowKeys())">
+          <a-button
+            type="primary"
+            style="margin-right: 18px"
+            @click="openAddModal(getSelectRowKeys())"
+          >
             审核
           </a-button>
         </template>
       </BasicTable>
     </TabPane>
     <TabPane :key="ReviewState.reviewed" tab="已审核" forceRender>
-      <BasicTable @register="registerReviewedTable" />
+      <BasicTable style="padding: 0" @register="registerReviewedTable" />
     </TabPane>
   </Tabs>
   <Add
@@ -49,45 +53,37 @@
   // component
   import { Tabs, TabPane } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  // import { BasicForm, useForm } from '/@/components/Form/index';
   import Add from './add/index.vue';
 
   // api
   import { getPageReviewListData, getPageClassifyListData } from '/@/api/biz/library/page';
 
   // form
-  const [registerForm, { setProps: setFormProps, getFieldsValue, resetFields }] = useForm({
-    schemas: createUnauditedSchemas(),
-    baseColProps: { span: 8 },
-    labelWidth: 80,
-  });
-  // 查询
-  function handelSearch() {
-    if (activeKeyRef.value === ReviewState.reviewed) {
-      reviewedReload();
-    } else {
-      unauditedReload();
-    }
-  }
+  // const [registerForm, { setProps: setFormProps, getFieldsValue, resetFields }] = useForm({
+  //   schemas: createUnauditedSchemas(),
+  //   baseColProps: { span: 8 },
+  //   labelWidth: 80,
+  // });
 
   // tab
   const activeKeyRef = ref();
   function tabChange(activeKey: string) {
     activeKeyRef.value = activeKey;
-    resetFields();
+    // resetFields();
     if (activeKey === ReviewState.reviewed) {
       nextTick(() => {
         reviewedReload();
-        setFormProps({
-          schemas: createReviewedSchemas(),
-        });
+        // setFormProps({
+        //   schemas: createReviewedSchemas(),
+        // });
       });
     } else {
       nextTick(() => {
         unauditedReload();
-        setFormProps({
-          schemas: createUnauditedSchemas(),
-        });
+        // setFormProps({
+        //   schemas: createUnauditedSchemas(),
+        // });
       });
     }
   }
@@ -117,11 +113,16 @@
     registerUnauditedTable,
     { reload: unauditedReload, getSelectRowKeys, setProps: setUnauditedTableProps },
   ] = useTable({
+    useSearchForm: true,
+    formConfig: {
+      schemas: createUnauditedSchemas(),
+      baseColProps: { span: 8 },
+      labelWidth: 80,
+    },
     columns: createUnauditedColumns(handleName),
     rowSelection: { type: 'checkbox' },
     clickToRowSelect: false,
     rowKey: 'id',
-    beforeFetch: beforeFetch,
     api: getPageReviewListData,
     actionColumn: {
       width: 60,
@@ -133,21 +134,19 @@
   // 已审核
   const [registerReviewedTable, { reload: reviewedReload, setProps: setReviewedTableProps }] =
     useTable({
+      useSearchForm: true,
+      formConfig: {
+        schemas: createReviewedSchemas(),
+        baseColProps: { span: 8 },
+        labelWidth: 80,
+      },
       columns: createReviewedColumns(handleName, pageClassifyListRef.value),
       clickToRowSelect: false,
       rowKey: 'id',
       api: getPageReviewListData,
-      beforeFetch: beforeFetch,
       immediate: false,
     });
-  // beforeFetch
-  function beforeFetch(val) {
-    const data = getFieldsValue();
-    return {
-      ...val,
-      ...data,
-    };
-  }
+
   // 点击名称
   const { push } = useRouter();
   function handleName() {

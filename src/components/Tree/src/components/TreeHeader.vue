@@ -1,7 +1,7 @@
 <template>
   <div :class="bem()" class="flex px-2 py-1.5 items-center">
     <slot name="headerTitle" v-if="slots.headerTitle"></slot>
-    <BasicTitle :helpMessage="helpMessage" v-if="!slots.headerTitle && title">
+    <BasicTitle :helpMessage="helpMessage" v-if="!slots.headerTitle && title" span>
       {{ title }}
     </BasicTitle>
     <div

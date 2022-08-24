@@ -1,8 +1,8 @@
 /*
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 15:16:05
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-19 17:36:50
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-24 17:57:16
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,13 +22,20 @@ export function createSchemas(): FormSchema[] {
   ];
 }
 
-export function createBasicColumns(): BasicColumn[] {
+export function createBasicColumns(handleName): BasicColumn[] {
   return [
     {
       dataIndex: 'knowName',
       title: '知识库名称',
       width: 300,
       fixed: 'left',
+      customRender: ({ text }) => {
+        return (
+          <a class="line-clamp-1" onClick={handleName}>
+            {text}
+          </a>
+        );
+      },
     },
     {
       dataIndex: 'pageNum',
