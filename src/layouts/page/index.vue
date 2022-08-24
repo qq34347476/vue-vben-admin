@@ -18,7 +18,9 @@
           <component :is="Component" :key="route.fullPath" />
         </keep-alive>
 
-        <component v-else :is="Component" :key="route.fullPath" />
+        <div v-else :key="route.name">
+          <component :is="Component" :key="route.fullPath" />
+        </div>
       </transition>
     </template>
   </RouterView>
