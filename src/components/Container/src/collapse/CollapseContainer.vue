@@ -86,6 +86,7 @@
     background-color: @component-background;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
+    padding: 16px;
 
     &__header {
       display: flex;

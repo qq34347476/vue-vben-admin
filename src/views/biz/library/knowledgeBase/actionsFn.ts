@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 16:12:05
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-24 15:29:17
+ * @LastEditTime: 2022-08-25 17:41:30
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\actionsFn.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -51,7 +51,7 @@ export function actionsFn(openDetailDrawer: Function, openEditDrawer: Function) 
     createConfirm({
       iconType: 'warning',
       title: '确认操作',
-      content: `确认将<span style="color:#0960BD">【${record.knowName}】</span>删除，删除后可至知识库回收站进行恢复。`,
+      content: `确认将<span class="text-blue-500">【${record.knowName}】</span>删除，删除后可至知识库回收站进行恢复。`,
       onOk: async () => {
         console.log('确认删除');
       },

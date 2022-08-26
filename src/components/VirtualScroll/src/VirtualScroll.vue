@@ -22,6 +22,10 @@
     minHeight: [Number, String] as NumberOrNumberString,
     minWidth: [Number, String] as NumberOrNumberString,
     width: [Number, String] as NumberOrNumberString,
+    showNoMore: {
+      type: Boolean,
+      default: false,
+    },
     bench: {
       type: [Number, String] as NumberOrNumberString,
       default: 0,
@@ -171,6 +175,7 @@
           <div class={`${prefixCls}__container`} style={unref(getContainerStyleRef)}>
             {renderChildren()}
           </div>
+          {props.showNoMore && <div class="text-center p-2 text-gray-400">已无更多数据...</div>}
         </div>
       );
     },
