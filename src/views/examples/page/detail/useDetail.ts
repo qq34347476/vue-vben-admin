@@ -1,20 +1,24 @@
-import { ref } from 'vue';
-import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
+import { shallowReactive, nextTick } from 'vue';
+import { DemoListItem } from '/@/api/demo/model/tableModel';
 import { useDrawer } from '/@/components/Drawer';
 
 export function useDetail() {
   // detailDrawer
-  const [registerDrawer, { openDrawer }] = useDrawer();
+  const [registerDetail, { openDrawer }] = useDrawer();
   // 详情
-  const recordRef = ref<KnowledgeItem>();
-  function handleDatail(record: KnowledgeItem) {
-    recordRef.value = record;
-    openDrawer();
+  const detailState = shallowReactive<{ record: DemoListItem | undefined }>({
+    record: undefined,
+  });
+  function handleDatail(record: DemoListItem) {
+    detailState.record = record;
+    nextTick(() => {
+      openDrawer();
+    });
   }
 
   return {
-    registerDrawer,
-    recordRef,
+    registerDetail,
+    detailState,
     handleDatail,
   };
 }

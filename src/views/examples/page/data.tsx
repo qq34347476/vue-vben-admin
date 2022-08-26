@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 16:05:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-24 17:56:23
+ * @LastEditTime: 2022-08-26 14:25:05
  * @FilePath: \knowledge-web\src\views\examples\page\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,7 +14,7 @@ import { h } from 'vue';
 export function createSchemas(): FormSchema[] {
   return [
     {
-      field: 'knowName',
+      field: 'name',
       label: '知识库名称',
       component: 'Input',
     },
@@ -24,7 +24,7 @@ export function createSchemas(): FormSchema[] {
 export function createBasicColumns(handleName): BasicColumn[] {
   return [
     {
-      dataIndex: 'knowName',
+      dataIndex: 'name',
       title: '知识库名称',
       width: 300,
       fixed: 'left',
@@ -37,12 +37,12 @@ export function createBasicColumns(handleName): BasicColumn[] {
       },
     },
     {
-      dataIndex: 'pageNum',
+      dataIndex: 'name1',
       title: '页面数',
       width: 100,
     },
     {
-      dataIndex: 'knowAdmin',
+      dataIndex: 'name2',
       title: '知识库管理员',
       width: 150,
     },
@@ -60,30 +60,30 @@ export function createBasicColumns(handleName): BasicColumn[] {
       },
     },
     {
-      dataIndex: 'memo',
+      dataIndex: 'address',
       title: '知识库描述',
       width: 300,
     },
     {
-      dataIndex: 'createPsn',
+      dataIndex: 'name4',
       title: '创建人',
       width: 100,
       sorter: true,
     },
     {
-      dataIndex: 'createTime',
+      dataIndex: 'beginTime',
       title: '创建时间',
       width: 200,
       sorter: true,
     },
     {
-      dataIndex: 'updatePsn',
+      dataIndex: 'name5',
       title: '更新人',
       width: 100,
       sorter: true,
     },
     {
-      dataIndex: 'updateTime',
+      dataIndex: 'endTime',
       title: '更新时间',
       width: 200,
       sorter: true,

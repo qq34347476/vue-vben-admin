@@ -24,6 +24,10 @@
       function handleAsk() {
         push('/question/ask');
       }
+      // 问答管理
+      function handleManage() {
+        push('/question/manage');
+      }
       // 问答详情页
       function handleGoDetail(item: QuestionListItem) {
         push(`/question/detail/${item.id}`);
@@ -50,7 +54,7 @@
                   <Icon icon="ant-design:form-outlined" />
                   发起提问
                 </a-button>
-                <a-button> 问答管理 </a-button>
+                <a-button onClick={handleManage}> 问答管理 </a-button>
               </div>
             </div>
             {

@@ -38,6 +38,7 @@
   import { useTrigger, useDragLine, useSiderEvent } from './useLayoutSider';
   import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { useRouter } from 'vue-router';
 
   import DragBar from './DragBar.vue';
   export default defineComponent({
@@ -46,6 +47,7 @@
     setup() {
       const dragBarRef = ref<ElRef>(null);
       const sideRef = ref<ElRef>(null);
+      const { currentRoute } = useRouter();
 
       const {
         getCollapsed,
@@ -78,6 +80,13 @@
       });
 
       const showClassSideBarRef = computed(() => {
+        const {
+          meta: { hideMenu },
+        } = currentRoute.value;
+        if (hideMenu) {
+          return false;
+        }
+
         return unref(getSplit) ? !unref(getMenuHidden) : true;
       });
 

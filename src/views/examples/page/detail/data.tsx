@@ -1,8 +1,8 @@
 /*
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 15:02:37
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-19 15:48:05
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-26 14:59:36
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,31 +13,31 @@ import { BasicColumn } from '/@/components/Table';
 export function createDesSchemas(): DescItem[] {
   return [
     {
-      field: 'knowName',
+      field: 'name',
       label: '知识库名称',
     },
     {
-      field: 'knowMark',
+      field: 'name1',
       label: '知识库标识',
     },
     {
-      field: 'createPsn',
+      field: 'name2',
       label: '创建人',
     },
     {
-      field: 'createTime',
+      field: 'beginTime',
       label: '创建时间',
     },
     {
-      field: 'updatePsn',
+      field: 'name3',
       label: '更新人',
     },
     {
-      field: 'updateTime',
+      field: 'endTime',
       label: '更新时间',
     },
     {
-      field: 'knowAdmin',
+      field: 'name4',
       label: '知识库管理员',
     },
     {
@@ -63,7 +63,7 @@ export function createDesSchemas(): DescItem[] {
       },
     },
     {
-      field: 'memo',
+      field: 'address',
       label: '知识库描述',
     },
   ];
@@ -72,15 +72,15 @@ export function createDesSchemas(): DescItem[] {
 export function createBasicColumns(): BasicColumn[] {
   return [
     {
-      dataIndex: 'group',
+      dataIndex: 'name1',
       title: '分组',
     },
     {
-      dataIndex: 'userId',
+      dataIndex: 'name2',
       title: '用户名',
     },
     {
-      dataIndex: 'userName',
+      dataIndex: 'name',
       title: '姓名',
     },
   ];

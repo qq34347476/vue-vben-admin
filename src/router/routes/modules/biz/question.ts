@@ -42,6 +42,22 @@ const about: AppRouteModule = {
         hideMenu: true,
       },
     },
+    {
+      path: 'manage',
+      name: 'QuestionManage',
+      component: () => import('/@/views/examples/page/index.vue'),
+      meta: {
+        title: '问答管理',
+      },
+    },
+    {
+      path: 'audit',
+      name: 'QuestionAudit',
+      component: () => import('/@/views/biz/question/list/index.vue'),
+      meta: {
+        title: '问答审核',
+      },
+    },
   ],
 };
 

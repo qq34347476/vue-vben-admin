@@ -1,8 +1,8 @@
 <!--
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 14:44:03
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-23 11:32:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-26 16:15:22
  * @FilePath: \knowledge-web\src\views\examples\page\index.vue
  * @Description: 页面模板
 -->
@@ -16,21 +16,14 @@
       </template>
     </template>
     <template #toolbar>
-      <a-button type="success" class="mr-2" @click="openAddModal"> 新建知识库 </a-button>
-      <a-button type="error" class="mr-2" @click="handleDelete(getSelectRowKeys())">
-        删除
-      </a-button>
+      <a-button type="success" class="mr-2" @click="handleAdd"> 新增 </a-button>
+      <a-button type="error" class="mr-2" @click="handleMultiDelete"> 删除 </a-button>
     </template>
   </BasicTable>
-  <Add
-    @register="registerModal"
-    :type="modalTypeRef"
-    :record="addRecordRef"
-    @success="closeAddModal(reload)"
-  />
-  <Detail @register="registerDrawer" :record="recordRef" />
+  <Add @register="registerAdd" v-bind="addState" @success="reload" />
+  <Detail @register="registerDetail" v-bind="detailState" />
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="ExamplePage">
   import { createBasicColumns, createActionColumn, createSchemas } from './data';
   import { PageEnum } from '/@/enums/pageEnum';
   import { useRouter } from 'vue-router';
@@ -41,13 +34,7 @@
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import Add from './add/index.vue';
   import Detail from './detail/index.vue';
-
-  // api
-  import { getKnowledgeListData } from '/@/api/biz/library/knowledge';
-
-  // 新增/编辑弹窗
-  const { registerModal, openAddModal, modalTypeRef, handleEdit, addRecordRef, closeAddModal } =
-    useAdd();
+  import { demoListApi } from '/@/api/demo/table';
 
   // table
   const [registerTable, { getSelectRowKeys, reload }] = useTable({
@@ -60,7 +47,7 @@
     rowSelection: { type: 'checkbox' },
     clickToRowSelect: false,
     rowKey: 'id',
-    api: getKnowledgeListData,
+    api: demoListApi,
     actionColumn: {
       width: 180,
       title: '操作',
@@ -75,10 +62,11 @@
     // 页面跳转
     push(PageEnum.BASE_HOME);
   }
-
+  // 新增/编辑弹窗
+  const { registerAdd, handleAdd, handleEdit, addState } = useAdd();
   // 详情
-  const { registerDrawer, recordRef, handleDatail } = useDetail();
+  const { registerDetail, detailState, handleDatail } = useDetail();
 
   // 删除
-  const { handleDelete } = useDelete(reload);
+  const { handleDelete, handleMultiDelete } = useDelete(reload, getSelectRowKeys);
 </script>
