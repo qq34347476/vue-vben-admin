@@ -1,12 +1,12 @@
 /*
- * @LastEditTime: 2022-08-26 14:17:30
+ * @LastEditTime: 2022-08-29 15:24:25
  * @Description:
  */
 export enum PageEnum {
   // basic login path
   BASE_LOGIN = '/login',
   // basic home path
-  BASE_HOME = '/dashboard',
+  BASE_HOME = '/question/list',
   // error page path
   ERROR_PAGE = '/exception',
   // error log page path

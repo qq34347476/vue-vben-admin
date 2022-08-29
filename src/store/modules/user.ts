@@ -7,15 +7,13 @@ import { PageEnum } from '/@/enums/pageEnum';
 import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi } from '/@/api/sys/user';
+import { doLogout, loginApi } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { usePermissionStore } from '/@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
-import { isArray } from '/@/utils/is';
-import { h } from 'vue';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -100,6 +98,22 @@ export const useUserStore = defineStore({
         return Promise.reject(error);
       }
     },
+
+    /**
+     * @description: 走saoauth授权：进入页面，就已经获得了token
+     * @return {*}
+     */
+    async loginByToken(): Promise<GetUserInfoModel | null> {
+      try {
+        const token = window.__SA_OAUTH__.getToken();
+        // save token
+        this.setToken(token);
+        return this.afterLoginAction(false);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+
     async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
       // get user info
@@ -124,15 +138,28 @@ export const useUserStore = defineStore({
     },
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
-      const userInfo = await getUserInfo();
-      const { roles = [] } = userInfo;
-      if (isArray(roles)) {
-        const roleList = roles.map((item) => item.value) as RoleEnum[];
-        this.setRoleList(roleList);
-      } else {
-        userInfo.roles = [];
-        this.setRoleList([]);
-      }
+      const data = await window.__SA_OAUTH__.loadUserInfo();
+      const userInfo: UserInfo = {
+        userId: data.uactId,
+        username: data.userId,
+        realName: data.userName,
+        avatar: '',
+        desc: '',
+        homePath: '',
+        roles: data.roleTypes.map((item) => {
+          return { roleName: item, value: item };
+        }),
+      };
+      // TODO: 角色权限控制待完善
+      this.setRoleList(data.roleTypes as RoleEnum[]);
+      // const { roles = [] } = userInfo;
+      // if (isArray(roles)) {
+      //   const roleList = roles.map((item) => item.value) as RoleEnum[];
+      //   this.setRoleList(roleList);
+      // } else {
+      //   userInfo.roles = [];
+      //   this.setRoleList([]);
+      // }
       this.setUserInfo(userInfo);
       return userInfo;
     },

@@ -141,22 +141,33 @@ export interface GlobConfig {
   title: string;
   // Service interface url
   apiUrl: string;
+  forumApiUrl: string;
+  systemApiUrl: string;
   // Upload url
   uploadUrl?: string;
   //  Service interface url prefix
   urlPrefix?: string;
   // Project abbreviation
   shortName: string;
+  // 授权相关
+  authUrl: string;
+  clientId: string;
+  tenantsCode: string;
 }
 export interface GlobEnvConfig {
   // Site title
   VITE_GLOB_APP_TITLE: string;
   // Service interface url
   VITE_GLOB_API_URL: string;
+  VITE_GLOB_FORUM_API_URL: string;
+  VITE_GLOB_SYSTEM_API_URL: string;
   // Service interface url prefix
   VITE_GLOB_API_URL_PREFIX?: string;
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string;
   // Upload url
   VITE_GLOB_UPLOAD_URL?: string;
+  VITE_GLOB_OAUTH_URL: string;
+  VITE_GLOB_CLIENT_ID: string;
+  VITE_GLOB_TENANTS_CODE: string;
 }

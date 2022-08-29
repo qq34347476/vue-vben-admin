@@ -6,6 +6,7 @@ import type {
   FunctionalComponent,
   PropType as VuePropType,
 } from 'vue';
+import type SaOAuth from 'saoauth';
 
 declare global {
   const __APP_INFO__: {
@@ -17,10 +18,10 @@ declare global {
     };
     lastBuildTime: string;
   };
-  // declare interface Window {
-  //   // Global vue app instance
-  //   __APP__: App<Element>;
-  // }
+  declare interface Window {
+    // Global vue app instance
+    __SA_OAUTH__: SaOAuth;
+  }
 
   // vue
   declare type PropType<T> = VuePropType<T>;

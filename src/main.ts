@@ -14,7 +14,10 @@ import { setupStore } from '/@/store';
 import { setupGlobDirectives } from '/@/directives';
 import { setupI18n } from '/@/locales/setupI18n';
 import { registerGlobComp } from '/@/components/registerGlobComp';
+import SaOAuth from 'saoauth';
+import { useGlobSetting } from '/@/hooks/setting';
 
+const { authUrl, clientId, tenantsCode } = useGlobSetting();
 async function bootstrap() {
   const app = createApp(App);
 
@@ -58,4 +61,18 @@ async function bootstrap() {
   app.mount('#app');
 }
 
-bootstrap();
+async function init() {
+  const sa = new SaOAuth({
+    url: authUrl,
+    clientId: clientId,
+    tenantsCode: tenantsCode,
+    replaceState: window.self === window.top,
+  });
+  await sa.init();
+  window.__SA_OAUTH__ = sa;
+  console.log('__SA_OAUTH__', window.__SA_OAUTH__.getToken());
+
+  bootstrap();
+}
+
+init();
