@@ -1,15 +1,15 @@
 <!--
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 10:59:49
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-19 17:31:48
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-08-26 16:14:32
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <BasicDrawer
     v-bind="$attrs"
-    title="新增知识库"
+    :title="type === 'add' ? '新增知识库' : '编辑知识库'"
     width="90%"
     :is-detail="true"
     @visible-change="handleVisibleChange"
@@ -22,16 +22,14 @@
       <BasicForm @register="registerForm">
         <template #switch>
           <Switch
-            :checked="unref(switchValRef)"
+            :checked="switchValRef"
             @change="handelSwitchChange"
             checked-children="开"
             un-checked-children="关"
           />
           <span class="ml-10" v-show="unref(switchValRef)">
             <Checkbox :checked="true" disabled>新增</Checkbox>
-            <Checkbox v-model:checked="editCheckedRef" :disabled="props.type === 'edit'"
-              >编辑</Checkbox
-            >
+            <Checkbox v-model:checked="editCheckedRef">编辑</Checkbox>
           </span>
         </template>
       </BasicForm>
