@@ -1,6 +1,7 @@
 import { reactive } from 'vue';
 import { getCateListApi, getQuestionListApi } from '/@/api/biz/question/list';
-import { CateListItem, QuestionListItem } from '/@/api/biz/question/model/listModel';
+import { QuestionListItem } from '/@/api/biz/question/model/listModel';
+import { CateTypeEnum } from '/@/enums/biz/questionEnum';
 
 export enum questionTabsEnum {
   ALL,
@@ -10,7 +11,11 @@ export enum questionTabsEnum {
   ABOUT,
 }
 export const ALL_CATE = 'ALL_CATE';
-export const ALL_CATE_ITEM = { id: ALL_CATE, cateName: '全部分类' };
+export const ALL_CATE_ITEM = { cateId: ALL_CATE, cateName: '全部分类' };
+interface CateItem {
+  cateId: string;
+  cateName: string;
+}
 // 问答列表
 export function useQuestionList() {
   const questionState = reactive<{
@@ -20,8 +25,8 @@ export function useQuestionList() {
     isLast: boolean;
     activekey: questionTabsEnum;
     searchValue: string;
-    catList: CateListItem[];
-    selectedCate: CateListItem | null;
+    catList: CateItem[];
+    selectedCate: CateItem | null;
   }>({
     data: [],
     loading: false,
@@ -37,13 +42,19 @@ export function useQuestionList() {
   });
   // 加载分类列表
   async function initCateList() {
-    const data = (await getCateListApi({})) || [];
-    questionState.catList = [ALL_CATE_ITEM, ...data];
+    const { records } =
+      (await getCateListApi({ pageNo: 1, pageSize: -1, cateType: CateTypeEnum.question })) || [];
+    questionState.catList = [
+      ALL_CATE_ITEM,
+      ...records.map((item) => {
+        return { cateId: item.cateId, cateName: item.cateName };
+      }),
+    ];
     questionState.selectedCate = questionState.catList[0];
   }
   initCateList();
   // 点击分类
-  function handleSelectCate(item: CateListItem) {
+  function handleSelectCate(item: CateItem) {
     questionState.selectedCate = item;
     fetchQuestionList(1);
   }
@@ -78,13 +89,13 @@ export function useQuestionList() {
       if (questionState.page === 1) {
         questionState.data = [];
       }
-      const { cateName } = questionState.selectedCate || {};
+      const { cateId } = questionState.selectedCate || {};
       const { records, recordTotal } = await getQuestionListApi({
-        page: questionState.page,
+        pageNo: questionState.page,
         pageSize: 20,
-        status: questionState.activekey,
-        name: questionState.searchValue,
-        cateName: cateName === ALL_CATE ? '' : cateName,
+        threadId: cateId === ALL_CATE ? '' : cateId,
+        // status: questionState.activekey,
+        content: questionState.searchValue,
       });
       questionState.data = [...questionState.data, ...records];
       // 判断是否最后一页

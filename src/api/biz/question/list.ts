@@ -1,14 +1,23 @@
 /*
- * @LastEditTime: 2022-08-19 15:15:18
+ * @LastEditTime: 2022-08-30 11:31:19
  * @Description:问答中心
  */
-import { defHttp } from '/@/utils/http/axios';
+import { forumHttp, systemHttp } from '/@/utils/http/axios';
 import { BasicFetchResult, BasicPageParams } from '../../model/baseModel';
-import { CateListItem, QuestionListItem } from './model/listModel';
+import {
+  CateListItem,
+  CommentSaveParams,
+  GetQuestionListParams,
+  QuestionListItem,
+  QuestionSaveParams,
+} from './model/listModel';
 
 enum Api {
-  QUESTION_LIST = '/question/getList',
-  CAT_LIST = '/question/getCatList',
+  QUESTION_LIST = '/forum-theme/find-by-condition-to-page',
+  QUESTION_BY_ID = '/forum-theme/get-by-id/',
+  CATE_LIST = '/cate/find-by-condition-to-page',
+  QUESTION_SAVE = '/forum-theme/save',
+  COMMENT_SAVE = '/forum-comment/save',
 }
 
 /**
@@ -16,8 +25,8 @@ enum Api {
  * @param {BasicPageParams} params
  * @return {*}
  */
-export const getQuestionListApi = (params: BasicPageParams & Partial<QuestionListItem>) =>
-  defHttp.get<BasicFetchResult<QuestionListItem>>({
+export const getQuestionListApi = (params: BasicPageParams & Partial<GetQuestionListParams>) =>
+  forumHttp.post<BasicFetchResult<QuestionListItem>>({
     url: Api.QUESTION_LIST,
     params,
     headers: {
@@ -25,14 +34,57 @@ export const getQuestionListApi = (params: BasicPageParams & Partial<QuestionLis
       ignoreCancelToken: true,
     },
   });
-
+/**
+ * @description: 问答详情
+ * @param {string} params
+ * @return {*}
+ */
+export const getQuestionByIdApi = (params: string) =>
+  forumHttp.post<QuestionListItem>({
+    url: Api.QUESTION_BY_ID,
+    params,
+  });
 /**
  * @description: 分类列表
  * @param {Partial} params
  * @return {*}
  */
-export const getCateListApi = (params: Partial<CateListItem>) =>
-  defHttp.get<CateListItem[]>({
-    url: Api.CAT_LIST,
+export const getCateListApi = (params: BasicPageParams & Partial<CateListItem>) =>
+  systemHttp.post<BasicFetchResult<CateListItem>>({
+    url: Api.CATE_LIST,
     params,
   });
+
+/**
+ * @description: 发起提问
+ * @param {QuestionSaveParams} params
+ * @return {*}
+ */
+export function questionSaveApi(params: QuestionSaveParams) {
+  return forumHttp.post(
+    {
+      url: Api.QUESTION_SAVE,
+      params,
+    },
+    {
+      successMessageModel: 'message',
+    },
+  );
+}
+
+/**
+ * @description: 写回答
+ * @param {CommentSaveParams} params
+ * @return {*}
+ */
+export function commentSaveApi(params: CommentSaveParams) {
+  return forumHttp.post(
+    {
+      url: Api.COMMENT_SAVE,
+      params,
+    },
+    {
+      successMessageModel: 'message',
+    },
+  );
+}

@@ -30,7 +30,7 @@
       }
       // 问答详情页
       function handleGoDetail(item: QuestionListItem) {
-        push(`/question/detail/${item.id}`);
+        push(`/question/detail/${item.themeId}`);
       }
       //   获得scroll高度
       const wrapperRef = ref<HTMLDivElement | null>(null);
@@ -60,9 +60,9 @@
             {
               // 内容
             }
-            <div class="flex-1 flex flex-row m-3">
+            <div class="flex flex-row flex-1 m-3">
               <div
-                class=" bg-white mr-3 w-180px text-center"
+                class="mr-3 text-center bg-white w-180px"
                 style={{ height: heightRef.value + 64 - 14 + 'px' }}
               >
                 <ScrollContainer>
@@ -71,13 +71,13 @@
                       <div
                         class={[
                           'cursor-pointer h-40px leading-40px ',
-                          questionState.selectedCate?.id === item.id
+                          questionState.selectedCate?.cateId === item.cateId
                             ? 'bg-primary text-white '
                             : 'hover:text-primary',
                           index === 0 ? 'border-b-1' : '',
                         ]}
                         onClick={handleSelectCate.bind(null, item)}
-                        key={item.id}
+                        key={item.cateId}
                       >
                         {item.cateName}
                       </div>
@@ -145,38 +145,45 @@
                           <div class="px-4 ">
                             <div
                               onClick={handleGoDetail.bind(null, item)}
-                              class="shadow-md p-4 border-1 cursor-pointer hover:bg-gray-500/4"
+                              class="p-4 shadow-md cursor-pointer border-1 hover:bg-gray-500/4"
                             >
                               <div class="flex flex-row mb-2">
-                                <div class="flex-1 font-bold text-base line-clamp-1 pr-2">
+                                <div class="flex-1 pr-2 text-base font-bold line-clamp-1">
                                   {item.title}
                                 </div>
-                                <div> {item.cateName}</div>
+                                <div> {item.threadId}</div>
                               </div>
-                              <div class="text-gray-500 text-xs mb-2">
-                                <span class="px-2">
-                                  <Icon icon="ant-design:eye-outlined" />
-                                  {item.look}
-                                </span>
+                              <div class="mb-2 text-xs text-gray-500">
+                                {
+                                  //   <span class="px-2">
+                                  //   <Icon icon="ant-design:eye-outlined" />
+                                  //   {item.look}
+                                  // </span>
+                                }
                                 <span class="px-2">
                                   <Icon icon="ant-design:user-outlined" />
-                                  {item.name}
+                                  {item.crter}
                                 </span>
-                                <span class="px-2">发布于 {item.time}</span>
+                                <span class="px-2">发布于 {item.crteTime}</span>
                               </div>
-                              <div class="mb-2 h-45px line-clamp-2">{item.content}</div>
+                              <div
+                                class="mb-2 h-45px line-clamp-2"
+                                v-html-parser:small={item.forumThemeInstDTO?.content || ''}
+                              ></div>
                               <div>
                                 <a-button type="text" class="ml-2 !hover:text-primary">
                                   <Icon icon="ant-design:edit-outlined" />
                                   写回答
                                 </a-button>
-                                <a-button type="text" class="ml-2 !hover:text-primary">
-                                  <Icon icon="ant-design:star-outlined" />
-                                  收藏
-                                </a-button>
+                                {
+                                  // <a-button type="text" class="ml-2 !hover:text-primary">
+                                  //   <Icon icon="ant-design:star-outlined" />
+                                  //   收藏
+                                  // </a-button>
+                                }
                                 <a-button type="text" class="ml-2 !hover:text-primary">
                                   <Icon icon="ant-design:message-outlined" />
-                                  {item.answerCount}条回答
+                                  {item.forumCommentDTOS?.length || 0}条回答
                                 </a-button>
                               </div>
                             </div>

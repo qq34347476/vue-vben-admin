@@ -21,7 +21,7 @@ import { AxiosRetry } from '/@/utils/http/axios/axiosRetry';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
-const { createMessage, createErrorModal } = useMessage();
+const { createMessage, createErrorModal, createSuccessModal } = useMessage();
 
 /**
  * @description: 数据处理，方便区分多种处理方式
@@ -55,6 +55,11 @@ const transform: AxiosTransform = {
     // 这里逻辑可以根据项目进行修改
     const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
     if (hasSuccess) {
+      if (options.successMessageModel === 'modal') {
+        createSuccessModal({ title: '成功提示', content: message || '操作成功' });
+      } else if (options.successMessageModel === 'message') {
+        createMessage.success(message || '操作成功');
+      }
       return result;
     }
 
@@ -149,6 +154,7 @@ const transform: AxiosTransform = {
       (config as Recordable).headers.Authorization = options.authenticationScheme
         ? `${options.authenticationScheme} ${token}`
         : token;
+      (config as Recordable).headers.brttoken = token;
     }
     return config;
   },
