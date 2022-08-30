@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 16:05:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-26 14:25:05
+ * @LastEditTime: 2022-08-30 15:04:50
  * @FilePath: \knowledge-web\src\views\examples\page\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -17,6 +17,11 @@ export function createSchemas(): FormSchema[] {
       field: 'name',
       label: '知识库名称',
       component: 'Input',
+    },
+    {
+      field: 'gender',
+      label: '性别',
+      component: 'DictSelect',
     },
   ];
 }
@@ -35,6 +40,11 @@ export function createBasicColumns(handleName): BasicColumn[] {
           </a>
         );
       },
+    },
+    {
+      dataIndex: 'gender',
+      title: '性别（数据字典）',
+      flag: 'DICT',
     },
     {
       dataIndex: 'name1',

@@ -1,3 +1,7 @@
+/*
+ * @LastEditTime: 2022-08-30 15:01:25
+ * @Description: 
+, */
 import { MockMethod } from 'vite-plugin-mock';
 import { Random } from 'mockjs';
 import { resultPageSuccess, resultSuccess } from '../_util';
@@ -15,6 +19,7 @@ const demoList = (() => {
   for (let index = 0; index < 200; index++) {
     result.push({
       id: `${index}`,
+      'gender|1': ['1', '2'],
       beginTime: '@datetime',
       endTime: '@datetime',
       address: '@city()',
