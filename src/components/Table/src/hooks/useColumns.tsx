@@ -10,6 +10,7 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import { formatToDate } from '/@/utils/dateUtil';
 import { ACTION_COLUMN_FLAG, DEFAULT_ALIGN, INDEX_COLUMN_FLAG, PAGE_SIZE } from '../const';
 import { Tag } from 'ant-design-vue';
+import { getDictLabel } from '/@/store/dictUtil';
 
 function handleItem(item: BasicColumn, ellipsis: boolean) {
   const { key, dataIndex, children } = item;
@@ -153,7 +154,8 @@ export function useColumns(
         return hasPermission(column.auth) && isIfShow(column);
       })
       .map((column) => {
-        const { slots, customRender, format, edit, editRow, flag, tagList, key } = column;
+        const { slots, customRender, format, edit, editRow, flag, tagList, dictType, dataIndex } =
+          column;
 
         if (!slots || !slots?.title) {
           // column.slots = { title: `header-${dataIndex}`, ...(slots || {}) };
@@ -174,13 +176,20 @@ export function useColumns(
         }
         // tag
         if (flag === 'TAG') {
-          column.customRender = ({ record }) => {
+          column.customRender = ({ text }) => {
             const tagItem = tagList?.filter((item) => {
-              return item.value === record[column.dataIndex + '' || ''];
+              return item.value === text;
             });
             if (tagItem?.length) {
               return <Tag color={tagItem[0].type}>{tagItem[0].label}</Tag>;
             }
+          };
+        } else if (flag === 'DICT') {
+          column.customRender = ({ text }) => {
+            if (!dataIndex) {
+              return text;
+            }
+            return getDictLabel(dictType || dataIndex + '', text);
           };
         }
         return reactive(column);

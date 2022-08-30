@@ -90,3 +90,35 @@ export const withInstall = <T>(component: T, alias?: string) => {
   };
   return component as T & Plugin;
 };
+
+export function decamelize(
+  string: string,
+  options?: { separator?: string; split?: string | RegExp; type?: 'UPPER' | 'LOWER' },
+) {
+  if (typeof string !== 'string') {
+    return string;
+  }
+  options = options || {};
+  const separator = options.separator || '_';
+  const split = options.split || /(?=[A-Z])/;
+  const type = options.type || 'UPPER';
+  const str = string.split(split).join(separator);
+
+  return type === 'UPPER' ? str.toUpperCase() : str.toLowerCase();
+}
+
+export function toCamelCase(str) {
+  if (typeof str !== 'string') {
+    return str;
+  }
+  return str
+    .split('_')
+    .map((item, index) => {
+      if (index > 0) {
+        return item.charAt(0).toUpperCase() + item.substr(1, item.length).toLowerCase();
+      } else {
+        return item.toLowerCase();
+      }
+    })
+    .join('');
+}

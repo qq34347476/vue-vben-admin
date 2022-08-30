@@ -1,3 +1,7 @@
+/*
+ * @LastEditTime: 2022-08-29 16:27:46
+ * @Description:
+ */
 // token key
 export const TOKEN_KEY = 'TOKEN__';
 
@@ -24,6 +28,13 @@ export const APP_LOCAL_CACHE_KEY = 'COMMON__LOCAL__KEY__';
 
 // base global session key
 export const APP_SESSION_CACHE_KEY = 'COMMON__SESSION__KEY__';
+
+// base global local key
+export const BASE_LOCAL_CACHE_KEY = 'LOCAL__CACHE__KEY__';
+// base global session key
+export const BASE_SESSION_CACHE_KEY = 'SESSION__CACHE__KEY__';
+// 字典表数据
+export const DICT_KEY = 'DICT__KEY__';
 
 export enum CacheTypeEnum {
   SESSION,

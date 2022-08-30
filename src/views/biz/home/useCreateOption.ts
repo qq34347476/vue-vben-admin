@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-08-26 17:22:14
+ * @LastEditTime: 2022-08-29 11:17:32
  * @Description:
  */
 import { ref, Ref } from 'vue';
@@ -42,7 +42,7 @@ export function useCreatOption() {
           avoidLabelOverlap: false,
           itemStyle: {
             borderRadius: 10,
-            // borderColor: '#fff',
+            borderColor: '#fff',
             borderWidth: 2,
           },
           label: {

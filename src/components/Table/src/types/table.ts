@@ -423,9 +423,10 @@ export interface BasicColumn extends ColumnProps<Recordable> {
   }[];
 
   //
-  flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION' | 'TAG';
+  flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION' | 'TAG' | 'DICT';
   tagList?: { label: string; value: string; type?: ColorTypeEnum | string }[];
   tagValue?: string;
+  dictType?: string;
   customTitle?: VueNode;
 
   slots?: Recordable;

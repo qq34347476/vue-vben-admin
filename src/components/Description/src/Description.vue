@@ -11,6 +11,7 @@
   import { isFunction } from '/@/utils/is';
   import { getSlot } from '/@/utils/helper/tsxHelper';
   import { useAttrs } from '/@/hooks/core/useAttrs';
+  import { getDictLabel } from '/@/store/dictUtil';
 
   const props = {
     useCollapse: { type: Boolean, default: true },
@@ -109,7 +110,7 @@
         const { schema, data } = unref(getProps);
         return unref(schema)
           .map((item) => {
-            const { render, field, span, show, contentMinWidth } = item;
+            const { render, field, span, show, contentMinWidth, type, dictType } = item;
 
             if (show && isFunction(show) && !show(data)) {
               return null;
@@ -123,6 +124,11 @@
               const getField = get(_data, field);
               if (getField && !toRefs(_data).hasOwnProperty(field)) {
                 return isFunction(render) ? render('', _data) : '';
+              }
+              if (type === 'dict') {
+                return isFunction(render)
+                  ? render(getField, _data)
+                  : getDictLabel(dictType || field, getField);
               }
               return isFunction(render) ? render(getField, _data) : getField ?? '';
             };
