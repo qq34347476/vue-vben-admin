@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-08-30 11:31:19
+ * @LastEditTime: 2022-08-30 17:53:29
  * @Description:问答中心
  */
 import { forumHttp, systemHttp } from '/@/utils/http/axios';
@@ -18,6 +18,7 @@ enum Api {
   CATE_LIST = '/cate/find-by-condition-to-page',
   QUESTION_SAVE = '/forum-theme/save',
   COMMENT_SAVE = '/forum-comment/save',
+  QUESTION_LIST_MANAGER = '/forum-theme/find-by-condition-to-manager-page',
 }
 
 /**
@@ -88,3 +89,16 @@ export function commentSaveApi(params: CommentSaveParams) {
     },
   );
 }
+
+/**
+ * @description: 问答管理
+ * @param {BasicPageParams} params
+ * @return {*}
+ */
+export const getQuestionListManageApi = (
+  params: BasicPageParams & Partial<GetQuestionListParams>,
+) =>
+  forumHttp.post<BasicFetchResult<QuestionListItem>>({
+    url: Api.QUESTION_LIST_MANAGER,
+    params,
+  });

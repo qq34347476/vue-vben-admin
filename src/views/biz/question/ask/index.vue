@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-08-30 11:26:58
+ * @LastEditTime: 2022-08-30 15:36:25
  * @Description: 发起提问
 -->
 <template>
@@ -86,6 +86,10 @@
   // function handleChange(value: string) {
   //   console.log(value);
   // }
+  // 取消
+  function handleCancel() {
+    go(-1);
+  }
   // 发布
   async function handleRelease() {
     // console.log(state.title, state.content, state.selectedCate);
@@ -96,12 +100,9 @@
         threadId: state.selectedCate,
         forumThemeInstDTO: { content: state.content },
       });
+      handleCancel();
     } finally {
       state.loading = false;
     }
-  }
-  // 取消
-  function handleCancel() {
-    go(-1);
   }
 </script>

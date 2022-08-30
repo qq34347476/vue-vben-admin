@@ -27,7 +27,8 @@ export interface QuestionListItem {
     crteTime: string; // null;
   };
   forumCommentDTOS: ForumCommentDTOItem[]; // null;
-  cateId: string;
+  count: number; // 回答数量
+  cateDTO: CateDTO;
 }
 export interface ForumCommentDTOItem {
   commentId: string; // '5b5a457155fd4b2d83ed9994b4c074ae';
@@ -42,6 +43,21 @@ export interface ForumCommentDTOItem {
   crterId: string; // 'e249d2702900405c95ae3b165a15aac6';
   crteTime: string; // '2022-08-29 14:06:18';
   hide: number; // 1;
+}
+export interface CateDTO {
+  cateId: string; // '139b8a3a8f0c4baa809d6ee74096c1dc';
+  cateCode: string; // null;
+  cateName: string; // '业务知识';
+  cateType: CateTypeEnum; // 2;
+  prntCateId: string; // '2';
+  stas: number; // 1;
+  updtTime: string; // '2022-08-29 16:06:39';
+  opterId: string; // '9af767783e624d4cb96691459024aa4a';
+  opter: string; // '李健麟';
+  descInfo: string; // '';
+  crter: string; // '李健麟';
+  crteTime: string; // '2022-08-29 15:55:18';
+  crterId: string; // '9af767783e624d4cb96691459024aa4a';
 }
 export interface CommentTreeItem extends ForumCommentDTOItem {
   children: CommentTreeItem[];

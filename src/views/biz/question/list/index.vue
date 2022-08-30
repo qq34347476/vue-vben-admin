@@ -1,13 +1,14 @@
 <script lang="tsx">
   import { defineComponent, ref } from 'vue';
-  import { Input, Tabs, Skeleton } from 'ant-design-vue';
+  import { Input, Tabs, Skeleton, Empty } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon/index';
   import { VScroll } from '/@/components/VirtualScroll/index';
   import { useCalcHeight } from '/@/hooks/web/useCalcHeight';
   import { QuestionListItem } from '/@/api/biz/question/model/listModel';
   import { ScrollContainer } from '/@/components/Container/index';
+  import { BizSorter } from '/@/views/biz/public/component/BizSorter/index';
 
-  import { questionTabsEnum, useQuestionList } from './useActions';
+  import { questionTabsEnum, useQuestionList, COLUMN_DATA } from './useActions';
   import { useRouter } from 'vue-router';
   export default defineComponent({
     name: 'QuestionList',
@@ -18,6 +19,8 @@
         handleTabsChange,
         handleScrollBottom,
         handleSelectCate,
+        handlerSearchChange,
+        handleSortChange,
       } = useQuestionList();
       const { push } = useRouter();
       // 发起提问
@@ -47,6 +50,7 @@
                   style="width: 300px"
                   placeholder="请输入关键字搜索"
                   onSearch={handleSearch}
+                  onChange={handlerSearchChange}
                 />
               </div>
               <div>
@@ -61,6 +65,9 @@
               // 内容
             }
             <div class="flex flex-row flex-1 m-3">
+              {
+                // 分类
+              }
               <div
                 class="mr-3 text-center bg-white w-180px"
                 style={{ height: heightRef.value + 64 - 14 + 'px' }}
@@ -88,7 +95,7 @@
               {
                 // 问答tabs
               }
-              <div class="flex-1 bg-white">
+              <div class="relative flex-1 bg-white">
                 <Tabs onChange={handleTabsChange}>
                   <Tabs.TabPane key={questionTabsEnum.ALL}>
                     {{
@@ -125,14 +132,30 @@
                       tab: () => <span class="px-5">我参与的</span>,
                     }}
                   </Tabs.TabPane>
+                  {
+                    // TODO: slot插槽不行？
+                    // {{
+                    //   rightExtra: () => <BizSorter columnData={COLUMN_DATA} />,
+                    //   leftExtra: () => <span>leftExtra</span>,
+                    // }}
+                  }
                 </Tabs>
+                {
+                  // 排序
+                }
+                <BizSorter
+                  columnData={COLUMN_DATA}
+                  class="absolute right-3 top-12px"
+                  onChange={handleSortChange}
+                />
+
                 {
                   // 问答列表滚动区
                 }
                 <div ref={wrapperRef}>
                   {questionState.loading && questionState.page === 1 ? (
                     <Skeleton />
-                  ) : (
+                  ) : questionState.data && questionState.data.length ? (
                     <VScroll
                       itemHeight={200}
                       items={questionState.data}
@@ -151,7 +174,7 @@
                                 <div class="flex-1 pr-2 text-base font-bold line-clamp-1">
                                   {item.title}
                                 </div>
-                                <div> {item.threadId}</div>
+                                <div> {item.cateDTO.cateName}</div>
                               </div>
                               <div class="mb-2 text-xs text-gray-500">
                                 {
@@ -160,18 +183,18 @@
                                   //   {item.look}
                                   // </span>
                                 }
-                                <span class="px-2">
+                                <span class="pr-3">
                                   <Icon icon="ant-design:user-outlined" />
                                   {item.crter}
                                 </span>
-                                <span class="px-2">发布于 {item.crteTime}</span>
+                                <span class="pr-2">发布于 {item.crteTime}</span>
                               </div>
                               <div
                                 class="mb-2 h-45px line-clamp-2"
                                 v-html-parser:small={item.forumThemeInstDTO?.content || ''}
                               ></div>
                               <div>
-                                <a-button type="text" class="ml-2 !hover:text-primary">
+                                <a-button type="text" class="mr-2 !hover:text-primary">
                                   <Icon icon="ant-design:edit-outlined" />
                                   写回答
                                 </a-button>
@@ -181,9 +204,9 @@
                                   //   收藏
                                   // </a-button>
                                 }
-                                <a-button type="text" class="ml-2 !hover:text-primary">
+                                <a-button type="text" class="mr-2 !hover:text-primary">
                                   <Icon icon="ant-design:message-outlined" />
-                                  {item.forumCommentDTOS?.length || 0}条回答
+                                  {item.count || 0}条回答
                                 </a-button>
                               </div>
                             </div>
@@ -191,6 +214,8 @@
                         ),
                       }}
                     </VScroll>
+                  ) : (
+                    <Empty />
                   )}
                 </div>
               </div>

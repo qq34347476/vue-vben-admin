@@ -3,7 +3,7 @@
   import { getQuestionByIdApi } from '/@/api/biz/question/list';
   import { QuestionListItem, CommentTreeItem } from '/@/api/biz/question/model/listModel';
   import { Icon } from '/@/components/Icon/index';
-  import { Skeleton } from 'ant-design-vue';
+  import { Skeleton, Avatar } from 'ant-design-vue';
   import Answer from '/@/views/biz/question/answer/index.vue';
   import { useAnswer } from '/@/views/biz/question/answer/useAnswer';
   import { listToTree } from '/@/utils/helper/treeHelper';
@@ -48,32 +48,36 @@
         return list.map((item) => {
           const { children } = item;
           return (
-            <div class="p-3 ">
-              <div class="mb-2 ">
-                {
-                  // <img class="inline-block rounded-1/2 w-25px h-25px" src={item.avatar} />
-                }
-                <span class="pr-2">{item?.crter} </span>
-                {prntCommentCrter && (
-                  <span>
-                    <span class="px-2 text-blue">回复</span>
-                    {prntCommentCrter}
-                  </span>
-                )}
-                <span class="px-2 text-xs text-gray-500"> {item?.crteTime}</span>
+            <div class="flex p-3">
+              <div class="pr-2">
+                <Avatar size={25} class="!text-xs !bg-primary/50 ">
+                  {item.crter.slice(-1)}
+                </Avatar>
               </div>
-              <div class="my-2" v-html-parser={item.content || ''}></div>
-              <div>
-                <a-button
-                  type="text"
-                  class="!hover:text-primary"
-                  onClick={handleAnswer.bind(null, state.detail, item)}
-                >
-                  <Icon icon="ant-design:message-outlined" />
-                  回复
-                </a-button>
+              <div class="flex-1">
+                <div class="mb-2 ">
+                  <span class="pr-2">{item.crter}</span>
+                  {prntCommentCrter && (
+                    <span class="pr-2">
+                      <span class="pr-2 text-primary">回复</span>
+                      {prntCommentCrter}
+                    </span>
+                  )}
+                  <span class="pr-2 text-xs text-gray-500"> {item.crteTime}</span>
+                </div>
+                <div v-html-parser={item.content || ''}></div>
+                <div>
+                  <a-button
+                    type="text"
+                    class="!hover:text-primary !px-1"
+                    onClick={handleAnswer.bind(null, state.detail, item)}
+                  >
+                    <Icon icon="ant-design:message-outlined" />
+                    回复
+                  </a-button>
+                </div>
+                <div>{children && children.length ? renderAnswer(children, item.crter) : ''}</div>
               </div>
-              <div>{children && children.length ? renderAnswer(children, item?.crter) : ''}</div>
             </div>
           );
         });
@@ -123,7 +127,7 @@
                 <div class="p-4 m-2 bg-white">
                   <div class="flex flex-row mb-2">
                     <div class="flex-1 pr-2 text-base font-bold line-clamp-1">{item?.title}</div>
-                    <div> {item?.threadId}</div>
+                    <div> {item?.cateDTO?.cateName}</div>
                   </div>
                   <div class="mb-2 text-xs text-gray-500">
                     {
