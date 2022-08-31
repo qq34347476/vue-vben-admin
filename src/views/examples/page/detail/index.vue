@@ -1,16 +1,13 @@
 <!--
- * @Author: crz 982544249@qq.com
- * @Date: 2022-08-15 10:59:49
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-26 15:31:03
- * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\index.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @LastEditTime: 2022-08-31 11:11:21
+ * @Description: 详情
 -->
+
 <template>
   <BasicDrawer
     v-bind="$attrs"
     @register="register"
-    title="知识库详情"
+    title="详情"
     width="90%"
     :is-detail="true"
     @visible-change="handleVisibleChange"
@@ -31,7 +28,10 @@
   // api
   import { DemoListItem } from '/@/api/demo/model/tableModel';
   import { demoDetailApi, demoListApi } from '/@/api/demo/table';
-
+  // expose
+  //   defineExpose({
+  //   open
+  // })
   // props
   const props = defineProps({
     record: { type: Object as PropType<DemoListItem> },
@@ -53,7 +53,7 @@
 
   // table
   const [registerTable] = useTable({
-    title: '用户列表',
+    title: '列表',
     columns: createBasicColumns(),
     api: demoListApi,
   });

@@ -8,7 +8,8 @@
   import { useAnswer } from '/@/views/biz/question/answer/useAnswer';
   import { listToTree } from '/@/utils/helper/treeHelper';
   // import { useRouter } from 'vue-router';
-
+  // 删除
+  import { useOperator } from './useOperator';
   export default defineComponent({
     name: 'QuestionDetail',
     props: {
@@ -16,8 +17,16 @@
         type: String,
         required: true,
       },
+      isManage: {
+        type: Boolean,
+        default: false,
+      },
+      immediate: {
+        type: Boolean,
+        default: true,
+      },
     },
-    setup(props) {
+    setup(props, { expose, emit }) {
       const state = reactive<{ detail: QuestionListItem | null }>({
         detail: null,
       });
@@ -28,7 +37,13 @@
         state.detail = data;
         // state.answers = records;
       }
-      initData();
+      // 页面打开立即请求，弹窗组件引用，每次打开，单独调用
+      props.immediate && initData();
+      expose({ initData });
+      function emitSuccess() {
+        emit('success');
+      }
+      const { handleDeleteComment, handleDelete } = useOperator(emitSuccess, initData);
       const commentsComputed = computed<CommentTreeItem[]>(() => {
         const answers = state.detail?.forumCommentDTOS || [];
         if (answers && answers.length) {
@@ -67,14 +82,25 @@
                 </div>
                 <div v-html-parser={item.content || ''}></div>
                 <div>
-                  <a-button
-                    type="text"
-                    class="!hover:text-primary !px-1"
-                    onClick={handleAnswer.bind(null, state.detail, item)}
-                  >
-                    <Icon icon="ant-design:message-outlined" />
-                    回复
-                  </a-button>
+                  {!props.isManage ? (
+                    <a-button
+                      type="text"
+                      class="!hover:text-primary !px-1"
+                      onClick={handleAnswer.bind(null, state.detail, item)}
+                    >
+                      <Icon icon="ant-design:message-outlined" />
+                      回复
+                    </a-button>
+                  ) : (
+                    <a-button
+                      color="error"
+                      type="link"
+                      onClick={handleDeleteComment.bind(null, item)}
+                    >
+                      <Icon icon="ant-design:delete-outlined" />
+                      删除回复
+                    </a-button>
+                  )}
                 </div>
                 <div>{children && children.length ? renderAnswer(children, item.crter) : ''}</div>
               </div>
@@ -143,20 +169,22 @@
                     <span class="px-2">发布于 {item?.crteTime}</span>
                   </div>
                   <div class="mb-2" v-html-parser={item.forumThemeInstDTO?.content || ''}></div>
-                  <div>
-                    <a-button
-                      type="text"
-                      class="ml-2 !hover:text-primary"
-                      onClick={handleAnswer.bind(null, item)}
-                    >
-                      <Icon icon="ant-design:edit-outlined" />
-                      写回答
-                    </a-button>
-                    <a-button type="text" class="ml-2 !hover:text-primary">
-                      <Icon icon="ant-design:star-outlined" />
-                      收藏
-                    </a-button>
-                  </div>
+                  {!props.isManage && (
+                    <div>
+                      <a-button
+                        type="text"
+                        class="ml-2 !hover:text-primary"
+                        onClick={handleAnswer.bind(null, item)}
+                      >
+                        <Icon icon="ant-design:edit-outlined" />
+                        写回答
+                      </a-button>
+                      <a-button type="text" class="ml-2 !hover:text-primary">
+                        <Icon icon="ant-design:star-outlined" />
+                        收藏
+                      </a-button>
+                    </div>
+                  )}
                 </div>,
                 <div class="px-3 m-2 bg-white divide-y">
                   <div class="p-2">
@@ -169,6 +197,15 @@
               ]
             ) : (
               <Skeleton />
+            )}
+
+            {item && props.isManage && (
+              <div class="px-3 m-2 bg-whit">
+                <a-button color="error" type="link" onClick={handleDelete.bind(null, item)}>
+                  <Icon icon="ant-design:delete-outlined" />
+                  删除问答
+                </a-button>
+              </div>
             )}
 
             <Answer onRegister={registerAnswer} {...answerState} onSuccess={initData} />

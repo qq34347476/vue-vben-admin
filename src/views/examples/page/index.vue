@@ -1,11 +1,8 @@
 <!--
- * @Author: crz 982544249@qq.com
- * @Date: 2022-08-17 14:44:03
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-26 16:15:22
- * @FilePath: \knowledge-web\src\views\examples\page\index.vue
- * @Description: 页面模板
+ * @LastEditTime: 2022-08-31 10:23:46
+ * @Description: 表格列表页
 -->
+
 <template>
   <BasicTable @register="registerTable">
     <template #bodyCell="{ column, record }">

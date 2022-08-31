@@ -1,4 +1,5 @@
-import { CateTypeEnum } from '/@/enums/biz/questionEnum';
+import { BasicPageParams } from '/@/api/model/baseModel';
+import { CateTypeEnum, HideEnum } from '/@/enums/biz/questionEnum';
 
 export interface QuestionListItem {
   themeId: string; // '2656773b2819480bb5d22d6d75de06b9';
@@ -13,7 +14,7 @@ export interface QuestionListItem {
   crteTime: string; // null;
   themeDesc: string; // '描述1';
   threadId: string; // '1';
-  hide: number; // 1;
+  hide: HideEnum; // 1;
   opter: string; // '李健麟';
   forumThemeInstDTO: {
     forumThemeInstId: string; // '7507ae6bff60499e9e8a7ef6fd7faca9';
@@ -62,7 +63,7 @@ export interface CateDTO {
 export interface CommentTreeItem extends ForumCommentDTOItem {
   children: CommentTreeItem[];
 }
-export interface GetQuestionListParams extends QuestionListItem {
+export interface GetQuestionListParams extends QuestionListItem, BasicPageParams {
   content: string;
   cateId: string;
 }

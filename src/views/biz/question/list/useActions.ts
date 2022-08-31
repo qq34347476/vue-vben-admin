@@ -1,8 +1,10 @@
 import { reactive } from 'vue';
 import { getCateListApi, getQuestionListApi } from '/@/api/biz/question/list';
-import { QuestionListItem } from '/@/api/biz/question/model/listModel';
+import { GetQuestionListParams, QuestionListItem } from '/@/api/biz/question/model/listModel';
 import { CateTypeEnum } from '/@/enums/biz/questionEnum';
 import { SorterColumnItem } from '/@/views/biz/public/component/BizSorter/index';
+import { useUserStoreWithOut } from '/@/store/modules/user';
+import { OrderByEnum } from '/@/enums/biz/indexEnum';
 
 export enum questionTabsEnum {
   ALL,
@@ -94,12 +96,13 @@ export function useQuestionList() {
   }
   // 搜索：输入框变化
   function handlerSearchChange(e: ChangeEvent) {
-    questionState.searchValue = e.target.value;
-    // console.log('handlerSearchChange', value);
+    const value = e.target?.value;
+    questionState.searchValue = value || '';
+    console.log('handlerSearchChange', value);
   }
   // 搜索：请求第一页
-  function handleSearch(value) {
-    questionState.searchValue = value;
+  function handleSearch(value: string) {
+    questionState.searchValue = value || '';
     fetchQuestionList(1);
   }
   // 滚动到底部：加载下一页
@@ -114,6 +117,8 @@ export function useQuestionList() {
     }
     fetchQuestionList();
   }
+  const userStore = useUserStoreWithOut();
+
   async function fetchQuestionList(initPage = 0) {
     try {
       questionState.isLast = false;
@@ -124,15 +129,24 @@ export function useQuestionList() {
         questionState.data = [];
       }
       const { cateId } = questionState.selectedCate || {};
-      const { records, recordTotal } = await getQuestionListApi({
+      const params: Partial<GetQuestionListParams> = {
         pageNo: questionState.page,
         pageSize: 20,
-        threadId: cateId === ALL_CATE ? '' : cateId,
-        // TODO: 最新最热
-        // status: questionState.activekey,
-        content: questionState.searchValue,
         orderBy: questionState.orderBy,
-      });
+        threadId: cateId === ALL_CATE ? '' : cateId,
+        content: questionState.searchValue,
+      };
+      const { userId, realName } = userStore.getUserInfo;
+      if (questionState.activekey === questionTabsEnum.ME) {
+        params.crter = realName;
+        params.crterId = userId;
+      } else if (questionState.activekey === questionTabsEnum.ABOUT) {
+        params.opter = realName;
+        params.opterId = userId;
+      } else if (questionState.activekey === questionTabsEnum.NEW) {
+        params.orderBy = `crteTime ${OrderByEnum.DESC}`;
+      }
+      const { records, recordTotal } = await getQuestionListApi(params);
       questionState.data = [...questionState.data, ...records];
       // 判断是否最后一页
       if (questionState.data.length === recordTotal) {

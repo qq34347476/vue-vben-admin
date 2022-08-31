@@ -1,11 +1,8 @@
 <!--
- * @Author: crz 982544249@qq.com
- * @Date: 2022-08-17 16:49:54
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-26 16:17:36
- * @FilePath: \knowledge-web\src\views\examples\page\add\index.vue
- * @Description: 新增弹窗
+ * @LastEditTime: 2022-08-31 10:28:15
+ * @Description: 新增/编辑
 -->
+
 <template>
   <BasicModal
     v-bind="$attrs"

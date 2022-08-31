@@ -45,7 +45,7 @@ const about: AppRouteModule = {
     {
       path: 'manage',
       name: 'QuestionManage',
-      component: () => import('/@/views/examples/page/index.vue'),
+      component: () => import('/@/views/biz/question/manage/index.vue'),
       meta: {
         title: '问答管理',
       },

@@ -1,108 +1,125 @@
-/*
- * @Author: crz 982544249@qq.com
- * @Date: 2022-08-17 16:05:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-30 15:04:50
- * @FilePath: \knowledge-web\src\views\examples\page\data.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+/**
+ * @description: 静态数据
+ * @return {*}
  */
 import { BasicColumn, ActionItem } from '/@/components/Table';
-import { Switch } from 'ant-design-vue';
 import { FormSchema } from '/@/components/Form/index';
-import { h } from 'vue';
+import { getCateListApi } from '/@/api/biz/question/list';
+import { QuestionListItem } from '/@/api/biz/question/model/listModel';
+import { HideEnum } from '/@/enums/biz/questionEnum';
 
 export function createSchemas(): FormSchema[] {
   return [
     {
-      field: 'name',
-      label: '知识库名称',
+      field: 'title',
+      label: '问答标题',
       component: 'Input',
     },
     {
-      field: 'gender',
-      label: '性别',
+      field: 'threadId',
+      component: 'ApiSelect',
+      label: '问答分类',
+      componentProps: {
+        // more details see /src/components/Form/src/components/ApiSelect.vue
+        api: getCateListApi,
+        params: {
+          pageNo: 1,
+          pageSize: -1,
+        },
+        resultField: 'records',
+        // use name as label
+        labelField: 'cateName',
+        // use id as value
+        valueField: 'cateId',
+        // not request untill to select
+        immediate: false,
+      },
+    },
+    {
+      field: 'hide',
+      label: '显示状态',
       component: 'DictSelect',
     },
+    {
+      field: 'crter',
+      label: '问答发布人',
+      component: 'Input',
+    },
+    {
+      field: 'crteTime',
+      label: '问答发布时间',
+      component: 'DatePicker',
+    },
+    // TODO：二期
+    // {
+    //   field: 'name',
+    //   label: '审核状态',
+    //   component: 'Input',
+    // },
   ];
 }
 
-export function createBasicColumns(handleName): BasicColumn[] {
+export function createBasicColumns(): BasicColumn[] {
   return [
     {
-      dataIndex: 'name',
-      title: '知识库名称',
+      dataIndex: 'title',
+      title: '问答标题',
       width: 300,
       fixed: 'left',
-      customRender: ({ text }) => {
-        return (
-          <a class="line-clamp-1" onClick={handleName}>
-            {text}
-          </a>
-        );
-      },
     },
     {
-      dataIndex: 'gender',
-      title: '性别（数据字典）',
-      flag: 'DICT',
-    },
-    {
-      dataIndex: 'name1',
-      title: '页面数',
-      width: 100,
-    },
-    {
-      dataIndex: 'name2',
-      title: '知识库管理员',
-      width: 150,
-    },
-    {
-      dataIndex: 'switch',
-      title: '审核开关',
+      dataIndex: 'threadId',
+      title: '问答分类',
       width: 100,
       customRender: ({ record }) => {
-        return h(Switch, {
-          checked: record.switch === '1',
-          onChange(checked: boolean) {
-            console.log(checked);
-          },
-        });
+        return (record as QuestionListItem)?.cateDTO?.cateName;
       },
     },
     {
-      dataIndex: 'address',
-      title: '知识库描述',
-      width: 300,
+      dataIndex: 'hide',
+      title: '显示状态',
+      width: 80,
+      // TODO:
+      // flag: 'DICT',
     },
     {
-      dataIndex: 'name4',
-      title: '创建人',
+      dataIndex: 'crter',
+      title: '问答发布人',
       width: 100,
-      sorter: true,
     },
     {
-      dataIndex: 'beginTime',
-      title: '创建时间',
-      width: 200,
-      sorter: true,
+      dataIndex: 'crteTime',
+      title: '问答发布时间',
+      width: 180,
     },
     {
-      dataIndex: 'name5',
-      title: '更新人',
-      width: 100,
-      sorter: true,
+      dataIndex: 'updtTime',
+      title: '问答更新时间',
+      width: 180,
     },
     {
-      dataIndex: 'endTime',
-      title: '更新时间',
-      width: 200,
+      dataIndex: 'count',
+      title: '回答数',
+      width: 80,
       sorter: true,
     },
+    // {
+    //   dataIndex: 'beginTime',
+    //   title: '是否匿名',
+    //   width: 200,
+    //   sorter: true,
+    // },
+    // {
+    //   dataIndex: 'name5',
+    //   title: '审核状态',
+    //   width: 100,
+    //   sorter: true,
+    // },
   ];
 }
 
 export function createActionColumn(
-  record,
+  record: QuestionListItem,
   handleDetail: Function,
   handleEdit: Function,
   handleFile: Function,
@@ -113,13 +130,13 @@ export function createActionColumn(
       onClick: handleDetail.bind(null, record),
     },
     {
-      label: '编辑',
+      label: record.hide === HideEnum.HIDE ? '显示' : '隐藏',
       onClick: handleEdit.bind(null, record),
     },
     {
       label: '删除',
       color: 'error',
-      onClick: handleFile.bind(null, [record.id]),
+      onClick: handleFile.bind(null, record),
     },
   ];
 }

@@ -1,60 +1,56 @@
 <!--
- * @Author: crz 982544249@qq.com
- * @Date: 2022-08-15 10:59:49
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-26 15:31:03
- * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\index.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @LastEditTime: 2022-08-31 11:48:19
+ * @Description: 详情
 -->
+
 <template>
   <BasicDrawer
-    v-bind="$attrs"
     @register="register"
+    @visible-change="handleVisibleChange"
+    v-bind="$attrs"
     title="知识库详情"
     width="90%"
     :is-detail="true"
-    @visible-change="handleVisibleChange"
   >
-    <Description title="基本信息" :column="2" :data="detailRef" :schema="createDesSchemas()" />
-    <BasicTable @register="registerTable" />
+    <QuestionDetail
+      ref="detailVueRef"
+      :id="props.record?.themeId || ''"
+      :is-manage="true"
+      :immediate="false"
+      @success="handleSuccess"
+    />
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="Detail">
-  import { ref } from 'vue';
+  import { nextTick, ref } from 'vue';
   import type { PropType } from 'vue';
 
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { Description } from '/@/components/Description/index';
-  import { createDesSchemas, createBasicColumns } from './data';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import QuestionDetail from '/@/views/biz/question/detail/index.vue';
 
   // api
-  import { DemoListItem } from '/@/api/demo/model/tableModel';
-  import { demoDetailApi, demoListApi } from '/@/api/demo/table';
-
+  import { QuestionListItem } from '/@/api/biz/question/model/listModel';
+  // emit
+  const emit = defineEmits(['success']);
   // props
   const props = defineProps({
-    record: { type: Object as PropType<DemoListItem> },
+    record: { type: Object as PropType<QuestionListItem> },
   });
-  const [register, { changeLoading }] = useDrawerInner();
+  const detailVueRef = ref<{ initData: () => void } | null>(null);
+  const [register, { closeDrawer }] = useDrawerInner();
 
-  // drawer
-  const detailRef = ref<DemoListItem>();
   async function handleVisibleChange(visible) {
     if (visible) {
-      try {
-        changeLoading(true);
-        detailRef.value = await demoDetailApi({ id: props.record?.id || '' });
-      } finally {
-        changeLoading(false);
-      }
+      // console.log(props.record, props.record?.themeId);
+      nextTick(() => {
+        // 刷新数据
+        detailVueRef.value?.initData();
+      });
     }
   }
-
-  // table
-  const [registerTable] = useTable({
-    title: '用户列表',
-    columns: createBasicColumns(),
-    api: demoListApi,
-  });
+  // 删除问答：成功关闭
+  function handleSuccess() {
+    emit('success');
+    closeDrawer();
+  }
 </script>

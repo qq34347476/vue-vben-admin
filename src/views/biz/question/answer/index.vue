@@ -6,6 +6,7 @@
     width="1000px"
     okText="发布"
     @ok="handleOk"
+    @visible-change="handleVisible"
   >
     <Tinymce v-model="state.content" width="100%" :height="350" />
     <!-- <div class="mt-2">
@@ -36,6 +37,15 @@
     content: '',
     // isAnonymous: false,
   });
+
+  // 打开弹窗
+  function handleVisible(visible) {
+    if (visible) {
+      // 重新打开：清空数据
+      state.content = '';
+    }
+  }
+
   const [register, { setModalProps, closeModal }] = useModalInner();
 
   // 发布

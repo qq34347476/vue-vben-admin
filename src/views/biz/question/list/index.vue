@@ -1,6 +1,6 @@
 <script lang="tsx">
   import { defineComponent, ref } from 'vue';
-  import { Input, Tabs, Skeleton, Empty } from 'ant-design-vue';
+  import { Input, Tabs, Skeleton, Empty, TypographyParagraph } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon/index';
   import { VScroll } from '/@/components/VirtualScroll/index';
   import { useCalcHeight } from '/@/hooks/web/useCalcHeight';
@@ -10,6 +10,7 @@
 
   import { questionTabsEnum, useQuestionList, COLUMN_DATA } from './useActions';
   import { useRouter } from 'vue-router';
+  import { html2Str } from '/@/utils/other';
   export default defineComponent({
     name: 'QuestionList',
     setup() {
@@ -112,16 +113,19 @@
                       ),
                     }}
                   </Tabs.TabPane>
-                  <Tabs.TabPane key={questionTabsEnum.HOT}>
-                    {{
-                      tab: () => (
-                        <span class="pl-5">
-                          最热问答
-                          <Icon icon="ant-design:fire-filled" class="!text-red-500" size={20} />
-                        </span>
-                      ),
-                    }}
-                  </Tabs.TabPane>
+                  {
+                    // TODO: 二期
+                    // <Tabs.TabPane key={questionTabsEnum.HOT}>
+                    //   {{
+                    //     tab: () => (
+                    //       <span class="pl-5">
+                    //         最热问答
+                    //         <Icon icon="ant-design:fire-filled" class="!text-red-500" size={20} />
+                    //       </span>
+                    //     ),
+                    //   }}
+                    // </Tabs.TabPane>
+                  }
                   <Tabs.TabPane key={questionTabsEnum.ME}>
                     {{
                       tab: () => <span class="px-5">我的问答</span>,
@@ -166,10 +170,7 @@
                       {{
                         default: ({ item }: { item: QuestionListItem }) => (
                           <div class="px-4 ">
-                            <div
-                              onClick={handleGoDetail.bind(null, item)}
-                              class="p-4 shadow-md cursor-pointer border-1 hover:bg-gray-500/4"
-                            >
+                            <div class="p-4 shadow-md  border-1 hover:bg-gray-500/4">
                               <div class="flex flex-row mb-2">
                                 <div class="flex-1 pr-2 text-base font-bold line-clamp-1">
                                   {item.title}
@@ -189,10 +190,21 @@
                                 </span>
                                 <span class="pr-2">发布于 {item.crteTime}</span>
                               </div>
-                              <div
-                                class="mb-2 h-45px line-clamp-2"
-                                v-html-parser:small={item.forumThemeInstDTO?.content || ''}
-                              ></div>
+                              {
+                                // <div
+                                //   class="mb-2 h-45px line-clamp-2"
+                                //   v-html-parser:small={item.forumThemeInstDTO?.content || ''}
+                                // ></div>
+                                // {{ ellipsisSymbol: () => '查看更多' }}
+                                <TypographyParagraph
+                                  class="cursor-pointer"
+                                  ellipsis={{
+                                    rows: 2,
+                                  }}
+                                  content={html2Str(item.forumThemeInstDTO?.content || '', 300)}
+                                  onClick={handleGoDetail.bind(null, item)}
+                                ></TypographyParagraph>
+                              }
                               <div>
                                 <a-button type="text" class="mr-2 !hover:text-primary">
                                   <Icon icon="ant-design:edit-outlined" />
