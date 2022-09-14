@@ -270,12 +270,25 @@ export const defHttp = createAxios();
 // 问答中心
 export const forumHttp = createAxios({
   requestOptions: {
-    apiUrl: globSetting.forumApiUrl,
+    // apiUrl: 'http://10.16.12.52:8097/forum', // globSetting.forumApiUrl,
+    apiUrl: globSetting.apiUrl + '/forum',
   },
 });
 // 系统管理
 export const systemHttp = createAxios({
   requestOptions: {
-    apiUrl: globSetting.systemApiUrl,
+    apiUrl: globSetting.apiUrl + '/system',
+  },
+});
+// knowledge
+export const knowledgeHttp = createAxios({
+  requestOptions: {
+    apiUrl: globSetting.apiUrl + '/knowledge',
+  },
+});
+// 用户中心
+export const custHttp = createAxios({
+  requestOptions: {
+    apiUrl: globSetting.apiUrl + '/cust',
   },
 });
