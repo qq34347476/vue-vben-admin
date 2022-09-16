@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-08-25 14:16:05
+ * @LastEditTime: 2022-09-15 15:56:33
  * @Description:
  */
 import { DescItem } from '/@/components/Description/index';
@@ -25,10 +25,6 @@ export function createDesSchemas(): DescItem[] {
     {
       field: 'updatePsn',
       label: '所属分组',
-    },
-    {
-      field: 'updateTime',
-      label: '角色',
     },
   ];
 }

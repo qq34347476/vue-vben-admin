@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-08-26 14:19:28
+ * @LastEditTime: 2022-09-16 09:58:58
  * @Description:
  */
 import { reactive } from 'vue';
@@ -52,7 +52,7 @@ export function useQuestionList() {
         messageState.data = [];
       }
       const { records, recordTotal } = await getUserMessageList({
-        page: messageState.page,
+        pageNo: messageState.page,
         pageSize: 20,
         type: messageState.type,
       });
@@ -70,7 +70,7 @@ export function useQuestionList() {
   // 点击信息
   const { push } = useRouter();
   function handleMessage(val: MessageListItem) {
-    if (val.type === 'answer') {
+    if (val.newType === 'answer') {
       push(PageEnum.QUESTION_PAGE);
     } else {
       push(PageEnum.BASE_HOME);

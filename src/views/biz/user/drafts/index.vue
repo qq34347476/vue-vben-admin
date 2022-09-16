@@ -2,9 +2,9 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 14:44:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-25 15:51:59
+ * @LastEditTime: 2022-09-16 09:59:48
  * @FilePath: \knowledge-web\src\views\examples\page\index.vue
- * @Description: 页面模板
+ * @Description: 草稿箱
 -->
 <template>
   <BasicTable @register="registerTable">
@@ -24,7 +24,7 @@
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
 
   // api
-  import { getUserDraftsList } from '/@/api/biz/user/drafts';
+  import { getUserDraftsListApi } from '/@/api/biz/user/drafts';
 
   // table
   const [registerTable, { reload }] = useTable({
@@ -37,7 +37,7 @@
     rowSelection: { type: 'checkbox' },
     clickToRowSelect: false,
     rowKey: 'id',
-    api: getUserDraftsList,
+    api: getUserDraftsListApi,
     actionColumn: {
       width: 100,
       title: '操作',
