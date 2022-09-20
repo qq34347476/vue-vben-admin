@@ -1,8 +1,8 @@
 /*
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 15:02:37
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-17 14:35:18
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-09-20 10:39:23
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -10,20 +10,34 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Form/index';
 import { numStrPattern } from '/@/utils/pattern';
-export function createSchemas(): FormSchema[] {
+import { getTeamMenberListApi } from '/@/api/biz/library/knowledge';
+import { useKonwledgeForm } from './useKonwledgeForm';
+import { TreeItem } from '/@/components/Tree';
+import { ref } from 'vue';
+
+const adminsSelectTree = ref<TreeItem[]>([]);
+const { departmentListToTree } = useKonwledgeForm();
+
+async function getAdminTree() {
+  const { records } = await getTeamMenberListApi({ pageNo: 1, pageSize: 9999 });
+  adminsSelectTree.value = departmentListToTree(records);
+  return adminsSelectTree.value;
+}
+export function createSchemas(nameBlur: Function, selectChange: Function): FormSchema[] {
   return [
     {
-      field: 'knowName',
+      field: 'name',
       label: '知识库名称',
       component: 'Input',
       componentProps: {
         showCount: true,
         maxlength: 50,
+        onblur: nameBlur,
       },
       rules: [{ required: true, message: '请输入知识库名称' }],
     },
     {
-      field: 'knowMark',
+      field: 'code',
       label: '知识库标志',
       component: 'Input',
       componentProps: {
@@ -40,13 +54,28 @@ export function createSchemas(): FormSchema[] {
       ],
     },
     {
-      field: 'knowAdmin',
+      field: 'admins',
       label: '知识库管理员',
-      component: 'TreeSelect',
+      component: 'ApiTreeSelect',
+      // defaultValue: ['0b5648f517e0425c974ad1db0be9baf1'],
+      componentProps: {
+        api: getAdminTree,
+        height: 100,
+        treeCheckable: true,
+        treeDefaultExpandAll: true,
+        maxTagCount: 2,
+        showSearch: true,
+        treeNodeFilterProp: 'title',
+        showCheckedStrategy: 'SHOW_PARENT',
+        resultField: 'list',
+        onChange: (val) => {
+          selectChange(adminsSelectTree.value, val);
+        },
+      },
       rules: [{ required: true }],
     },
     {
-      field: 'memo',
+      field: 'contentDesc',
       label: '知识库描述',
       component: 'InputTextArea',
       componentProps: {
@@ -56,7 +85,7 @@ export function createSchemas(): FormSchema[] {
       colProps: { span: 16 },
     },
     {
-      field: 'switch',
+      field: 'needAudit',
       label: '审核开关',
       helpMessage: '开关开启时，所有页面<新增>时均需审核，<编辑>时是否需要审核可选',
       component: 'Switch',
@@ -65,19 +94,50 @@ export function createSchemas(): FormSchema[] {
   ];
 }
 
+export function createUserSchemas(): FormSchema[] {
+  return [
+    {
+      field: 'userName',
+      label: '姓名',
+      component: 'Input',
+    },
+  ];
+}
 export function createBasicColumns(): BasicColumn[] {
   return [
     {
-      dataIndex: 'group',
-      title: '分组',
+      dataIndex: 'userName',
+      title: '姓名',
     },
     {
       dataIndex: 'userId',
       title: '用户名',
     },
     {
-      dataIndex: 'userName',
-      title: '姓名',
+      dataIndex: 'grpName',
+      title: '所属分组',
+    },
+  ];
+}
+
+export function createGroupSchemas(): FormSchema[] {
+  return [
+    {
+      field: 'grpName',
+      label: '分组名称',
+      component: 'Input',
+    },
+  ];
+}
+export function createGroupColumns(): BasicColumn[] {
+  return [
+    {
+      dataIndex: 'grpName',
+      title: '分组名称',
+    },
+    {
+      dataIndex: 'teamId',
+      title: '分组ID',
     },
   ];
 }

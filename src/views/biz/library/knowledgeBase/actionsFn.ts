@@ -2,64 +2,70 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 16:12:05
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-25 17:41:30
+ * @LastEditTime: 2022-09-20 15:49:13
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\actionsFn.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 知识库表格操作列方法
  */
 import { ref } from 'vue';
 import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
 import { useMessage } from '/@/hooks/web/useMessage';
-import { PageEnum } from '/@/enums/pageEnum';
-import { useRouter } from 'vue-router';
+import { knowledgePigeonholeApi } from '/@/api/biz/library/knowledge';
+import { knowledgeActiveApi, knowledgeDeleteApi } from '/@/api/biz/library/fileKnowledge';
+import { knowledgePerpetualDeleteApi } from '/@/api/biz/library/recycleKnowledge';
+
 const { createConfirm, createMessage } = useMessage();
 
-export function actionsFn(openDetailDrawer: Function, openEditDrawer: Function) {
+export function actionsFn(openDetailDrawer: Function, openEditDrawer: Function, reload: Function) {
   const knowledgeRecordRef = ref<KnowledgeItem>();
   // 详情
-  function handelDetail(record) {
+  function handelDetail(record: KnowledgeItem) {
     knowledgeRecordRef.value = record;
     openDetailDrawer();
   }
   // 编辑
   const drawerTypeRef = ref('');
-  function handleEdit(record) {
+  function handleEdit(record: KnowledgeItem) {
     drawerTypeRef.value = 'edit';
     knowledgeRecordRef.value = record;
     openEditDrawer();
   }
   // 归档
-  function handleFile(record) {
+  function handleFile(record: KnowledgeItem) {
     createConfirm({
       iconType: 'warning',
       title: '确认操作',
-      content: `确认将<span style="color:#0960BD">【${record.knowName}】</span>归档，归档后可至归档知识库进行激活。`,
+      content: `确认将<span style="color:#0960BD">【${record.name}】</span>归档，归档后可至归档知识库进行激活。`,
       onOk: async () => {
-        console.log('确认归档');
+        await knowledgePigeonholeApi(record.spaceId);
+        reload();
       },
     });
   }
   // 收藏
-  function handleCollection(record) {
+  function handleCollection(record: KnowledgeItem) {
     console.log(record);
   }
   // 激活
-  function handleActive(record) {
-    console.log(record);
+  async function handleActive(record: KnowledgeItem) {
+    await knowledgeActiveApi(record.spaceId);
+    reload();
   }
   // 删除
-  function handleDelete(record) {
+  function handleDelete(record: KnowledgeItem) {
     createConfirm({
       iconType: 'warning',
       title: '确认操作',
-      content: `确认将<span class="text-blue-500">【${record.knowName}】</span>删除，删除后可至知识库回收站进行恢复。`,
+      content: `确认将<span class="text-blue-500">【${record.name}】</span>删除，删除后可至知识库回收站进行恢复。`,
       onOk: async () => {
-        console.log('确认删除');
+        await knowledgeDeleteApi(record.spaceId);
+        reload();
       },
     });
   }
   // 恢复
-  function handleRecover(record) {
-    console.log(record);
+  async function handleRecover(record: KnowledgeItem) {
+    await knowledgePigeonholeApi(record.spaceId);
+    reload();
   }
   // 永久删除
   function handleForeverDelete(deleteIdArr: string[]) {
@@ -69,19 +75,13 @@ export function actionsFn(openDetailDrawer: Function, openEditDrawer: Function) 
         title: '确认操作',
         content: `确认将所选知识库永久删除，删除后将无法恢复。`,
         onOk: async () => {
-          console.log('确认删除', deleteIdArr);
+          await knowledgePerpetualDeleteApi(deleteIdArr);
+          reload();
         },
       });
     } else {
       createMessage.warn('请先勾选要删除的知识库');
     }
-  }
-
-  // 点击名称
-  const { push } = useRouter();
-  function handleName() {
-    // 页面跳转
-    push(PageEnum.BASE_HOME);
   }
 
   return {
@@ -95,6 +95,5 @@ export function actionsFn(openDetailDrawer: Function, openEditDrawer: Function) 
     handleDelete,
     handleRecover,
     handleForeverDelete,
-    handleName,
   };
 }

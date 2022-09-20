@@ -1,6 +1,6 @@
 <!--
- * @LastEditTime: 2022-08-26 14:08:52
- * @Description: 
+ * @LastEditTime: 2022-09-16 10:00:07
+ * @Description: 个人信息
 -->
 <template>
   <div class="p-4 h-full">
@@ -17,7 +17,7 @@
           />
         </Col>
         <Col :span="16" class="pt-8">
-          <Description :column="2" :schema="createDesSchemas()" :data="userStore.getUserInfo" />
+          <Description :column="2" :schema="createDesSchemas()" :data="userInfoRef" />
         </Col>
       </Row>
     </CollapseContainer>
@@ -44,7 +44,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { computed, reactive, onBeforeMount } from 'vue';
+  import { computed, reactive, onBeforeMount, ref } from 'vue';
   import { CollapseContainer } from '/@/components/Container';
   import { CropperAvatar } from '/@/components/Cropper';
   import { Row, Col } from 'ant-design-vue';
@@ -54,21 +54,29 @@
   import { createDesSchemas } from './data';
   import { Description } from '/@/components/Description/index';
   // api
-  import { getUserContribution } from '/@/api/biz/user/info';
+  import { getUserInfoApi, getUserContribution } from '/@/api/biz/user/info';
+  import { UserInfo } from '/@/api/biz/user/model/infoModel';
 
   const userStore = useUserStore();
-
+  // 头像
   const avatar = computed(() => {
     const { avatar } = userStore.getUserInfo;
     console.log(userStore.getUserInfo);
     return avatar || headerImg;
   });
-
+  // 上传头像
   function updateAvatar(src: string) {
     const userinfo = userStore.getUserInfo;
     userinfo.avatar = src;
     userStore.setUserInfo(userinfo);
   }
+
+  // 个人信息
+  const userInfoRef = ref<UserInfo>();
+  onBeforeMount(async () => {
+    const { userId } = userStore.getUserInfo;
+    userInfoRef.value = await getUserInfoApi(userId);
+  });
 
   // 个人贡献list
   const contributionData = reactive<
@@ -83,10 +91,11 @@
     { img: '/src/assets/images/question.png', count: 0, title: '创建的问答' },
   ]);
   onBeforeMount(async () => {
-    const { knowledgeCount, pageCount, questionCount } = await getUserContribution();
-    contributionData[0].count = knowledgeCount;
+    const { userId } = userStore.getUserInfo;
+    const { spaceCount, pageCount, commentCount } = await getUserContribution(userId);
+    contributionData[0].count = spaceCount;
     contributionData[1].count = pageCount;
-    contributionData[2].count = questionCount;
+    contributionData[2].count = commentCount;
   });
 </script>
 
