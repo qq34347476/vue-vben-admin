@@ -1,8 +1,8 @@
 <!--
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 10:59:49
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-19 17:30:57
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-09-20 16:41:26
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,8 +15,22 @@
     @visible-change="handleVisibleChange"
   >
     <Spin :spinning="unref(loadingRef)">
-      <Description :column="2" :data="unref(desDataRef)" :schema="createDesSchemas()" />
-      <BasicTable @register="registerTable" />
+      <div class="common-title">基本信息</div>
+      <Description
+        class="mx-4 mb-4"
+        :column="2"
+        :data="unref(desDataRef)"
+        :schema="createDesSchemas()"
+      />
+      <div class="common-title">用户权限</div>
+      <Tabs class="bg-white p-0" style="margin: 16px; padding: 0" type="card">
+        <TabPane :key="1" tab="分组">
+          <BasicTable @register="registerGroupTable" style="padding: 0" />
+        </TabPane>
+        <TabPane :key="2" tab="用户">
+          <BasicTable @register="registerUserTable" style="padding: 0" />
+        </TabPane>
+      </Tabs>
     </Spin>
   </BasicDrawer>
 </template>
@@ -24,12 +38,12 @@
   import { ref, unref } from 'vue';
   import { BasicDrawer } from '/@/components/Drawer';
   import { Description } from '/@/components/Description/index';
-  import { createDesSchemas, createBasicColumns } from './data';
-  import { BasicTable, useTable } from '/@/components/Table';
-  import { Spin } from 'ant-design-vue';
-
+  import { createDesSchemas } from './data';
+  import { BasicTable } from '/@/components/Table';
+  import { Spin, Tabs, TabPane } from 'ant-design-vue';
+  import { useUserTable } from './useUserTable';
   // api
-  import { getKnowledgeDetailData, getKnowledgeUserListData } from '/@/api/biz/library/knowledge';
+  import { getKnowledgeDetailApi } from '/@/api/biz/library/knowledge';
   import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
   const props = defineProps<{
     knowledgeRecord: KnowledgeItem | undefined;
@@ -42,7 +56,7 @@
     if (visibel) {
       loadingRef.value = true;
       try {
-        desDataRef.value = await getKnowledgeDetailData({ id: props.knowledgeRecord?.id || '' });
+        desDataRef.value = await getKnowledgeDetailApi(props.knowledgeRecord?.spaceId || '');
       } finally {
         loadingRef.value = false;
       }
@@ -50,9 +64,5 @@
   }
 
   // table
-  const [registerTable] = useTable({
-    title: '用户列表',
-    columns: createBasicColumns(),
-    api: getKnowledgeUserListData,
-  });
+  const { registerUserTable, registerGroupTable } = useUserTable();
 </script>

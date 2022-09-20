@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 15:16:05
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-24 17:57:16
+ * @LastEditTime: 2022-09-20 17:22:47
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,11 +11,12 @@ import { BasicColumn, ActionItem } from '/@/components/Table';
 import { FormSchema } from '/@/components/Form/index';
 import { Switch } from 'ant-design-vue';
 import { h } from 'vue';
+import { KnowledgeAdmin } from '/@/api/biz/library/model/knowledgeModel';
 
 export function createSchemas(): FormSchema[] {
   return [
     {
-      field: 'knowName',
+      field: 'name',
       label: '知识库名称',
       component: 'Input',
     },
@@ -25,7 +26,7 @@ export function createSchemas(): FormSchema[] {
 export function createBasicColumns(handleName): BasicColumn[] {
   return [
     {
-      dataIndex: 'knowName',
+      dataIndex: 'name',
       title: '知识库名称',
       width: 300,
       fixed: 'left',
@@ -38,55 +39,66 @@ export function createBasicColumns(handleName): BasicColumn[] {
       },
     },
     {
-      dataIndex: 'pageNum',
+      dataIndex: 'pageCount',
       title: '页面数',
       width: 100,
     },
     {
-      dataIndex: 'knowAdmin',
+      dataIndex: 'admins',
       title: '知识库管理员',
-      width: 150,
+      width: 200,
+      customRender: ({ value }: { value: KnowledgeAdmin[] }) => {
+        let text = '';
+        if (value) {
+          value.forEach((item, index) => {
+            if (index === value.length - 1) {
+              text += item.custNick;
+            } else {
+              text += item.custNick + '，';
+            }
+          });
+        }
+        return text;
+      },
     },
     {
-      dataIndex: 'switch',
+      dataIndex: 'needAudit',
       title: '审核开关',
       width: 100,
-      customRender: ({ record }) => {
+      customRender: ({ value }) => {
         return h(Switch, {
-          checked: record.switch === '1',
+          checked: value,
           checkedChildren: '开',
           unCheckedChildren: '关',
-          onChange(checked: boolean) {
-            console.log(checked);
-          },
+          disabled: true,
         });
       },
     },
     {
-      dataIndex: 'memo',
+      dataIndex: 'contentDesc',
       title: '知识库描述',
       width: 300,
     },
     {
-      dataIndex: 'createPsn',
+      dataIndex: 'crter',
       title: '创建人',
       width: 100,
       sorter: true,
     },
     {
-      dataIndex: 'createTime',
+      dataIndex: 'crteTime',
       title: '创建时间',
       width: 200,
       sorter: true,
     },
     {
-      dataIndex: 'updatePsn',
+      dataIndex: 'opterId',
       title: '更新人',
       width: 100,
       sorter: true,
     },
     {
-      dataIndex: 'updateTime',
+      dataIndex: 'updtTime',
       title: '更新时间',
       width: 200,
       sorter: true,
@@ -99,7 +111,7 @@ export function createEffActionColumn(
   handleDetail: Function,
   handleEdit: Function,
   handleFile: Function,
-  handleCollection: Function,
+  // handleCollection: Function,
 ): ActionItem[] {
   return [
     {
@@ -114,10 +126,10 @@ export function createEffActionColumn(
       label: '归档',
       onClick: handleFile.bind(null, record),
     },
-    {
-      label: record.collection === '0' ? '收藏' : '取消收藏',
-      onClick: handleCollection.bind(null, record),
-    },
+    // {
+    //   label: record.collection === '0' ? '收藏' : '取消收藏',
+    //   onClick: handleCollection.bind(null, record),
+    // },
   ];
 }
 export function createFileActionColumn(
@@ -160,7 +172,7 @@ export function createRecycleActionColumn(
     {
       label: '永久删除',
       color: 'error',
-      onClick: handleForeverDelete.bind(null, [record.id]),
+      onClick: handleForeverDelete.bind(null, [record.spaceId]),
     },
   ];
 }

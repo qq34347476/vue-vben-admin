@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 14:10:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-24 15:30:02
+ * @LastEditTime: 2022-09-20 15:54:02
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\index.vue
  * @Description: 知识库
 -->
@@ -33,16 +33,21 @@
         </a-button>
       </template>
     </BasicTable>
-    <DetailDrawer @register="registerDrawer" :knowledge-record="knowledgeRecordRef" />
+    <DetailDrawer @register="registerDetailDrawer" :knowledge-record="knowledgeRecordRef" />
     <AddDrawer
       @register="registerAddDrawer"
       :knowledge-record="knowledgeRecordRef"
       :type="drawerTypeRef"
+      @success="
+        () => {
+          openAddDrawer(false);
+          reload();
+        }
+      "
     />
   </div>
 </template>
 <script lang="ts" setup>
-  // import { ref, watch } from 'vue';
   import {
     createBasicColumns,
     createSchemas,
@@ -51,6 +56,8 @@
     createRecycleActionColumn,
   } from './data';
   import { actionsFn } from './actionsFn';
+  import { PageEnum } from '/@/enums/pageEnum';
+  import { useRouter } from 'vue-router';
 
   // compoent
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
@@ -59,15 +66,49 @@
   import { useDrawer } from '/@/components/Drawer';
 
   // api
-  import { getKnowledgeListData } from '/@/api/biz/library/knowledge';
+  import { getKnowledgeListDataApi } from '/@/api/biz/library/knowledge';
+  import { getFileKnowledgeListApi } from '/@/api/biz/library/fileKnowledge';
+  import { getRecycleKnowledgeListApi } from '/@/api/biz/library/recycleKnowledge';
 
   const props = defineProps<{
     type: 'effective' | 'file' | 'recycleBin';
   }>();
 
   // Drawer
-  const [registerDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
+  const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
   const [registerAddDrawer, { openDrawer: openAddDrawer }] = useDrawer();
+
+  // 点击名称
+  const { push } = useRouter();
+  function handleName() {
+    // 页面跳转
+    push(PageEnum.BASE_HOME);
+  }
+  // table
+  const [registerTable, { getSelectRowKeys, reload }] = useTable({
+    columns: createBasicColumns(handleName),
+    useSearchForm: true,
+    formConfig: {
+      labelWidth: 80,
+      schemas: createSchemas(),
+      baseColProps: { span: 8 },
+    },
+    api:
+      props.type === 'effective'
+        ? getKnowledgeListDataApi
+        : props.type === 'file'
+        ? getFileKnowledgeListApi
+        : getRecycleKnowledgeListApi,
+    actionColumn: {
+      width: props.type === 'recycleBin' ? 180 : 160,
+      title: '操作',
+      align: 'left',
+      dataIndex: 'action',
+    },
+    rowSelection: props.type === 'recycleBin' ? { type: 'checkbox' } : undefined,
+    rowKey: 'spaceId',
+    clickToRowSelect: false,
+  });
 
   // actionsFn
   const {
@@ -76,37 +117,17 @@
     handleEdit,
     drawerTypeRef,
     handleFile,
-    handleCollection,
+    // handleCollection,
     handleActive,
     handleDelete,
     handleRecover,
     handleForeverDelete,
-    handleName,
-  } = actionsFn(openDetailDrawer, openAddDrawer);
+  } = actionsFn(openDetailDrawer, openAddDrawer, reload);
 
-  // table
-  const [registerTable, { getSelectRowKeys }] = useTable({
-    columns: createBasicColumns(handleName),
-    useSearchForm: true,
-    formConfig: {
-      labelWidth: 80,
-      schemas: createSchemas(),
-      baseColProps: { span: 8 },
-    },
-    api: getKnowledgeListData,
-    actionColumn: {
-      width: props.type === 'effective' ? 230 : 180,
-      title: '操作',
-      align: 'left',
-      dataIndex: 'action',
-    },
-    rowSelection: props.type === 'recycleBin' ? { type: 'checkbox' } : undefined,
-    clickToRowSelect: false,
-  });
   // 展示操作列
   function getActions(record) {
     if (props.type === 'effective') {
-      return createEffActionColumn(record, handelDetail, handleEdit, handleFile, handleCollection);
+      return createEffActionColumn(record, handelDetail, handleEdit, handleFile);
     } else if (props.type === 'file') {
       return createFileActionColumn(record, handelDetail, handleActive, handleDelete);
     } else {
