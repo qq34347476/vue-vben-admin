@@ -24,14 +24,16 @@
   import { createBasicColumns, createActionColumn, createSchemas } from './data';
   import { PageEnum } from '/@/enums/pageEnum';
   import { useRouter } from 'vue-router';
-  import { useDetail } from './detail/useDetail';
-  import { useAdd } from './add/useAdd';
-  import { useDelete } from './useDelete';
   // component
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import Add from './add/index.vue';
+  import { useAdd } from './add/useAdd';
+
   import Detail from './detail/index.vue';
+  import { useDetail } from './detail/useDetail';
+
   import { demoListApi } from '/@/api/demo/table';
+  import { useDelete } from './useDelete';
 
   // table
   const [registerTable, { getSelectRowKeys, reload }] = useTable({

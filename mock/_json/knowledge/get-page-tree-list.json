@@ -1,0 +1,59 @@
+{
+  "code": 0,
+  "type": "success",
+  "message": "成功",
+  "data": [
+    {
+      "id": "1",
+      "parentId": "0",
+      "level": 0,
+      "children": [
+        {
+          "id": "2",
+          "parentId": "1",
+          "level": 0,
+          "children": [
+            {
+              "id": "3",
+              "parentId": "2",
+              "level": 0,
+              "children": [],
+              "pageCode": "ceshipage",
+              "pageTitle": "建设背景",
+              "pageType": "2",
+              "externalUrl": "/qqqqq"
+            },
+            {
+              "id": "4",
+              "parentId": "2",
+              "level": 0,
+              "children": [],
+              "pageCode": "ceshipage",
+              "pageTitle": "系统功能",
+              "pageType": "2",
+              "externalUrl": "/qqqqq"
+            }
+          ],
+          "pageCode": "ceshipage",
+          "pageTitle": "核心业务系统",
+          "pageType": "1",
+          "externalUrl": "/abcd"
+        }
+      ],
+      "pageCode": "ceshipage",
+      "pageTitle": "产品规划",
+      "pageType": "1",
+      "externalUrl": "/aaa"
+    },
+    {
+      "id": "5",
+      "parentId": "0",
+      "level": 0,
+      "children": [],
+      "pageCode": "ceshipage",
+      "pageTitle": "回收站",
+      "pageType": "1",
+      "externalUrl": "/qqqqq"
+    }
+  ]
+}

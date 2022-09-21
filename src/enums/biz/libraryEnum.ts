@@ -1,8 +1,8 @@
 /*
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-19 18:01:16
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-22 17:24:15
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-09-21 18:07:27
  * @FilePath: \knowledge-web\src\enums\libraryEnum.ts
  * @Description: 知识库enum
  */
@@ -43,3 +43,17 @@ export const ReviewStateList = [
     type: ColorTypeEnum.error,
   },
 ];
+
+// page type  1文件夹  2草稿页面  3审核  4发布页面
+export enum PageTypeEnum {
+  FILE = '1',
+  DRAFT = '2',
+  AUDIT = '3',
+  RELEASE = '4',
+}
+// 新增页面
+// correspondSort?: '1' | '0'; //'1'; //1表示上，0表示下
+export enum CorrespondSortEnum {
+  UP = '1',
+  DOWN = '0',
+}
