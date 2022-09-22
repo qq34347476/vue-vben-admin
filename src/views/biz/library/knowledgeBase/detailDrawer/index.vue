@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 10:59:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-20 16:41:26
+ * @LastEditTime: 2022-09-22 15:34:39
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,6 +13,7 @@
     width="90%"
     :is-detail="true"
     @visible-change="handleVisibleChange"
+    :destroy-on-close="true"
   >
     <Spin :spinning="unref(loadingRef)">
       <div class="common-title">基本信息</div>
@@ -38,12 +39,23 @@
   import { ref, unref } from 'vue';
   import { BasicDrawer } from '/@/components/Drawer';
   import { Description } from '/@/components/Description/index';
-  import { createDesSchemas } from './data';
+  import {
+    createDesSchemas,
+    createGroupColumns,
+    createBasicColumns,
+    createGroupSchemas,
+    createUserSchemas,
+  } from './data';
   import { BasicTable } from '/@/components/Table';
   import { Spin, Tabs, TabPane } from 'ant-design-vue';
-  import { useUserTable } from './useUserTable';
+  import { useTable } from '/@/components/Table';
+
   // api
-  import { getKnowledgeDetailApi } from '/@/api/biz/library/knowledge';
+  import {
+    getKnowledgeDetailApi,
+    getKnowledgeDetailGroupApi,
+    getKnowledgeDetailUserApi,
+  } from '/@/api/biz/library/knowledge';
   import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
   const props = defineProps<{
     knowledgeRecord: KnowledgeItem | undefined;
@@ -62,7 +74,37 @@
       }
     }
   }
+  // beforeFetch
+  function beforeFetch(v) {
+    return {
+      ...v,
+      spaceId: props.knowledgeRecord?.spaceId || '',
+    };
+  }
 
-  // table
-  const { registerUserTable, registerGroupTable } = useUserTable();
+  // 分组table
+  const [registerGroupTable] = useTable({
+    useSearchForm: true,
+    formConfig: {
+      schemas: createGroupSchemas(),
+      baseColProps: { span: 8 },
+      actionColOptions: { span: 16 },
+    },
+    columns: createGroupColumns(),
+    api: getKnowledgeDetailGroupApi,
+    beforeFetch: beforeFetch,
+  });
+
+  // 用户table
+  const [registerUserTable] = useTable({
+    useSearchForm: true,
+    formConfig: {
+      schemas: createUserSchemas(),
+      baseColProps: { span: 8 },
+      actionColOptions: { span: 16 },
+    },
+    columns: createBasicColumns(),
+    api: getKnowledgeDetailUserApi,
+    beforeFetch: beforeFetch,
+  });
 </script>

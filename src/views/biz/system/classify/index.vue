@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 14:44:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-24 17:54:15
+ * @LastEditTime: 2022-09-22 13:52:53
  * @FilePath: \knowledge-web\src\views\examples\page\index.vue
  * @Description: 页面模板
 -->
@@ -20,7 +20,7 @@
             defaultExpandAll
             @select="selectTree"
             :fieldNames="{
-              key: 'id',
+              key: 'cateId',
             }"
           />
         </Spin>
@@ -39,7 +39,7 @@
   <Add
     @register="registerModal"
     :type="modalTypeRef"
-    :record="addRecordRef"
+    :record="(addRecordRef as ClassifyItem)"
     @success="closeAddModal(reloadTableAndTree)"
   />
   <Detail @register="registerDetailModal" :record="recordRef" />
@@ -59,7 +59,8 @@
   import { BasicTree } from '/@/components/Tree/index';
 
   // api
-  import { getClassifyList } from '/@/api/biz/system/classify';
+  import { getClassifyListApi } from '/@/api/biz/system/classify';
+  import { ClassifyItem } from '/@/api/biz/system/model/classifyModel';
 
   // 新增/编辑弹窗
   const { registerModal, modalTypeRef, openAddModal, handleEdit, addRecordRef, closeAddModal } =
@@ -78,7 +79,7 @@
     columns: createBasicColumns(handleDatail),
     clickToRowSelect: false,
     rowKey: 'id',
-    api: getClassifyList,
+    api: getClassifyListApi,
     actionColumn: {
       width: 100,
       title: '操作',
@@ -92,7 +93,7 @@
 
   // tree
   const { treeLoadingRef, treeDataRef, classifyTreeRef, getTreeData, actionList, selectTree } =
-    useTree(openAddModal, handleEdit, handleDelete);
+    useTree(openAddModal, handleEdit, handleDelete, reload);
   onBeforeMount(() => {
     getTreeData();
   });
