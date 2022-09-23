@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-22 13:39:17
+ * @LastEditTime: 2022-09-23 14:29:20
  * @Description: 表单颜色选择
 -->
 <template>
@@ -27,6 +27,7 @@
       style="margin-top: 10px"
       v-show="$props.showRadio"
       v-model:value="isSolidRef"
+      @change="changeSolid"
       :options="[
         { label: '实底', value: true },
         { label: '虚底', value: false },
@@ -77,7 +78,7 @@
     setup(props, { emit }) {
       const { prefixCls } = useDesign('form-color-picker');
       const selectColorRef = ref();
-      const isSolidRef = ref(true);
+      const isSolidRef = ref();
 
       watch(
         () => props.defaultColor,
@@ -94,15 +95,10 @@
         () => props.isSolid,
         (val) => {
           isSolidRef.value = val;
+          changeSolid();
         },
-      );
-
-      watch(
-        () => isSolidRef.value,
-        () => {
-          setTimeout(() => {
-            handleClick(selectColorRef.value);
-          }, 100);
+        {
+          immediate: true,
         },
       );
 
@@ -115,15 +111,23 @@
           !isSolidRef.value,
         )};border: 1px solid ${color};color:${
           isSolidRef.value ? 'white' : color
-        };border-radius:5px;padding:5px 10px`;
+        };border-radius:5px;padding:5px 10px;font-size:12px;`;
         emit('change', JSON.stringify({ color, style, isSolid: isSolidRef.value }));
       }
 
+      // 切换实底/虚底
+      function changeSolid() {
+        // 未加setTimeout，此次emit('change'),得到的值为undefined
+        setTimeout(() => {
+          handleClick(selectColorRef.value);
+        }, 100);
+      }
       return {
         prefixCls,
         selectColorRef,
         isSolidRef,
         handleClick,
+        changeSolid,
         hexToRGB,
       };
     },
