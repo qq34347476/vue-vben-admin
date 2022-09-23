@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-23 14:33:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-22 14:26:37
+ * @LastEditTime: 2022-09-23 16:54:17
  * @FilePath: \knowledge-web\src\views\biz\system\classify\useTree.ts
  * @Description: 分类管理树
  */
@@ -97,8 +97,7 @@ export function useTree(
           return h(DeleteOutlined, {
             style: 'color:red',
             onClick: () => {
-              console.log(node.cateId);
-              handleDelete([node.cateId]);
+              handleDelete({ cateId: node.cateId, cateType: node.cateType });
             },
           });
         }

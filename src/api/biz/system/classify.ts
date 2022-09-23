@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 18:18:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-22 14:00:18
+ * @LastEditTime: 2022-09-23 16:55:44
  * @FilePath: \knowledge-web\src\api\biz\library\knowledge.ts
  * @Description: 分类管理api
  */
@@ -49,10 +49,11 @@ export const cateSaveApi = (params: CateParams) =>
  * @param {CateParams} params
  * @return {*}
  */
-export const cateDeleteApi = (params: string) =>
+export const cateDeleteApi = (params: { cateId: string; cateType: number }) =>
   systemHttp.post<TreeDataItem[]>(
-    { url: Api.CATE_DELETE, params },
+    { url: '', params: { cateType: params.cateType } },
     {
+      urlPrefix: Api.CATE_DELETE + params.cateId,
       successMessageModel: 'message',
     },
   );

@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 18:18:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-22 15:30:55
+ * @LastEditTime: 2022-09-23 17:55:26
  * @FilePath: \knowledge-web\src\api\biz\library\knowledge.ts
  * @Description: 知识库管理api
  */
@@ -18,11 +18,9 @@ import { BasicPageParams, BasicFetchResult } from '/@/api/model/baseModel';
 enum Api {
   KNOWLEDGE_LIST = '/space/find-effective-by-condition-to-page',
   KNOWLEDEG_SAVE = '/space/save-space',
-  GROUP_INFO_list = '/group-info/find-team-list-by-param',
-  TEAM_MENBER_LIST = '/group-info/find-team-member-list-by-param',
+  GROUP_INFO_list = '/group-info/space-auth/find-by-condition-to-page',
+  TEAM_MENBER_LIST = '/cust/space-auth/find-by-condition-to-page',
   KNOWLEDGE_DETAIL = '/space/get-space-detail-and-auth/',
-  KNOWLEDGE_DETAIL_TEAM_MEMBER_LIST = '/group-info/find-team-member-list-by-space-id/',
-  KNOWLEDGE_DETAIL_TEAM_LIST = '/group-info/find-team-list-by-space-id/',
   KNOWLEDGE_USER_LIST = '/knowledge/user/list',
   KNOWLEDGE_PIGEONHOLE_BY_ID = '/space/pigeonhole-by-id/',
   KNOWLEDGE_PIGEONHOLE_LIST = '/space/find-pigeonhole-by-condition-to-page',
@@ -58,7 +56,7 @@ export const knowledgeSaveApi = (params: BasicPageParams & KnowledgeListParams) 
  * @param {BasicPageParams} params
  * @return {*}
  */
-export const getGroupInfoListApi = (params: BasicPageParams & Partial<{ grpName: string }>) =>
+export const getGroupInfoListApi = (params: BasicPageParams & Partial<{ groupName: string }>) =>
   custHttp.post<BasicFetchResult<GroupItem>>({
     url: Api.GROUP_INFO_list,
     params,
@@ -83,37 +81,6 @@ export const getKnowledgeDetailApi = (params: string) =>
     url: Api.KNOWLEDGE_DETAIL,
     params,
   });
-
-/**
- * @description: 知识库详情分组列表
- * @param {KnowledgeParams} params
- * @return {*}
- */
-export const getKnowledgeDetailGroupApi = (
-  params: BasicPageParams & { spaceId: string; grpName?: string },
-) =>
-  custHttp.post<KnowledgeItem>(
-    {
-      url: '',
-      params: { pageNo: params.pageNo, pageSize: params.pageSize, grpName: params.grpName },
-    },
-    { urlPrefix: Api.KNOWLEDGE_DETAIL_TEAM_LIST + params.spaceId },
-  );
-/**
- * @description: 知识库详情分组成员列表
- * @param {KnowledgeParams} params
- * @return {*}
- */
-export const getKnowledgeDetailUserApi = (
-  params: BasicPageParams & { spaceId: string; userName?: string },
-) =>
-  custHttp.post<KnowledgeItem>(
-    {
-      url: '',
-      params: { pageNo: params.pageNo, pageSize: params.pageSize, userName: params.userName },
-    },
-    { urlPrefix: Api.KNOWLEDGE_DETAIL_TEAM_MEMBER_LIST + params.spaceId },
-  );
 
 /**
  * @description: 知识库用户列表

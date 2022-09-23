@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 14:44:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-23 13:43:51
+ * @LastEditTime: 2022-09-23 15:47:24
  * @FilePath: \knowledge-web\src\views\examples\page\index.vue
  * @Description: 分类管理
 -->
@@ -44,7 +44,7 @@
   />
   <Detail @register="registerDetailModal" :record="recordRef" />
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="ClassfyManage">
   import { onBeforeMount } from 'vue';
   import { createBasicColumns, createActionColumn, createSchemas } from './data';
   import { useDetail } from './detail/useDetail';

@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 16:49:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-22 14:00:48
+ * @LastEditTime: 2022-09-23 16:45:26
  * @FilePath: \knowledge-web\src\views\examples\page\add\index.vue
  * @Description: 新增弹窗
 -->
@@ -81,25 +81,25 @@
         setModalProps({
           confirmLoading: true,
         });
+        const params = {
+          cateName: value.cateName,
+          descInfo: value.descInfo,
+          cateConfig: value.cateConfig,
+          cateType: props.record.cateType,
+        };
         if (props.type === 'add') {
-          const params = {
-            cateName: value.cateName,
-            descInfo: value.descInfo,
-            cateConfig: value.cateConfig,
+          await cateSaveApi({
+            ...params,
             prntCateId: props.record.cateId,
             prntCateName: props.record.cateName,
-          };
-          await cateSaveApi(params);
+          });
         } else {
-          const params = {
+          await cateSaveApi({
+            ...params,
             cateId: props.record.cateId,
-            cateName: value.cateName,
-            descInfo: value.descInfo,
-            cateConfig: value.cateConfig,
             prntCateId: props.record.prntCateId,
             prntCateName: props.record.prntCateName,
-          };
-          await cateSaveApi(params);
+          });
         }
         emit('success');
       } finally {
