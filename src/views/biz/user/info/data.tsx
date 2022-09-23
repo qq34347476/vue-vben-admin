@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-15 15:56:33
+ * @LastEditTime: 2022-09-22 16:08:05
  * @Description:
  */
 import { DescItem } from '/@/components/Description/index';
@@ -7,15 +7,15 @@ import { DescItem } from '/@/components/Description/index';
 export function createDesSchemas(): DescItem[] {
   return [
     {
-      field: 'username',
+      field: 'custCode',
       label: '用户名',
     },
     {
-      field: 'realName',
+      field: 'custNick',
       label: '姓名',
     },
     {
-      field: 'phoneNumber',
+      field: 'mob',
       label: '手机号码',
     },
     {
@@ -23,7 +23,7 @@ export function createDesSchemas(): DescItem[] {
       label: '用户邮箱',
     },
     {
-      field: 'updatePsn',
+      field: 'groupName',
       label: '所属分组',
     },
   ];

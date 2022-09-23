@@ -59,6 +59,7 @@ export interface CateDTO {
   crter: string; // '李健麟';
   crteTime: string; // '2022-08-29 15:55:18';
   crterId: string; // '9af767783e624d4cb96691459024aa4a';
+  cateConfig: string;
 }
 export interface CommentTreeItem extends ForumCommentDTOItem {
   children: CommentTreeItem[];

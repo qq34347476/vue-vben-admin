@@ -175,7 +175,9 @@
                                 <div class="flex-1 pr-2 text-base font-bold line-clamp-1">
                                   {item.title}
                                 </div>
-                                <div> {item.cateDTO.cateName}</div>
+                                <div style={JSON.parse(item.cateDTO.cateConfig).style}>
+                                  {item.cateDTO.cateName}
+                                </div>
                               </div>
                               <div class="mb-2 text-xs text-gray-500">
                                 {

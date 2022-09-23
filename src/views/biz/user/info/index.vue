@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-16 10:00:07
+ * @LastEditTime: 2022-09-22 16:09:01
  * @Description: 个人信息
 -->
 <template>
@@ -61,7 +61,6 @@
   // 头像
   const avatar = computed(() => {
     const { avatar } = userStore.getUserInfo;
-    console.log(userStore.getUserInfo);
     return avatar || headerImg;
   });
   // 上传头像

@@ -1,17 +1,17 @@
 /*
- * @LastEditTime: 2022-08-24 17:50:40
+ * @LastEditTime: 2022-09-21 14:54:11
  * @Description:
  */
 import { ref } from 'vue';
-import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
+import { ClassifyItem } from '/@/api/biz/system/model/classifyModel';
 import { useModal } from '/@/components/Modal';
 
 export function useDetail() {
   // detailDrawer
   const [registerDetailModal, { openModal }] = useModal();
   // 详情
-  const recordRef = ref<KnowledgeItem>();
-  function handleDatail(record: KnowledgeItem) {
+  const recordRef = ref<ClassifyItem>();
+  function handleDatail(record: ClassifyItem) {
     recordRef.value = record;
     openModal();
   }

@@ -14,7 +14,7 @@ import {
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 import { buildUUID } from '/@/utils/uuid';
 import { isFunction, isBoolean } from '/@/utils/is';
-import { get, cloneDeep, merge, orderBy } from 'lodash-es';
+import { get, cloneDeep, merge } from 'lodash-es';
 import { FETCH_SETTING, ROW_KEY, PAGE_SIZE } from '../const';
 
 interface ActionType {
@@ -270,17 +270,15 @@ export function useDataSource(
       }
 
       const { sortInfo = {}, filterInfo } = searchState;
-      const orderBy = { orderBy: '' };
-      if (sortInfo.field) {
-        orderBy.orderBy = sortInfo.field + ' ' + (sortInfo.order === 'ascend' ? 'asc' : 'desc');
-      }
       let params: Recordable = merge(
         pageParams,
         useSearchForm ? getFieldsValue() : {},
         searchInfo,
         opt?.searchInfo ?? {},
         defSort,
-        orderBy,
+        sortInfo.field
+          ? { orderBy: sortInfo.field + ' ' + (sortInfo.order === 'ascend' ? 'asc' : 'desc') }
+          : {},
         filterInfo,
         // opt?.sortInfo ?? {},
         opt?.filterInfo ?? {},

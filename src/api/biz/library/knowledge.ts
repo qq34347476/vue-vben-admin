@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 18:18:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-20 15:27:32
+ * @LastEditTime: 2022-09-23 17:55:26
  * @FilePath: \knowledge-web\src\api\biz\library\knowledge.ts
  * @Description: 知识库管理api
  */
@@ -18,8 +18,8 @@ import { BasicPageParams, BasicFetchResult } from '/@/api/model/baseModel';
 enum Api {
   KNOWLEDGE_LIST = '/space/find-effective-by-condition-to-page',
   KNOWLEDEG_SAVE = '/space/save-space',
-  GROUP_INFO_list = '/group-info/find-team-list-by-param',
-  TEAM_MENBER_LIST = '/group-info/find-team-member-list-by-param',
+  GROUP_INFO_list = '/group-info/space-auth/find-by-condition-to-page',
+  TEAM_MENBER_LIST = '/cust/space-auth/find-by-condition-to-page',
   KNOWLEDGE_DETAIL = '/space/get-space-detail-and-auth/',
   KNOWLEDGE_USER_LIST = '/knowledge/user/list',
   KNOWLEDGE_PIGEONHOLE_BY_ID = '/space/pigeonhole-by-id/',
@@ -56,7 +56,7 @@ export const knowledgeSaveApi = (params: BasicPageParams & KnowledgeListParams) 
  * @param {BasicPageParams} params
  * @return {*}
  */
-export const getGroupInfoListApi = (params: BasicPageParams & Partial<{ grpName: string }>) =>
+export const getGroupInfoListApi = (params: BasicPageParams & Partial<{ groupName: string }>) =>
   custHttp.post<BasicFetchResult<GroupItem>>({
     url: Api.GROUP_INFO_list,
     params,
