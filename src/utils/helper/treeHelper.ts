@@ -79,7 +79,7 @@ export function findPath<T = any>(
   tree: any,
   func: Fn,
   config: Partial<TreeHelperConfig> = {},
-): T | T[] | null {
+): T[] | null {
   config = getConfig(config);
   const path: T[] = [];
   const list = [...tree];

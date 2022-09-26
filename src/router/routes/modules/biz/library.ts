@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 14:16:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-08-24 10:39:20
+ * @LastEditTime: 2022-09-20 22:06:54
  * @FilePath: \knowledge-web\src\router\routes\modules\biz\library.ts
  * @Description: 知识库路由
  */
@@ -21,6 +21,16 @@ const library: AppRouteModule = {
     title: '知识库',
   },
   children: [
+    {
+      path: 'pageManage/:id',
+      name: 'PageManage',
+      component: () => import('/@/views/biz/library/pageManage/index.vue'),
+      props: true,
+      meta: {
+        title: '页面管理',
+        hideMenu: true,
+      },
+    },
     {
       path: 'knowledge',
       name: 'Knowledge',

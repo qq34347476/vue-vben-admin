@@ -141,6 +141,8 @@ export interface GlobConfig {
   title: string;
   // Service interface url
   apiUrl: string;
+  etherpadUrl: string;
+
   forumApiUrl: string;
   systemApiUrl: string;
   // Upload url
@@ -159,6 +161,7 @@ export interface GlobEnvConfig {
   VITE_GLOB_APP_TITLE: string;
   // Service interface url
   VITE_GLOB_API_URL: string;
+  VITE_GLOB_ETHERPAD_URL: string;
   VITE_GLOB_FORUM_API_URL: string;
   VITE_GLOB_SYSTEM_API_URL: string;
   // Service interface url prefix

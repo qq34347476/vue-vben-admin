@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 15:16:05
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-22 14:35:01
+ * @LastEditTime: 2022-09-24 19:59:49
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,7 +11,7 @@ import { BasicColumn, ActionItem } from '/@/components/Table';
 import { FormSchema } from '/@/components/Form/index';
 import { Switch } from 'ant-design-vue';
 import { h } from 'vue';
-import { KnowledgeAdmin } from '/@/api/biz/library/model/knowledgeModel';
+import { KnowledgeAdmin, KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
 
 export function createSchemas(): FormSchema[] {
   return [
@@ -30,9 +30,10 @@ export function createBasicColumns(handleName): BasicColumn[] {
       title: '知识库名称',
       width: 300,
       fixed: 'left',
-      customRender: ({ text }) => {
+      customRender: ({ text, record }) => {
+        const { spaceId } = record as KnowledgeItem;
         return (
-          <a class="line-clamp-1" onClick={handleName}>
+          <a class="line-clamp-1" onClick={handleName.bind(null, spaceId)}>
             {text}
           </a>
         );

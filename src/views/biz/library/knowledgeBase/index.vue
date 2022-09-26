@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 14:10:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-20 15:54:02
+ * @LastEditTime: 2022-09-24 19:23:30
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\index.vue
  * @Description: 知识库
 -->
@@ -56,7 +56,7 @@
     createRecycleActionColumn,
   } from './data';
   import { actionsFn } from './actionsFn';
-  import { PageEnum } from '/@/enums/pageEnum';
+  // import { PageEnum } from '/@/enums/pageEnum';
   import { useRouter } from 'vue-router';
 
   // compoent
@@ -80,9 +80,10 @@
 
   // 点击名称
   const { push } = useRouter();
-  function handleName() {
+  function handleName(id) {
     // 页面跳转
-    push(PageEnum.BASE_HOME);
+    // push(PageEnum.BASE_HOME);
+    push('/library/pageManage/' + id);
   }
   // table
   const [registerTable, { getSelectRowKeys, reload }] = useTable({

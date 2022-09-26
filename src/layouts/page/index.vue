@@ -18,7 +18,7 @@
           <component :is="Component" :key="route.fullPath" />
         </keep-alive>
 
-        <div v-else :key="route.name">
+        <div v-else :key="route.name" class="h-full">
           <component :is="Component" :key="route.fullPath" />
         </div>
       </transition>

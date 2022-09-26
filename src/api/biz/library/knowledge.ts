@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 18:18:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-23 18:08:39
+ * @LastEditTime: 2022-09-26 09:39:03
  * @FilePath: \knowledge-web\src\api\biz\library\knowledge.ts
  * @Description: 知识库管理api
  */
@@ -33,7 +33,7 @@ enum Api {
  * @param {BasicPageParams} params
  * @return {*}
  */
-export const getKnowledgeListDataApi = (params: BasicPageParams & KnowledgeListParams) =>
+export const getKnowledgeListDataApi = (params: Partial<BasicPageParams & KnowledgeListParams>) =>
   systemHttp.post<BasicFetchResult<KnowledgeItem>>({
     url: Api.KNOWLEDGE_LIST,
     params,
