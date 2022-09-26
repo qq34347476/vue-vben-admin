@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-23 11:40:12
+ * @LastEditTime: 2022-09-26 16:29:33
  * @Description:
  */
 /**
@@ -19,19 +19,15 @@ export function createSchemas(): FormSchema[] {
   ];
 }
 
-export function createBasicColumns(handleName: () => void): BasicColumn[] {
+export function createBasicColumns(): BasicColumn[] {
   return [
     {
       dataIndex: 'tageName',
       title: '知识库名称',
       width: 300,
       fixed: 'left',
-      customRender: ({ text }) => {
-        return (
-          <a class="line-clamp-1" onClick={handleName}>
-            {text}
-          </a>
-        );
+      customRender: ({ text, record }) => {
+        return <span style={JSON.parse(record.tagConfig).style}>{text}</span>;
       },
     },
     {
@@ -56,7 +52,7 @@ export function createBasicColumns(handleName: () => void): BasicColumn[] {
     {
       dataIndex: 'updtTime',
       title: '更新时间',
-      width: 100,
+      width: 160,
       sorter: true,
     },
   ];

@@ -424,7 +424,7 @@ export interface BasicColumn extends ColumnProps<Recordable> {
 
   //
   flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION' | 'TAG' | 'DICT';
-  tagList?: { label: string; value: string; type?: ColorTypeEnum | string }[];
+  tagList?: { label: string; value: string | number; type?: ColorTypeEnum | string }[];
   tagValue?: string;
   dictType?: string;
   customTitle?: VueNode;

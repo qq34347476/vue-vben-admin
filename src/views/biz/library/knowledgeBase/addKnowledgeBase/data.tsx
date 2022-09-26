@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 15:02:37
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-20 10:39:23
+ * @LastEditTime: 2022-09-26 10:35:05
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\data.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,17 +11,17 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Form/index';
 import { numStrPattern } from '/@/utils/pattern';
 import { getTeamMenberListApi } from '/@/api/biz/library/knowledge';
-import { useKonwledgeForm } from './useKonwledgeForm';
-import { TreeItem } from '/@/components/Tree';
-import { ref } from 'vue';
+// import { useKonwledgeForm } from './useKonwledgeForm';
+// import { TreeItem } from '/@/components/Tree';
+// import { ref } from 'vue';
 
-const adminsSelectTree = ref<TreeItem[]>([]);
-const { departmentListToTree } = useKonwledgeForm();
+// const adminsSelectTree = ref<TreeItem[]>([]);
+// const { departmentListToTree } = useKonwledgeForm();
 
 async function getAdminTree() {
   const { records } = await getTeamMenberListApi({ pageNo: 1, pageSize: 9999 });
-  adminsSelectTree.value = departmentListToTree(records);
-  return adminsSelectTree.value;
+  // adminsSelectTree.value = departmentListToTree(records);
+  return records;
 }
 export function createSchemas(nameBlur: Function, selectChange: Function): FormSchema[] {
   return [
@@ -56,21 +56,20 @@ export function createSchemas(nameBlur: Function, selectChange: Function): FormS
     {
       field: 'admins',
       label: '知识库管理员',
-      component: 'ApiTreeSelect',
-      // defaultValue: ['0b5648f517e0425c974ad1db0be9baf1'],
+      component: 'ApiSelect',
       componentProps: {
         api: getAdminTree,
-        height: 100,
-        treeCheckable: true,
-        treeDefaultExpandAll: true,
-        maxTagCount: 2,
-        showSearch: true,
-        treeNodeFilterProp: 'title',
-        showCheckedStrategy: 'SHOW_PARENT',
-        resultField: 'list',
-        onChange: (val) => {
-          selectChange(adminsSelectTree.value, val);
+        params: {
+          pageNo: 1,
+          pageSize: -1,
         },
+        resultField: 'records',
+        labelField: 'custNick',
+        valueField: 'custId',
+        mode: 'multiple',
+        maxTagCount: 2,
+        optionFilterProp: 'label',
+        onChange: selectChange,
       },
       rules: [{ required: true }],
     },
@@ -97,7 +96,7 @@ export function createSchemas(nameBlur: Function, selectChange: Function): FormS
 export function createUserSchemas(): FormSchema[] {
   return [
     {
-      field: 'userName',
+      field: 'custNick',
       label: '姓名',
       component: 'Input',
     },
@@ -106,16 +105,12 @@ export function createUserSchemas(): FormSchema[] {
 export function createBasicColumns(): BasicColumn[] {
   return [
     {
-      dataIndex: 'userName',
+      dataIndex: 'custNick',
       title: '姓名',
     },
     {
-      dataIndex: 'userId',
+      dataIndex: 'custCode',
       title: '用户名',
-    },
-    {
-      dataIndex: 'grpName',
-      title: '所属分组',
     },
   ];
 }
@@ -123,7 +118,7 @@ export function createBasicColumns(): BasicColumn[] {
 export function createGroupSchemas(): FormSchema[] {
   return [
     {
-      field: 'grpName',
+      field: 'groupName',
       label: '分组名称',
       component: 'Input',
     },
@@ -132,11 +127,11 @@ export function createGroupSchemas(): FormSchema[] {
 export function createGroupColumns(): BasicColumn[] {
   return [
     {
-      dataIndex: 'grpName',
+      dataIndex: 'groupName',
       title: '分组名称',
     },
     {
-      dataIndex: 'teamId',
+      dataIndex: 'groupId',
       title: '分组ID',
     },
   ];

@@ -8,6 +8,7 @@ import { isFunction } from '/@/utils/is';
 import { cloneDeep } from 'lodash-es';
 import { ContentTypeEnum } from '/@/enums/httpEnum';
 import { RequestEnum } from '/@/enums/httpEnum';
+import { useUserStore } from '/@/store/modules/user';
 
 export * from './axiosTransform';
 
@@ -144,6 +145,9 @@ export class VAxios {
       });
     }
 
+    const userStore = useUserStore();
+    const { userId } = userStore.getUserInfo;
+    formData.append('id', userId);
     return this.axiosInstance.request<T>({
       ...config,
       method: 'POST',

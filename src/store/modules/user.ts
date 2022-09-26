@@ -15,6 +15,7 @@ import { usePermissionStore } from '/@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { h } from 'vue';
+import { getUserInfoApi } from '/@/api/biz/user/info';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -22,6 +23,7 @@ interface UserState {
   roleList: RoleEnum[];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
+  avatar: string;
 }
 
 export const useUserStore = defineStore({
@@ -37,6 +39,7 @@ export const useUserStore = defineStore({
     sessionTimeout: false,
     // Last fetch time
     lastUpdateTime: 0,
+    avatar: '',
   }),
   getters: {
     getUserInfo(): UserInfo {
@@ -140,11 +143,12 @@ export const useUserStore = defineStore({
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
       const data = await window.__SA_OAUTH__.loadUserInfo();
+      const { headPortraitUrl } = await getUserInfoApi(data.uactId);
       const userInfo: UserInfo = {
         userId: data.uactId,
         username: data.userId,
         realName: data.userName,
-        avatar: '',
+        avatar: headPortraitUrl || '',
         desc: '',
         homePath: '',
         roles: data.roleTypes.map((item) => {

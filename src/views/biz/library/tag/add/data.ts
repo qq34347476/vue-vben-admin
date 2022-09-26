@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-22 17:13:44
+ * @LastEditTime: 2022-09-26 16:08:27
  * @Description:静态数据
  */
 
@@ -13,12 +13,13 @@ export function createSchemas(): FormSchema[] {
       rules: [{ required: true }],
     },
     {
-      field: 'cateConfig',
+      field: 'tagConfig',
       label: '标签颜色',
       component: 'RadioColorGroup',
       componentProps: {
         isSolid: false,
       },
+      rules: [{ required: true }],
     },
   ];
 }

@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-23 10:10:42
+ * @LastEditTime: 2022-09-26 16:02:03
  * @Description:
  */
 /**
@@ -14,6 +14,9 @@ export function createDesSchemas(): DescItem[] {
     {
       field: 'tageName',
       label: '标签名称',
+      render(val, data) {
+        return <span style={JSON.parse(data.tagConfig).style}>{val}</span>;
+      },
     },
   ];
 }

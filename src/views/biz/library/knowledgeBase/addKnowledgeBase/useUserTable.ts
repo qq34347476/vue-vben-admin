@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-20 18:17:05
+ * @LastEditTime: 2022-09-26 11:21:36
  * @Description:用户权限表格
  */
 import { reactive } from 'vue';
@@ -23,13 +23,15 @@ export function useUserTable() {
     },
     columns: createGroupColumns(),
     api: getGroupInfoListApi,
-    rowKey: 'teamId',
+    rowKey: 'groupId',
     rowSelection: {
       type: 'checkbox',
       onSelect: selectChange.bind(null, 'group'),
       onSelectAll: selectAllChange.bind(null, 'group'),
     },
-    maxHeight: 470,
+    scroll: {
+      y: 470,
+    },
   });
 
   // 用户table
@@ -43,28 +45,30 @@ export function useUserTable() {
     },
     columns: createBasicColumns(),
     api: getTeamMenberListApi,
-    rowKey: 'uactId',
+    rowKey: 'custId',
     rowSelection: {
       type: 'checkbox',
       onSelect: selectChange.bind(null, 'user'),
       onSelectAll: selectAllChange.bind(null, 'user'),
     },
-    maxHeight: 470,
+    scroll: {
+      y: 470,
+    },
   });
 
   // selectChange
   function selectChange(type, record, selected) {
     if (selected) {
       if (type === 'group') {
-        groupSelectArr.push(record.teamId);
+        groupSelectArr.push(record.groupId);
       } else {
-        userSelectArr.push(record.uactId);
+        userSelectArr.push(record.custId);
       }
     } else {
       if (type === 'group') {
-        groupSelectArr.splice(groupSelectArr.indexOf(record.teamId), 1);
+        groupSelectArr.splice(groupSelectArr.indexOf(record.groupId), 1);
       } else {
-        userSelectArr.splice(userSelectArr.indexOf(record.uactId), 1);
+        userSelectArr.splice(userSelectArr.indexOf(record.custId), 1);
       }
     }
   }
@@ -73,17 +77,17 @@ export function useUserTable() {
     if (selected) {
       changeRows.forEach((item) => {
         if (type === 'group') {
-          groupSelectArr.push(item.teamId);
+          groupSelectArr.push(item.groupId);
         } else {
-          userSelectArr.push(item.uactId);
+          userSelectArr.push(item.custId);
         }
       });
     } else {
       changeRows.forEach((item) => {
         if (type === 'group') {
-          groupSelectArr.splice(groupSelectArr.indexOf(item.teamId), 1);
+          groupSelectArr.splice(groupSelectArr.indexOf(item.groupId), 1);
         } else {
-          userSelectArr.splice(userSelectArr.indexOf(item.uactId), 1);
+          userSelectArr.splice(userSelectArr.indexOf(item.custId), 1);
         }
       });
     }

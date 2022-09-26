@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-20 16:30:07
+ * @LastEditTime: 2022-09-26 10:37:46
  * @Description:新增知识库表单
  */
 import { ref } from 'vue';
@@ -34,27 +34,27 @@ export function useKonwledgeForm() {
   // 知识库管理员勾选
   let beforeSelect: string[] = [];
   const selectDataRef = ref<string[]>([]);
-  function selectChange(adminsSelectTree: TreeItem[], val: string[]) {
-    selectDataRef.value = [];
+  function selectChange(val: string[]) {
     if (val.length) {
-      val.forEach((item) => {
-        if (item.split('-').length > 1 && item.split('-')[0] === 'team') {
-          adminsSelectTree.forEach((treeItem) => {
-            if (treeItem.value === item) {
-              treeItem.children?.forEach((chilItem) => {
-                selectDataRef.value.push(chilItem.value);
-              });
-            }
-          });
-        } else {
-          selectDataRef.value.push(item);
-        }
-      });
-      if (selectDataRef.value.length > 5) {
+      // val.forEach((item) => {
+      //   if (item.split('-').length > 1 && item.split('-')[0] === 'team') {
+      //     adminsSelectTree.forEach((treeItem) => {
+      //       if (treeItem.value === item) {
+      //         treeItem.children?.forEach((chilItem) => {
+      //           selectDataRef.value.push(chilItem.value);
+      //         });
+      //       }
+      //     });
+      //   } else {
+      //     selectDataRef.value.push(item);
+      //   }
+      // });
+      if (val.length > 5) {
         createMessage.warning('管理员人数不得超过5人!');
         setFieldsValue({ admins: beforeSelect });
       } else {
         beforeSelect = val;
+        selectDataRef.value = val;
       }
       clearValidate('admins');
     } else {

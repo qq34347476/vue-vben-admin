@@ -2,14 +2,14 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-19 18:01:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-21 18:07:27
+ * @LastEditTime: 2022-09-26 17:23:20
  * @FilePath: \knowledge-web\src\enums\libraryEnum.ts
  * @Description: 知识库enum
  */
 import { ColorTypeEnum } from './indexEnum';
 export enum ModelState {
-  enable = '1',
-  deactivate = '0',
+  deactivate,
+  enable,
 }
 
 export const ModelStateList = [

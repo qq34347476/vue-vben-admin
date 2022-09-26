@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-23 10:04:07
+ * @LastEditTime: 2022-09-26 16:31:36
  * @Description:
  */
 export interface TagItem {
@@ -14,6 +14,7 @@ export interface TagItem {
   crter: string; //  'hhh';
   crteTime: string; //  '2022-09-05 10:45:39';
   crterId: string; //  '7da3eed7f74a4d93889c4aa166bea7d1';
+  tagConfig: string;
 }
 
 export interface SaveTagParams {

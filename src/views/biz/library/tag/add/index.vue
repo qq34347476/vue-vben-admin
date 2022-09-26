@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-23 09:41:14
+ * @LastEditTime: 2022-09-26 16:33:13
  * @Description: 新增/编辑
 -->
 
@@ -37,7 +37,7 @@
   });
 
   // form
-  const [registerForm, { setFieldsValue, validateFields }] = useForm({
+  const [registerForm, { setFieldsValue, validateFields, updateSchema }] = useForm({
     schemas: createSchemas(),
     showActionButtonGroup: false,
     baseColProps: { span: 24 },
@@ -50,6 +50,14 @@
       if (props.type === 'edit') {
         nextTick(() => {
           setFieldsValue(props.record);
+          updateSchema([
+            {
+              field: 'tagConfig',
+              componentProps: {
+                defaultColor: JSON.parse(props.record?.tagConfig as string).color || '',
+              },
+            },
+          ]);
         });
       }
     }

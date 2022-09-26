@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-22 16:09:01
+ * @LastEditTime: 2022-09-26 15:38:25
  * @Description: 个人信息
 -->
 <template>
@@ -12,7 +12,7 @@
             :value="avatar"
             btnText="更换头像"
             :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
-            @change="updateAvatar"
+            @change="uploadSuccess"
             width="150"
           />
         </Col>
@@ -58,15 +58,15 @@
   import { UserInfo } from '/@/api/biz/user/model/infoModel';
 
   const userStore = useUserStore();
+  const userinfo = userStore.getUserInfo;
+
   // 头像
   const avatar = computed(() => {
-    const { avatar } = userStore.getUserInfo;
-    return avatar || headerImg;
+    return userinfo.avatar || headerImg;
   });
-  // 上传头像
-  function updateAvatar(src: string) {
-    const userinfo = userStore.getUserInfo;
-    userinfo.avatar = src;
+  // 上传成功
+  function uploadSuccess({ data }) {
+    userinfo.avatar = data.data.headPortraitUrl;
     userStore.setUserInfo(userinfo);
   }
 

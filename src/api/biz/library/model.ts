@@ -1,23 +1,50 @@
 /*
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 18:18:36
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-22 14:25:50
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-09-26 17:43:31
  * @FilePath: \knowledge-web\src\api\biz\library\knowledge.ts
  * @Description: 模板管理api
  */
-import { defHttp } from '/@/utils/http/axios';
-import { KnowledgeListParams, KnowledgeItem } from './model/knowledgeModel';
+import { knowledgeHttp } from '/@/utils/http/axios';
+import { ModelParams, ModelItem } from './model/model';
 import { BasicPageParams, BasicFetchResult } from '/@/api/model/baseModel';
 
 enum Api {
-  Model_LIST = '/model/list',
+  MODEL_LIST = '/page-templete/find-by-condition-to-page',
+  MODEL_SAVE = '/page-templete/save',
+  MODEL_CAHNGE_ABLE = '/page-templete/change-able',
 }
 
 /**
- * @description: 有效知识库列表
+ * @description: 模板列表
  * @param {BasicPageParams} params
  * @return {*}
  */
-export const getModelListData = (params: BasicPageParams & KnowledgeListParams) =>
-  defHttp.post<BasicFetchResult<KnowledgeItem>>({ url: Api.Model_LIST, params });
+export const getModelListApi = (params: BasicPageParams & Partial<ModelParams>) =>
+  knowledgeHttp.post<BasicFetchResult<ModelItem>>({ url: Api.MODEL_LIST, params });
+
+/**
+ * @description: 新增模板
+ * @param {BasicPageParams} params
+ * @return {*}
+ */
+export const modelSaveApi = (params: Partial<ModelParams>) =>
+  knowledgeHttp.post(
+    { url: Api.MODEL_SAVE, params },
+    {
+      successMessageModel: 'message',
+    },
+  );
+/**
+ * @description: 新增模板
+ * @param {BasicPageParams} params
+ * @return {*}
+ */
+export const modelChangeAbleApi = (params: BasicPageParams & Partial<ModelParams>) =>
+  knowledgeHttp.post(
+    { url: Api.MODEL_CAHNGE_ABLE, params },
+    {
+      successMessageModel: 'message',
+    },
+  );

@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-15 10:59:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-22 15:34:39
+ * @LastEditTime: 2022-09-26 11:20:49
  * @FilePath: \knowledge-web\src\views\biz\library\knowledgeBase\detailDrawer\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -53,8 +53,8 @@
   // api
   import {
     getKnowledgeDetailApi,
-    getKnowledgeDetailGroupApi,
-    getKnowledgeDetailUserApi,
+    getGroupInfoListApi,
+    getTeamMenberListApi,
   } from '/@/api/biz/library/knowledge';
   import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
   const props = defineProps<{
@@ -91,8 +91,11 @@
       actionColOptions: { span: 16 },
     },
     columns: createGroupColumns(),
-    api: getKnowledgeDetailGroupApi,
+    api: getGroupInfoListApi,
     beforeFetch: beforeFetch,
+    scroll: {
+      y: 470,
+    },
   });
 
   // 用户table
@@ -104,7 +107,10 @@
       actionColOptions: { span: 16 },
     },
     columns: createBasicColumns(),
-    api: getKnowledgeDetailUserApi,
+    api: getTeamMenberListApi,
     beforeFetch: beforeFetch,
+    scroll: {
+      y: 470,
+    },
   });
 </script>
