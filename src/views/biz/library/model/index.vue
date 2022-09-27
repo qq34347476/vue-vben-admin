@@ -1,8 +1,8 @@
 <!--
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 14:44:03
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-22 14:31:31
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-09-27 10:05:44
  * @FilePath: \knowledge-web\src\views\examples\page\index.vue
  * @Description: 页面模板
 -->
@@ -11,7 +11,9 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'action'">
         <TableAction
-          :actions="createActionColumn(record, handleDatail, handleEdit, handleDelete)"
+          :actions="
+            createActionColumn(record, handleDatail, handleEdit, handleEnable, handleDelete)
+          "
         />
       </template>
     </template>
@@ -25,23 +27,21 @@
     :record="addRecordRef"
     @success="closeAddModal(reload)"
   />
-  <Detail @register="registerDrawer" :record="recordRef" />
 </template>
 <script lang="ts" setup>
   import { createBasicColumns, createActionColumn, createSchemas } from './data';
   import { PageEnum } from '/@/enums/pageEnum';
   import { useRouter } from 'vue-router';
-  import { useDetail } from './useDetail';
-  import { useAdd } from './useAdd';
-  import { useDelete } from './useDelete';
+  import { useAdd } from './add/useAdd';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   // component
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import Add from './add/index.vue';
-  import Detail from './detail/index.vue';
 
   // api
-  import { getModelListData } from '/@/api/biz/library/model';
+  import { getModelListApi, modelChangeAbleApi, modelDeleteApi } from '/@/api/biz/library/model';
+  import { ModelItem } from '/@/api/biz/library/model/model';
 
   // 新增/编辑弹窗
   const { registerModal, openAddModal, modalTypeRef, handleEdit, addRecordRef, closeAddModal } =
@@ -58,7 +58,7 @@
     columns: createBasicColumns(handleName),
     clickToRowSelect: false,
     rowKey: 'id',
-    api: getModelListData,
+    api: getModelListApi,
     actionColumn: {
       width: 200,
       title: '操作',
@@ -75,8 +75,32 @@
   }
 
   // 详情
-  const { registerDrawer, recordRef, handleDatail } = useDetail();
+  function handleDatail(record: ModelItem) {
+    console.log(record);
+    push(PageEnum.BASE_HOME);
+  }
+
+  // 启用/停用
+  async function handleEnable(record: ModelItem) {
+    await modelChangeAbleApi([record.pageTmplId]);
+    reload({ page: 1 });
+  }
 
   // 删除
-  const { handleDelete } = useDelete(reload);
+  const { createConfirm, createMessage } = useMessage();
+  function handleDelete(rowKeys: string[], record: ModelItem) {
+    if (rowKeys.length) {
+      createConfirm({
+        iconType: 'warning',
+        title: '确认操作',
+        content: `确认将模板<span class="text-blue-500">【${record.templeteName}】</span>删除吗，删除后新建页面无法再引用。`,
+        onOk: async () => {
+          await modelDeleteApi(rowKeys);
+          reload({ page: 1 });
+        },
+      });
+    } else {
+      createMessage.warn('请先勾选要删除的知识库');
+    }
+  }
 </script>

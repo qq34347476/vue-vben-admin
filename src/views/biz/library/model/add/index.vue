@@ -1,8 +1,8 @@
 <!--
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 16:49:54
- * @LastEditors: crz 982544249@qq.com
- * @LastEditTime: 2022-08-19 16:33:09
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-09-26 17:39:34
  * @FilePath: \knowledge-web\src\views\examples\page\add\index.vue
  * @Description: 新增弹窗
 -->
@@ -24,6 +24,8 @@
   import { BasicForm, useForm } from '/@/components/Form';
   import { createSchemas } from './data';
   import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
+  // api
+  import { modelSaveApi } from '/@/api/biz/library/model';
 
   // emit
   const emit = defineEmits(['success']);
@@ -63,7 +65,7 @@
           confirmLoading: true,
         });
         if (props.type === 'add') {
-          console.log('新增接口');
+          await modelSaveApi(value);
         } else {
           console.log('编辑接口');
         }

@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-16 09:58:58
+ * @LastEditTime: 2022-09-27 15:22:35
  * @Description:
  */
 import { reactive } from 'vue';
@@ -8,6 +8,7 @@ import { MessageListItem } from '/@/api/biz/user/model/messageModel';
 import { MessageType } from '/@/enums/biz/userEnum';
 import { useRouter } from 'vue-router';
 import { PageEnum } from '/@/enums/pageEnum';
+import { useUserStore } from '/@/store/modules/user';
 
 // 问答列表
 export function useQuestionList() {
@@ -51,10 +52,14 @@ export function useQuestionList() {
       if (messageState.page === 1) {
         messageState.data = [];
       }
+      const userStore = useUserStore();
+      const { userId } = userStore.getUserInfo;
+
       const { records, recordTotal } = await getUserMessageList({
         pageNo: messageState.page,
         pageSize: 20,
-        type: messageState.type,
+        custId: userId,
+        newType: messageState.type,
       });
       messageState.data = [...messageState.data, ...records];
       // 判断是否最后一页
@@ -70,8 +75,8 @@ export function useQuestionList() {
   // 点击信息
   const { push } = useRouter();
   function handleMessage(val: MessageListItem) {
-    if (val.newType === 'answer') {
-      push(PageEnum.QUESTION_PAGE);
+    if (val.newType === 'comment') {
+      push(PageEnum.QUESTION_DETAIL + '/' + val.forumThemeId);
     } else {
       push(PageEnum.BASE_HOME);
     }

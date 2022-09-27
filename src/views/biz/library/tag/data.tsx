@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-26 16:29:33
+ * @LastEditTime: 2022-09-27 15:09:53
  * @Description:
  */
 /**
@@ -23,7 +23,7 @@ export function createBasicColumns(): BasicColumn[] {
   return [
     {
       dataIndex: 'tageName',
-      title: '知识库名称',
+      title: '标签名称',
       width: 300,
       fixed: 'left',
       customRender: ({ text, record }) => {
@@ -45,7 +45,7 @@ export function createBasicColumns(): BasicColumn[] {
       sorter: true,
     },
     {
-      dataIndex: 'opterId',
+      dataIndex: 'opter',
       title: '更新人',
       sorter: true,
     },

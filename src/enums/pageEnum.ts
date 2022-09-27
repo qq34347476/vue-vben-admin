@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-16 15:03:17
+ * @LastEditTime: 2022-09-27 15:16:53
  * @Description:
  */
 export enum PageEnum {
@@ -13,4 +13,6 @@ export enum PageEnum {
   ERROR_LOG_PAGE = '/error-log/list',
   // 问答页面
   QUESTION_PAGE = '/question/list',
+  // 问答详情
+  QUESTION_DETAIL = '/question/detail',
 }

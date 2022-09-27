@@ -1,11 +1,11 @@
 /*
- * @LastEditTime: 2022-08-26 10:14:35
+ * @LastEditTime: 2022-09-27 15:26:00
  * @Description:
  */
 export enum MessageType {
   ALL = '',
-  ANSWER = 'answer',
-  ABOUT = 'about',
+  COMMENT = 'comment',
+  PAGE = 'page',
 }
 export const MessageTypeList = [
   {
@@ -13,11 +13,11 @@ export const MessageTypeList = [
     label: '全部类别',
   },
   {
-    value: MessageType.ANSWER,
+    value: MessageType.COMMENT,
     label: '问答回复',
   },
   {
-    value: MessageType.ABOUT,
+    value: MessageType.PAGE,
     label: '提及我的',
   },
 ];

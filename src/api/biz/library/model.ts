@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 18:18:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-26 17:43:31
+ * @LastEditTime: 2022-09-27 09:53:41
  * @FilePath: \knowledge-web\src\api\biz\library\knowledge.ts
  * @Description: 模板管理api
  */
@@ -14,6 +14,7 @@ enum Api {
   MODEL_LIST = '/page-templete/find-by-condition-to-page',
   MODEL_SAVE = '/page-templete/save',
   MODEL_CAHNGE_ABLE = '/page-templete/change-able',
+  MODEL_DELETE = '/page-templete/delete-by-ids',
 }
 
 /**
@@ -37,13 +38,26 @@ export const modelSaveApi = (params: Partial<ModelParams>) =>
     },
   );
 /**
- * @description: 新增模板
+ * @description: 停用/启用
  * @param {BasicPageParams} params
  * @return {*}
  */
-export const modelChangeAbleApi = (params: BasicPageParams & Partial<ModelParams>) =>
+export const modelChangeAbleApi = (params: string[]) =>
   knowledgeHttp.post(
     { url: Api.MODEL_CAHNGE_ABLE, params },
+    {
+      successMessageModel: 'message',
+    },
+  );
+
+/**
+ * @description: 模板删除
+ * @param {string} params
+ * @return {*}
+ */
+export const modelDeleteApi = (params: string[]) =>
+  knowledgeHttp.post(
+    { url: Api.MODEL_DELETE, params },
     {
       successMessageModel: 'message',
     },

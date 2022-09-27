@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-09-15 18:17:05
+ * @LastEditTime: 2022-09-27 11:28:37
  * @Description:
  */
 export interface MessageListItem {
@@ -13,5 +13,6 @@ export interface MessageListItem {
 }
 
 export interface MessageParams {
-  type: string;
+  custId: string;
+  newType: string;
 }
