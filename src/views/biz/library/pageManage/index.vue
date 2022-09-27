@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-24 19:50:51
+ * @LastEditTime: 2022-09-27 15:33:26
  * @Description: 页面管理
 -->
 <script lang="tsx">
@@ -35,6 +35,9 @@
   import { usePageTree } from './usePageTree';
   import PageContent from './content/index.vue';
   import { findPath } from '/@/utils/helper/treeHelper';
+  import Move from './move/index.vue';
+  import { useModal } from '/@/components/Modal';
+  import Copy from './copy/index.vue';
 
   export default defineComponent({
     name: 'PageManage',
@@ -83,6 +86,20 @@
       });
       // 新增/编辑弹窗
       const { registerAdd, handleAdd, addState, handleEdit } = useAdd();
+      // 移动
+      const [registerMove, { openModal: openMove }] = useModal();
+      function handleMove() {
+        openMove();
+      }
+      // 复制
+      const [registerCopy, { openModal: openCopy }] = useModal();
+      function handleCopy() {
+        openCopy();
+      }
+      // 编辑
+      function handleEditPage() {
+        push(`/library/pageEdit/${state.selectedSpaceId}/${state.selectedPageKeys[0]}`);
+      }
       // 加载有效知识库列表
       async function initKnowledge() {
         const { records } = await getKnowledgeListDataApi({});
@@ -129,10 +146,10 @@
           findPath<PageTreeItem>(state.treeData, (item) => item.pageId === selectedKeys[0])?.map(
             (item) => item.pageTitle,
           ) || [];
+        list.length ? list.pop() : list.push('回收站');
 
         state.selectedSpaceItem && list.unshift(state.selectedSpaceItem.name);
-        list.pop();
-        state.selectedPagePath = list.join('/') || '';
+        state.selectedPagePath = list.join(' / ') || '';
       }
 
       // 页面树：右键选择
@@ -385,10 +402,29 @@
                   page={state.selectedPage}
                   path={state.selectedPagePath}
                   onDelete={handleDelete}
+                  onMove={handleMove}
+                  onCopy={handleCopy}
+                  onEdit={handleEditPage}
                 />
               )}
             </LayoutContent>
             <Add onRegister={registerAdd} {...addState} onSuccess={initTree} />
+            <Move
+              onRegister={registerMove}
+              selectedPage={state.selectedPage}
+              selectedSpaceItem={state.selectedSpaceItem}
+              knowledges={state.knowledges}
+              onSuccess={initTree}
+              path={state.selectedPagePath}
+            />
+            <Copy
+              onRegister={registerCopy}
+              selectedPage={state.selectedPage}
+              selectedSpaceItem={state.selectedSpaceItem}
+              knowledges={state.knowledges}
+              onSuccess={initTree}
+              path={state.selectedPagePath}
+            />
           </Layout>
         );
       };

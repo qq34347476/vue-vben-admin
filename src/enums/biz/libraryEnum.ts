@@ -2,11 +2,13 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-19 18:01:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-26 17:23:20
+ * @LastEditTime: 2022-09-27 18:08:43
  * @FilePath: \knowledge-web\src\enums\libraryEnum.ts
  * @Description: 知识库enum
  */
 import { ColorTypeEnum } from './indexEnum';
+// import { primaryColor,successColor,errorColor,warningColor } from '../../../build/config/themeConfig';
+
 export enum ModelState {
   deactivate,
   enable,
@@ -51,6 +53,28 @@ export enum PageTypeEnum {
   AUDIT = '3',
   RELEASE = '4',
 }
+export const PAGE_TYPE_LIST = [
+  {
+    value: PageTypeEnum.FILE,
+    label: '文件夹',
+    type: ColorTypeEnum.error,
+  },
+  {
+    value: PageTypeEnum.DRAFT,
+    label: '草稿页面',
+    type: ColorTypeEnum.warning,
+  },
+  {
+    value: PageTypeEnum.AUDIT,
+    label: '审核',
+    type: ColorTypeEnum.primary,
+  },
+  {
+    value: PageTypeEnum.RELEASE,
+    label: '发布页面',
+    type: ColorTypeEnum.success,
+  },
+];
 // 新增页面
 // correspondSort?: '1' | '0'; //'1'; //1表示上，0表示下
 export enum CorrespondSortEnum {

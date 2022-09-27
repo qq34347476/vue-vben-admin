@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-12 14:16:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-20 22:06:54
+ * @LastEditTime: 2022-09-27 15:28:16
  * @FilePath: \knowledge-web\src\router\routes\modules\biz\library.ts
  * @Description: 知识库路由
  */
@@ -28,6 +28,16 @@ const library: AppRouteModule = {
       props: true,
       meta: {
         title: '页面管理',
+        hideMenu: true,
+      },
+    },
+    {
+      path: 'pageEdit/:spaceId/:pageId',
+      name: 'PageEdit',
+      component: () => import('/@/views/biz/library/pageManage/edit/index.vue'),
+      props: true,
+      meta: {
+        title: '编辑页面',
         hideMenu: true,
       },
     },
