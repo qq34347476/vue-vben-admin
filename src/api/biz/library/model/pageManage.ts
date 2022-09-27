@@ -1,5 +1,6 @@
 import { CorrespondSortEnum, PageTypeEnum } from '/@/enums/biz/libraryEnum';
 export interface PageRecyclingPublicItem {
+  cateId: string;
   pageId: string; // '158aec975ff141c287d8290489663e7c';
   pageCode: string; // null;
   pageTitle: string; // '重命名';
@@ -41,8 +42,8 @@ export interface MovePageParams {
   pageId: string; // '98a924deb6bb41b786a69ac5cd3be19c';
   parentId: string; //  'ae9804e98a3d444cb1d11c8d240b111f';
   spaceId: string; //  '2';
-  correspondId: string; //  '2';
-  correspondSort: CorrespondSortEnum; //  '1'; //1表示上，0表示下
+  correspondId?: string; //  '2';
+  correspondSort?: CorrespondSortEnum; //  '1'; //1表示上，0表示下
 }
 
 export interface CopyPageParams {

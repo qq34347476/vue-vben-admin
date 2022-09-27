@@ -37,11 +37,12 @@ export const createNodeEditPage = (params: CreateNodeEditPageParams) =>
   knowledgeHttp.post({ url: Api.CREAT_NODE_EDIT_PAGE, params }, { successMessageModel: 'message' });
 
 /**
- * @description: 页面标题重名命
+ * @description: 页面标题重名命\分类修改
  * @return {*}
  */
 export const pageSave = (params: {
-  pageTitle: string; //'测试页面1';
+  cateId?: string;
+  pageTitle?: string; //'测试页面1';
   pageId: string; // '77c7900203f94ca89e44d06ce318c4d4';
 }) => knowledgeHttp.post({ url: Api.PAGE_SAVE, params }, { successMessageModel: 'message' });
 

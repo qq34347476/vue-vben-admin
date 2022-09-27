@@ -1,13 +1,14 @@
 <script lang="tsx">
-  import { defineComponent, shallowReactive, watch } from 'vue';
+  import { computed, defineComponent, shallowReactive, watch } from 'vue';
   import { PageRecyclingItem, PageRecyclingPublicItem } from '/@/api/biz/library/model/pageManage';
   import Iframe from '/@/views/sys/iframe/index.vue';
   import { useGlobSetting } from '/@/hooks/setting';
   import { useLoading } from '/@/components/Loading';
   import { getPageByID } from '/@/api/biz/library/pageManage';
   import { Icon } from '/@/components/Icon/index';
-  import { Dropdown, Menu } from 'ant-design-vue';
+  import { Dropdown, Menu, Tag } from 'ant-design-vue';
   import { MORE_MENUS, TreeMenuKeyEnum } from '../types';
+  import { PAGE_TYPE_LIST } from '/@/enums/biz/libraryEnum';
 
   export default defineComponent({
     name: 'PageContent',
@@ -21,7 +22,7 @@
       },
       page: { type: Object as PropType<PageRecyclingPublicItem> },
     },
-    emits: ['delete'],
+    emits: ['delete', 'move', 'copy', 'edit'],
     setup(props, { emit }) {
       const state = shallowReactive<{ page: PageRecyclingItem | undefined }>({ page: undefined });
       const globSetting = useGlobSetting();
@@ -56,8 +57,23 @@
         const { pageId, pageTitle } = state.page || {};
         if (key === TreeMenuKeyEnum.MORE_DELETE) {
           emit('delete', { pageId, pageTitle });
+        } else if (key === TreeMenuKeyEnum.MORE_MOVE) {
+          emit('move');
+        } else if (key === TreeMenuKeyEnum.MORE_COPY) {
+          emit('copy');
         }
       }
+      function handleEdit() {
+        emit('edit');
+      }
+      const pageTypeComputed = computed(() => {
+        const { pageType } = state.page || {};
+        if (!pageType) {
+          return null;
+        }
+
+        return PAGE_TYPE_LIST.find((item) => item.value === pageType);
+      });
 
       return () => {
         const { pageTitle, externalUrl } = props.page || {};
@@ -69,7 +85,15 @@
               <div class="flex">
                 <div class="flex-1 text-primary">{props.path}</div>
                 <div>
-                  <a-button type="text" size="small" class="mr-2 !hover:text-primary">
+                  {pageTypeComputed.value && (
+                    <Tag color={pageTypeComputed.value.type}>{pageTypeComputed.value.label}</Tag>
+                  )}
+                  <a-button
+                    type="text"
+                    size="small"
+                    class="mr-2 !hover:text-primary"
+                    onClick={handleEdit}
+                  >
                     <Icon icon="ant-design:edit-outlined" />
                     编辑
                   </a-button>
@@ -77,7 +101,6 @@
                     <Icon icon="ant-design:star-outlined" />
                     收藏
                   </a-button>
-
                   <Dropdown trigger={['click']}>
                     {{
                       default: () => (
@@ -101,12 +124,12 @@
               <div class="flex text-xs text-gray-500 divide-x">
                 <div class="pr-2">
                   <Icon icon="ant-design:user-outlined" />
-                  <span class="pr-1">{crter}</span>
+                  <span class="pr-2">{crter}</span>
                   <span class="pr-1">创建于 {crteTime}</span>
                 </div>
                 <div class="pl-2">
                   <Icon icon="ant-design:user-outlined" />
-                  <span class="pr-1">{crter}</span>
+                  <span class="pr-2">{crter}</span>
                   <span class="pr-1">修改于 {updtTime}</span>
                 </div>
               </div>
