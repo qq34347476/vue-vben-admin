@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-27 16:51:11
+ * @LastEditTime: 2022-09-28 11:36:31
  * @Description: 新增/编辑页面
 -->
 <script lang="tsx">
@@ -18,6 +18,9 @@
   import { CateListItem } from '/@/api/biz/question/model/listModel';
   import { CateTypeEnum } from '/@/enums/biz/questionEnum';
   import { getKnowledgeDetailApi } from '/@/api/biz/library/knowledge';
+  import { PAGE_DEFAULT_TITLE } from '/@/enums/biz/libraryEnum';
+  import { useDebounceFn } from '@vueuse/core';
+
   export default defineComponent({
     name: 'EditPage',
     props: {
@@ -70,7 +73,7 @@
             getCateListApi({ pageNo: 1, pageSize: -1, cateType: CateTypeEnum.knowledge }),
           ]);
           const { pageTitle, cateId } = data;
-          state.pageTitle = pageTitle;
+          state.pageTitle = pageTitle === PAGE_DEFAULT_TITLE ? '' : pageTitle;
           state.selectedCate = cateId;
 
           state.page = data;
@@ -103,8 +106,13 @@
       }
       function handlePressEnter() {
         const { pageId = '' } = props || {};
-        pageSave({ pageId, pageTitle: state.pageTitle });
+        // console.log(state.pageTitle);
+        if (!state.pageTitle) {
+          return;
+        }
+        pageSave({ pageId, pageTitle: state.pageTitle || PAGE_DEFAULT_TITLE });
       }
+      const handleTitleChange = useDebounceFn(handlePressEnter, 1000);
       function handleRelease() {
         emit('success');
       }
@@ -124,18 +132,20 @@
                   <Icon icon="ant-design:tag-filled" />
                 </div>
                 <div>
-                  <a-button type="primary" class="mr-2" onClick={handleRelease}>
+                  <a-button type="primary" size="small" class="mr-3 !px-3" onClick={handleRelease}>
                     发布
                   </a-button>
-                  <a-button onClick={handleCancel}> 返回 </a-button>
+                  <a-button size="small" class="!px-3" onClick={handleCancel}>
+                    返回
+                  </a-button>
                 </div>
               </div>
               <div class="flex pt-2">
                 <div class="flex-1 pr-2">
                   <Input
                     v-model:value={state.pageTitle}
-                    placeholder="回车后立即保存"
-                    onPressEnter={handlePressEnter}
+                    placeholder={PAGE_DEFAULT_TITLE}
+                    onChange={handleTitleChange}
                   />
                 </div>
                 <div>

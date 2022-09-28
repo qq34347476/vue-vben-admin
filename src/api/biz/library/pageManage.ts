@@ -34,7 +34,10 @@ export const getPageTreeListData = (params: { spaceId: string }) =>
  * @return {*}
  */
 export const createNodeEditPage = (params: CreateNodeEditPageParams) =>
-  knowledgeHttp.post({ url: Api.CREAT_NODE_EDIT_PAGE, params }, { successMessageModel: 'message' });
+  knowledgeHttp.post<PageRecyclingItem>(
+    { url: Api.CREAT_NODE_EDIT_PAGE, params },
+    { successMessageModel: 'message' },
+  );
 
 /**
  * @description: 页面标题重名命\分类修改

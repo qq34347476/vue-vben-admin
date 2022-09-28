@@ -111,6 +111,7 @@ export interface PageRecyclingPublicTree extends PageRecyclingPublicItem {
 }
 
 export const RECYCLING_ROOT: PageRecyclingPublicTree = {
+  cateId: '',
   pageId: TreeMenuKeyEnum.RECYCLING_ROOT,
   pageCode: '',
   pageTitle: '回收站',

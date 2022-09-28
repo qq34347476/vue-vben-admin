@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-27 15:33:26
+ * @LastEditTime: 2022-09-28 13:38:55
  * @Description: 页面管理
 -->
 <script lang="tsx">
@@ -85,7 +85,7 @@
         knowledges: [],
       });
       // 新增/编辑弹窗
-      const { registerAdd, handleAdd, addState, handleEdit } = useAdd();
+      const { registerAdd, addState, handleEdit } = useAdd();
       // 移动
       const [registerMove, { openModal: openMove }] = useModal();
       function handleMove() {
@@ -132,7 +132,8 @@
       }
       initTree(true);
       // 删除等操作
-      const { handleDelete, handlePermanentDelete, handleRecover } = usePageTree(initTree);
+      const { handleDelete, handlePermanentDelete, handleRecover, handleAddPage } =
+        usePageTree(initTree);
       // 页面树的选中
       function handleSelectTree(
         selectedKeys: string[],
@@ -160,11 +161,11 @@
         } else if (menuKey === TreeMenuKeyEnum.DELETE) {
           handleDelete(data);
         } else if (menuKey === TreeMenuKeyEnum.SUB) {
-          handleAdd(state.selectedSpaceId, data);
+          handleAddPage(state.selectedSpaceId, data.pageId);
         } else if (menuKey === TreeMenuKeyEnum.UP) {
-          handleAdd(state.selectedSpaceId, data, CorrespondSortEnum.UP);
+          handleAddPage(state.selectedSpaceId, data.pageId, CorrespondSortEnum.UP);
         } else if (menuKey === TreeMenuKeyEnum.DOWN) {
-          handleAdd(state.selectedSpaceId, data, CorrespondSortEnum.DOWN);
+          handleAddPage(state.selectedSpaceId, data.pageId, CorrespondSortEnum.DOWN);
         }
       }
       const onDrop = (info: AntTreeNodeDropEvent) => {
@@ -362,10 +363,10 @@
                 <div class="flex p-2 cursor-pointer hover:text-primary">
                   <div
                     class="flex-1"
-                    onClick={handleAdd.bind(
+                    onClick={handleAddPage.bind(
                       null,
                       state.selectedSpaceId,
-                      state.selectedPage,
+                      state.selectedPage?.pageId,
                       undefined,
                     )}
                   >

@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-19 18:01:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-27 18:08:43
+ * @LastEditTime: 2022-09-28 10:33:41
  * @FilePath: \knowledge-web\src\enums\libraryEnum.ts
  * @Description: 知识库enum
  */
@@ -81,3 +81,5 @@ export enum CorrespondSortEnum {
   UP = '1',
   DOWN = '0',
 }
+// 新增页面：默认标题
+export const PAGE_DEFAULT_TITLE = '无标题';

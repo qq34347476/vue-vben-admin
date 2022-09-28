@@ -120,7 +120,7 @@
                   </Dropdown>
                 </div>
               </div>
-              <div class="my-3 text-3xl">{pageTitle}</div>
+              <div class="my-2 text-2xl">{pageTitle}</div>
               <div class="flex text-xs text-gray-500 divide-x">
                 <div class="pr-2">
                   <Icon icon="ant-design:user-outlined" />

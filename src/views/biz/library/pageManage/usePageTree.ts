@@ -4,9 +4,42 @@ import {
   reductionPage,
   permanentlyDeleteByIds,
 } from '/@/api/biz/library/pageManage';
-import { PageRecyclingItem } from '/@/api/biz/library/model/pageManage';
+import { PageRecyclingItem, CreateNodeEditPageParams } from '/@/api/biz/library/model/pageManage';
+import { useLoading } from '/@/components/Loading';
+import { PageTypeEnum, CorrespondSortEnum, PAGE_DEFAULT_TITLE } from '/@/enums/biz/libraryEnum';
+import { createNodeEditPage } from '/@/api/biz/library/pageManage';
+import { useRouter } from 'vue-router';
+
 export function usePageTree(initTree: () => Promise<void>) {
+  const { push } = useRouter();
+
   const { createConfirm } = useMessage();
+  const [openFullLoading, closeFullLoading] = useLoading({
+    tip: '加载中...',
+  });
+  // 新建子页面/上方新增/下方新增
+  async function handleAddPage(spaceId: string, id: string, correspondSort?: CorrespondSortEnum) {
+    try {
+      openFullLoading();
+
+      const params: CreateNodeEditPageParams = {
+        pageType: PageTypeEnum.DRAFT,
+        spaceId: spaceId,
+        pageTitle: PAGE_DEFAULT_TITLE,
+      };
+      if (!correspondSort) {
+        params.parentId = id;
+      } else {
+        params.correspondSort = correspondSort;
+        params.correspondId = id;
+      }
+      const { pageId } = await createNodeEditPage(params);
+      // 进入编辑页面
+      push(`/library/pageEdit/${spaceId}/${pageId}`);
+    } finally {
+      closeFullLoading();
+    }
+  }
   // 页面树：删除
   function handleDelete(record: { pageId: string; pageTitle: string }) {
     createConfirm({
@@ -40,5 +73,6 @@ export function usePageTree(initTree: () => Promise<void>) {
     handleDelete,
     handleRecover,
     handlePermanentDelete,
+    handleAddPage,
   };
 }
