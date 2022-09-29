@@ -18,6 +18,12 @@ import SaOAuth from 'saoauth';
 import { useGlobSetting } from '/@/hooks/setting';
 
 const { authUrl, clientId, tenantsCode } = useGlobSetting();
+import { isDevMode } from './utils/env';
+
+if (isDevMode()) {
+  import('ant-design-vue/es/style');
+}
+
 async function bootstrap() {
   const app = createApp(App);
 
