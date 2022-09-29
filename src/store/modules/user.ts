@@ -172,18 +172,17 @@ export const useUserStore = defineStore({
      * @description: logout
      */
     async logout(goLogin = false) {
-      if (this.getToken) {
-        try {
-          // await doLogout();
-          window.__SA_OAUTH__.logoutReload();
-        } catch {
-          console.log('注销Token失败');
-        }
-      }
+      console.log(goLogin);
+
       this.setToken(undefined);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
-      goLogin && router.push(PageEnum.BASE_LOGIN);
+      try {
+        // await doLogout();
+        window.__SA_OAUTH__.logoutReload();
+      } catch {
+        console.log('注销Token失败');
+      }
     },
 
     /**

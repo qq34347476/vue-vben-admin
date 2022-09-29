@@ -1,7 +1,11 @@
 <script lang="tsx">
   import { computed, defineComponent, reactive } from 'vue';
-  import { getQuestionByIdApi } from '/@/api/biz/question/list';
-  import { QuestionListItem, CommentTreeItem } from '/@/api/biz/question/model/listModel';
+  import { getCommentListApi, getQuestionByIdApi } from '/@/api/biz/question/list';
+  import {
+    QuestionListItem,
+    CommentTreeItem,
+    ForumCommentDTOItem,
+  } from '/@/api/biz/question/model/listModel';
   import { Icon } from '/@/components/Icon/index';
   import { Skeleton, Avatar } from 'ant-design-vue';
   import Answer from '/@/views/biz/question/answer/index.vue';
@@ -26,16 +30,22 @@
         default: true,
       },
     },
+    emits: ['success'],
+
     setup(props, { expose, emit }) {
-      const state = reactive<{ detail: QuestionListItem | null }>({
+      const state = reactive<{ detail: QuestionListItem | null; list: ForumCommentDTOItem[] }>({
         detail: null,
+        list: [],
       });
       // 初始化数据
       async function initData() {
         state.detail = null;
-        const data = await getQuestionByIdApi(props.id);
+        const [data] = await Promise.all([getQuestionByIdApi(props.id), initCommontList()]);
         state.detail = data;
         // state.answers = records;
+      }
+      async function initCommontList() {
+        state.list = await getCommentListApi({ forumThemeId: props.id });
       }
       // 页面打开立即请求，弹窗组件引用，每次打开，单独调用
       props.immediate && initData();
@@ -43,9 +53,9 @@
       function emitSuccess() {
         emit('success');
       }
-      const { handleDeleteComment, handleDelete } = useOperator(emitSuccess, initData);
+      const { handleDeleteComment, handleDelete } = useOperator(emitSuccess, initCommontList);
       const commentsComputed = computed<CommentTreeItem[]>(() => {
-        const answers = state.detail?.forumCommentDTOS || [];
+        const answers = state.list || [];
         if (answers && answers.length) {
           return listToTree(answers, {
             id: 'commentId',
@@ -59,11 +69,11 @@
       // 写回答
       const { registerAnswer, handleAnswer, answerState } = useAnswer();
       // render回答
-      function renderAnswer(list: CommentTreeItem[], prntCommentCrter?: string) {
+      function renderAnswer(list: CommentTreeItem[]) {
         return list.map((item) => {
-          const { children } = item;
+          const { children, respondent, commentId, prntCommentId } = item;
           return (
-            <div class="flex p-3">
+            <div class="flex p-3" key={commentId}>
               <div class="pr-2">
                 <Avatar size={25} class="!text-xs !bg-primary/50 ">
                   {item.crter.slice(-1)}
@@ -72,10 +82,10 @@
               <div class="flex-1">
                 <div class="mb-2 ">
                   <span class="pr-2">{item.crter}</span>
-                  {prntCommentCrter && (
+                  {prntCommentId !== '0' && (
                     <span class="pr-2">
                       <span class="pr-2 text-primary">回复</span>
-                      {prntCommentCrter}
+                      {respondent}
                     </span>
                   )}
                   <span class="pr-2 text-xs text-gray-500"> {item.crteTime}</span>
@@ -102,47 +112,14 @@
                     </a-button>
                   )}
                 </div>
-                <div>{children && children.length ? renderAnswer(children, item.crter) : ''}</div>
+                <div class="bg-gray-500/10">
+                  {children && children.length ? renderAnswer(children) : ''}
+                </div>
               </div>
             </div>
           );
         });
       }
-      // function renderComment(list: CommentTreeItem[]) {
-      //   return list.map((item) => {
-      //     const { children } = item;
-      //     return (
-      //       <Comment>
-      //         {{
-      //           actions: () => (
-      //             <a-button
-      //               type="text"
-      //               class="!hover:text-primary"
-      //               onClick={handleAnswer.bind(null, state.detail, item)}
-      //             >
-      //               <Icon icon="ant-design:message-outlined" />
-      //               回复
-      //             </a-button>
-      //           ),
-      //           author: () => (
-      //             <div class="mb-2 ">
-      //               {
-      //                 // <img class="inline-block rounded-1/2 w-25px h-25px" src={item.avatar} />
-      //               }
-      //               <span class="px-2">{item?.crter}</span>
-      //               <span class="px-2 text-xs text-gray-500"> {item?.crteTime}</span>
-      //             </div>
-      //           ),
-      //           // avatar: () => (
-      //           //   <img class="inline-block rounded-1/2 w-25px h-25px" src={item.avatar} />
-      //           // ),
-      //           content: () => <div class="my-2">{item.content}</div>,
-      //           default: () => (children && children.length ? renderComment(children) : ''),
-      //         }}
-      //       </Comment>
-      //     );
-      //   });
-      // }
 
       return () => {
         const item = state.detail;
@@ -210,7 +187,7 @@
               </div>
             )}
 
-            <Answer onRegister={registerAnswer} {...answerState} onSuccess={initData} />
+            <Answer onRegister={registerAnswer} {...answerState} onSuccess={initCommontList} />
           </div>
         );
       };

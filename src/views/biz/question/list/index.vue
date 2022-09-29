@@ -136,13 +136,6 @@
                       tab: () => <span class="px-5">我参与的</span>,
                     }}
                   </Tabs.TabPane>
-                  {
-                    // TODO: slot插槽不行？
-                    // {{
-                    //   rightExtra: () => <BizSorter columnData={COLUMN_DATA} />,
-                    //   leftExtra: () => <span>leftExtra</span>,
-                    // }}
-                  }
                 </Tabs>
                 {
                   // 排序
@@ -170,7 +163,10 @@
                       {{
                         default: ({ item }: { item: QuestionListItem }) => (
                           <div class="px-4 ">
-                            <div class="p-4 shadow-md  border-1 hover:bg-gray-500/4">
+                            <div
+                              class="p-4 shadow-md  border-1 hover:bg-gray-500/4"
+                              onClick={handleGoDetail.bind(null, item)}
+                            >
                               <div class="flex flex-row mb-2">
                                 <div class="flex-1 pr-2 text-base font-bold line-clamp-1">
                                   {item.title}
@@ -204,7 +200,6 @@
                                     rows: 2,
                                   }}
                                   content={html2Str(item.forumThemeInstDTO?.content || '', 300)}
-                                  onClick={handleGoDetail.bind(null, item)}
                                 ></TypographyParagraph>
                               }
                               <div>

@@ -1,3 +1,4 @@
+import { CateDTO } from '../../question/model/listModel';
 import { CorrespondSortEnum, PageTypeEnum } from '/@/enums/biz/libraryEnum';
 export interface PageRecyclingPublicItem {
   cateId: string;
@@ -7,6 +8,7 @@ export interface PageRecyclingPublicItem {
   pageType: string; // '2';
   parentId: string; // 'a15663e93e384575a291c10a01c4912e';
   externalUrl: string; // '/p/158aec975ff141c287d8290489663e7c';
+  onlyReadUrl: string;
 }
 export interface PageTreeItem extends PageRecyclingPublicItem {
   level: number; // 0,
@@ -36,6 +38,7 @@ export interface PageRecyclingItem extends PageRecyclingPublicItem {
   correspondSort: string; // null;
   recoverVersion: string; // null;
   padText: string; // null;
+  cateDTO: CateDTO;
 }
 
 export interface MovePageParams {

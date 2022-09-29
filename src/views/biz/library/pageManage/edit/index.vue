@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-28 11:36:31
+ * @LastEditTime: 2022-09-28 16:59:37
  * @Description: 新增/编辑页面
 -->
 <script lang="tsx">
@@ -51,7 +51,7 @@
         cates: [],
         selectedCate: '',
       });
-      const { back } = useRouter();
+      const { push } = useRouter();
 
       const globSetting = useGlobSetting();
       const [openFullLoading, closeFullLoading] = useLoading({
@@ -118,7 +118,9 @@
       }
 
       function handleCancel() {
-        back();
+        // back();
+        const { spaceId = '' } = props || {};
+        push('/library/pageManage/' + spaceId);
       }
       return () => {
         const { externalUrl } = state.page || {};

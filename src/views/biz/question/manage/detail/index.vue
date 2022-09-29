@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-08-31 11:48:19
+ * @LastEditTime: 2022-09-28 17:24:56
  * @Description: 详情
 -->
 
@@ -31,7 +31,7 @@
   // api
   import { QuestionListItem } from '/@/api/biz/question/model/listModel';
   // emit
-  const emit = defineEmits(['success']);
+  const emit = defineEmits(['success', 'register']);
   // props
   const props = defineProps({
     record: { type: Object as PropType<QuestionListItem> },

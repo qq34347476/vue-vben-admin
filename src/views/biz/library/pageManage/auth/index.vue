@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-28 11:41:15
+ * @LastEditTime: 2022-09-29 11:40:22
  * @Description:权限设置
 -->
 
@@ -11,28 +11,41 @@
     @ok="handleOk"
     @visible-change="handleVisible"
     :destroy-on-close="true"
-    :use-wrapper="false"
-    :min-height="100"
+    width="60%"
   >
     <BasicForm @register="registerForm">
-      <template #saveUserAuthsSlot="{ model, field }"> 表格{{ model[field] }} </template>
+      <!-- ="{ model, field }" -->
+      <template #saveUserAuthsSlot>
+        <BasicTable @register="registerTable">
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'look'">
+              <Checkbox :checked="record.look" @change="handleChange('look', record, $event)" />
+            </template>
+            <template v-else-if="column.key === 'edit'">
+              <Checkbox :checked="record.edit" @change="handleChange('edit', record, $event)" />
+            </template>
+          </template>
+        </BasicTable>
+      </template>
     </BasicForm>
   </BasicModal>
 </template>
 <script lang="ts" setup name="Move">
   import { nextTick, shallowReactive } from 'vue';
   import type { PropType } from 'vue';
-  // import { Tree } from 'ant-design-vue';
   import { useLoading } from '/@/components/Loading';
+  import { Checkbox } from 'ant-design-vue';
 
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { createSchemas } from './data';
+  import { createSchemas, createBasicColumns } from './data';
 
   import { KnowledgeItem } from '/@/api/biz/library/model/knowledgeModel';
   import { PageRecyclingPublicTree } from '../types';
-  import { PageTreeItem } from '/@/api/biz/library/model/pageManage';
-  import { getPageTreeListData, movePage } from '/@/api/biz/library/pageManage';
+  // import { getPageTreeListData, movePage } from '/@/api/biz/library/pageManage';
+  import { BasicTable, useTable } from '/@/components/Table';
+  // api
+  import { getTeamMenberListApi } from '/@/api/biz/library/knowledge';
 
   // emit
   const emit = defineEmits(['success', 'register']);
@@ -41,58 +54,61 @@
   const props = defineProps({
     selectedPage: { type: Object as PropType<PageRecyclingPublicTree> },
     selectedSpaceItem: { type: Object as PropType<KnowledgeItem> },
-    knowledges: { type: Array as PropType<KnowledgeItem[]> },
-    path: {
-      type: String,
-    },
   });
 
   // form
-  const [registerForm, { setFieldsValue, validateFields, updateSchema }] = useForm({
-    schemas: createSchemas(),
+  const [registerForm, { validateFields }] = useForm({
+    schemas: createSchemas(handleAuthTypeChange),
     showActionButtonGroup: false,
     baseColProps: { span: 24 },
     labelWidth: 100,
   });
+
   const [openFullLoading, closeFullLoading] = useLoading({
     tip: '加载中...',
   });
-  const state = shallowReactive<{ treeData: PageTreeItem[]; selectPath: string }>({
-    treeData: [],
-    selectPath: '',
+  const state = shallowReactive<{ auth: string }>({
+    auth: '',
   });
-  async function handleSpaceIdChange(value: string) {
-    // console.log(e);
+  const [registerTable, { reload }] = useTable({
+    api: getTeamMenberListApi,
+    columns: createBasicColumns(),
+    immediate: false,
+    // bordered: true,
+  });
+  // 权限设置变化
+  async function handleAuthTypeChange(value: string) {
+    console.log(value);
     try {
       openFullLoading();
-      const data = await getPageTreeListData({ spaceId: value });
-      state.treeData = data;
+      // reload({
+      //   searchInfo: {
+      //     spaceId: value,
+      //   },
+      // });
     } finally {
       closeFullLoading();
     }
   }
-
+  // 权限变化
+  function handleChange(type: 'look' | 'edit', record, value) {
+    console.log(type, record, value);
+  }
   // 打开弹窗
   function handleVisible(visible: boolean) {
     if (visible) {
-      // console.log(props.knowledges);
+      console.log(state);
+
       const { spaceId = '' } = props.selectedSpaceItem || {};
-      handleSpaceIdChange(spaceId);
+      // handleAuthTypeChange(spaceId);
 
       nextTick(() => {
-        updateSchema({
-          field: 'spaceId',
-          componentProps: {
-            onChange: handleSpaceIdChange,
-            options: props.knowledges?.map((item) => {
-              return {
-                value: item.spaceId,
-                label: item.name,
-              };
-            }),
+        reload({
+          searchInfo: {
+            spaceId,
           },
         });
-        setFieldsValue({ spaceId });
+        // setFieldsValue({ spaceId });
       });
     }
   }
@@ -105,12 +121,10 @@
       return;
     }
     console.log(value);
-    const { pageId: keys, spaceId } = value || {};
-    const [parentId] = keys || [];
-    const { pageId = '' } = props.selectedPage || {};
+
     try {
       changeOkLoading(true);
-      await movePage({ pageId, parentId, spaceId });
+      // await movePage({ pageId, parentId, spaceId });
 
       closeModal();
       emit('success');

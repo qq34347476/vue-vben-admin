@@ -1,5 +1,5 @@
 /*
- * @LastEditTime: 2022-08-31 13:46:33
+ * @LastEditTime: 2022-09-29 09:31:13
  * @Description:问答中心
  */
 import { forumHttp, systemHttp } from '/@/utils/http/axios';
@@ -7,6 +7,7 @@ import { BasicFetchResult, BasicPageParams } from '../../model/baseModel';
 import {
   CateListItem,
   CommentSaveParams,
+  ForumCommentDTOItem,
   GetQuestionListParams,
   QuestionListItem,
   QuestionSaveParams,
@@ -22,6 +23,7 @@ enum Api {
   QUESTION_MANAGER_DEL = '/forum-theme/delete-by-ids',
   QUESTION_MANAGER_HIDE = '/forum-theme/hide/',
   COMMENT_DELETE = '/forum-comment/delete-by-ids',
+  COMMENT_LIST = '/forum-comment/find-by-param',
 }
 
 /**
@@ -47,6 +49,21 @@ export const getQuestionByIdApi = (params: string) =>
   forumHttp.post<QuestionListItem>({
     url: Api.QUESTION_BY_ID,
     params,
+  });
+/**
+   * @description: 查看此条问答的所有回答
+
+   * @param {Partial} params
+   * @return {*}
+   */
+export const getCommentListApi = (params: Partial<ForumCommentDTOItem>) =>
+  forumHttp.post<ForumCommentDTOItem[]>({
+    url: Api.COMMENT_LIST,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
   });
 /**
  * @description: 分类列表

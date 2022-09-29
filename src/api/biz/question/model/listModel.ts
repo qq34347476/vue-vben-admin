@@ -44,6 +44,11 @@ export interface ForumCommentDTOItem {
   crterId: string; // 'e249d2702900405c95ae3b165a15aac6';
   crteTime: string; // '2022-08-29 14:06:18';
   hide: number; // 1;
+  headUrl: string; //
+  anonymoly: string; //
+  answeredId: string; //
+  respondentId: string; // '80d618683d984b16828fce316593f847';
+  respondent: string; //  '蒋琴';
 }
 export interface CateDTO {
   cateId: string; // '139b8a3a8f0c4baa809d6ee74096c1dc';
@@ -99,6 +104,7 @@ export interface CommentSaveParams {
   content: string; //  '评论了你的评论';
   prntCommentId: string; //  '9f4b51663c5d4bfb883248eed30a7ce0';
   forumThemeId: string; //  'a61c102a0ca34f2f8c079bf81036b6f5';
+  answeredId?: string; // 回复人
   // hide: string; //  '0';
   // stas: string; //  '1';
 }

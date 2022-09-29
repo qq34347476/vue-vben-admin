@@ -118,5 +118,6 @@ export const RECYCLING_ROOT: PageRecyclingPublicTree = {
   pageType: '2',
   parentId: '',
   externalUrl: '',
+  onlyReadUrl: '',
   children: [],
 };

@@ -25,7 +25,7 @@
   import { ForumCommentDTOItem, QuestionListItem } from '/@/api/biz/question/model/listModel';
   import { commentSaveApi } from '/@/api/biz/question/list';
   // emit
-  const emit = defineEmits(['success']);
+  const emit = defineEmits(['success', 'register']);
   const props = defineProps({
     record: { type: Object as PropType<QuestionListItem> },
     comment: { type: Object as PropType<ForumCommentDTOItem> },
@@ -52,15 +52,16 @@
   async function handleOk() {
     try {
       setModalProps({ loading: true, confirmLoading: true });
-      console.log(props.record);
+      // console.log(props.record);
       const { themeId = '' } = props.record || {};
       if (props.comment) {
-        // 有评论：则为回复
-        const { commentId } = props.comment;
+        // 有评论：则为回复; 最多二级
+        const { commentId, prntCommentId } = props.comment;
         await commentSaveApi({
           forumThemeId: themeId,
           content: state.content,
-          prntCommentId: commentId,
+          prntCommentId: prntCommentId === '0' ? commentId : prntCommentId,
+          answeredId: commentId,
         });
       } else {
         await commentSaveApi({ forumThemeId: themeId, content: state.content, prntCommentId: '' });

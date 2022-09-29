@@ -1,5 +1,5 @@
 <!--
- * @LastEditTime: 2022-09-28 13:38:55
+ * @LastEditTime: 2022-09-28 17:20:42
  * @Description: 页面管理
 -->
 <script lang="tsx">
@@ -38,7 +38,7 @@
   import Move from './move/index.vue';
   import { useModal } from '/@/components/Modal';
   import Copy from './copy/index.vue';
-
+  // import Auth from './auth/index.vue';
   export default defineComponent({
     name: 'PageManage',
     props: {
@@ -96,6 +96,11 @@
       function handleCopy() {
         openCopy();
       }
+      // 权限设置
+      // const [registerAuth, { openModal: openAuth }] = useModal();
+      // function handleAuth() {
+      //   openAuth();
+      // }
       // 编辑
       function handleEditPage() {
         push(`/library/pageEdit/${state.selectedSpaceId}/${state.selectedPageKeys[0]}`);
@@ -426,6 +431,14 @@
               onSuccess={initTree}
               path={state.selectedPagePath}
             />
+            {
+              // onAuth={handleAuth}
+              // <Auth
+              //   onRegister={registerAuth}
+              //   selectedPage={state.selectedPage}
+              //   selectedSpaceItem={state.selectedSpaceItem}
+              // />
+            }
           </Layout>
         );
       };

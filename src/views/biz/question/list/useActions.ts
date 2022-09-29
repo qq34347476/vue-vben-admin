@@ -66,7 +66,7 @@ export function useQuestionList() {
   });
   // 排序变换
   function handleSortChange(value: string) {
-    console.log('handleSortChange', value);
+    // console.log('handleSortChange', value);
 
     questionState.orderBy = value;
     fetchQuestionList(1);
@@ -98,7 +98,7 @@ export function useQuestionList() {
   function handlerSearchChange(e: ChangeEvent) {
     const value = e.target?.value;
     questionState.searchValue = value || '';
-    console.log('handlerSearchChange', value);
+    // console.log('handlerSearchChange', value);
   }
   // 搜索：请求第一页
   function handleSearch(value: string) {

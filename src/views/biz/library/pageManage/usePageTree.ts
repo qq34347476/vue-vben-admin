@@ -45,7 +45,7 @@ export function usePageTree(initTree: () => Promise<void>) {
     createConfirm({
       iconType: 'warning',
       title: '确认操作',
-      content: `确认删除页面<span class="text-blue-500">【${record.pageTitle}】</span>吗，删除页面将连同子页面一起删除？<p class="text-sm">页面删除后若想找回页面，可通过回收站进行恢复</p>`,
+      content: `确认删除页面<span class="text-blue-500">【${record.pageTitle}】</span>吗，删除页面将连同子页面一起删除？<p class="text-xs pt-2">页面删除后若想找回页面，可通过回收站进行恢复</p>`,
       onOk: async () => {
         await deletePageTreeById(record.pageId);
         initTree();

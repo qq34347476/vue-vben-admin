@@ -67,9 +67,9 @@
     cursor: pointer;
     transition: all 0.2s ease;
 
-    &.light {
-      border-bottom: 1px solid @border-color-base;
-    }
+    // &.light {
+    //   border-bottom: 1px solid @border-color-base;
+    // }
 
     &.collapsed-show-title {
       padding-left: 20px;

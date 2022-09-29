@@ -22,7 +22,7 @@
       },
       page: { type: Object as PropType<PageRecyclingPublicItem> },
     },
-    emits: ['delete', 'move', 'copy', 'edit'],
+    emits: ['delete', 'move', 'copy', 'edit', 'auth'],
     setup(props, { emit }) {
       const state = shallowReactive<{ page: PageRecyclingItem | undefined }>({ page: undefined });
       const globSetting = useGlobSetting();
@@ -61,6 +61,8 @@
           emit('move');
         } else if (key === TreeMenuKeyEnum.MORE_COPY) {
           emit('copy');
+        } else if (key === TreeMenuKeyEnum.MORE_AUDIT) {
+          emit('auth');
         }
       }
       function handleEdit() {
@@ -76,8 +78,8 @@
       });
 
       return () => {
-        const { pageTitle, externalUrl } = props.page || {};
-        const { crter, crteTime, updtTime } = state.page || {};
+        const { pageTitle, onlyReadUrl } = props.page || {};
+        const { crter, crteTime, updtTime, cateDTO } = state.page || {};
 
         return (
           <div class="divide-y ">
@@ -120,7 +122,14 @@
                   </Dropdown>
                 </div>
               </div>
-              <div class="my-2 text-2xl">{pageTitle}</div>
+              <div class="my-2 ">
+                <span class="text-2xl">{pageTitle}</span>
+                {cateDTO && (
+                  <span class="ml-4" style={JSON.parse(cateDTO.cateConfig).style}>
+                    {cateDTO.cateName}
+                  </span>
+                )}
+              </div>
               <div class="flex text-xs text-gray-500 divide-x">
                 <div class="pr-2">
                   <Icon icon="ant-design:user-outlined" />
@@ -134,7 +143,7 @@
                 </div>
               </div>
             </div>
-            {externalUrl && <Iframe frameSrc={globSetting.etherpadUrl + externalUrl} />}
+            {onlyReadUrl && <Iframe frameSrc={globSetting.etherpadUrl + onlyReadUrl} />}
           </div>
         );
       };

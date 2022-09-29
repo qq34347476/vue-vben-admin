@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 16:49:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-23 16:45:26
+ * @LastEditTime: 2022-09-29 11:06:39
  * @FilePath: \knowledge-web\src\views\examples\page\add\index.vue
  * @Description: 新增弹窗
 -->
@@ -33,7 +33,7 @@
   // props
   const props = defineProps<{
     type: 'add' | 'edit';
-    record: ClassifyItem;
+    record: ClassifyItem | undefined;
   }>();
 
   // form

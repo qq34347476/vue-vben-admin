@@ -2,7 +2,7 @@
  * @Author: crz 982544249@qq.com
  * @Date: 2022-08-17 14:44:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-09-23 15:47:24
+ * @LastEditTime: 2022-09-28 16:25:44
  * @FilePath: \knowledge-web\src\views\examples\page\index.vue
  * @Description: 分类管理
 -->
@@ -39,7 +39,7 @@
   <Add
     @register="registerModal"
     :type="modalTypeRef"
-    :record="(addRecordRef as ClassifyItem)"
+    :record="addRecordRef"
     @success="closeAddModal(reloadTableAndTree)"
   />
   <Detail @register="registerDetailModal" :record="recordRef" />
@@ -60,7 +60,7 @@
 
   // api
   import { getClassifyListApi } from '/@/api/biz/system/classify';
-  import { ClassifyItem } from '/@/api/biz/system/model/classifyModel';
+  // import { ClassifyItem } from '/@/api/biz/system/model/classifyModel';
 
   // 新增/编辑弹窗
   const { registerModal, modalTypeRef, openAddModal, handleEdit, addRecordRef, closeAddModal } =
